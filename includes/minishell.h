@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/28 11:47:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/28 12:13:30 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 typedef enum e_token_type
 {
 	WORD,
+	WORD_SINGLE_QUOTE,
+	WORD_DOUBLE_QUOTE,
 	PIPE,
 	HERE_DOC,
 	APPEND,

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:51:53 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/25 17:47:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/28 12:13:03 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ typedef enum e_char_type
 	CHAR_SPACE,
 	CHAR_SINGLE_QUOTE,
 	CHAR_DOUBLE_QUOTE
+	CHAR_PIPE,
+	CHAR_REDIR_IN,
+	CHAR_REDIR_OUT
+	CHAR_HEREDOC,
+	CHAR_APPEND,
 }	t_char_type;
 
 typedef struct s_lexer
