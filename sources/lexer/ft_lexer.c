@@ -6,20 +6,19 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/25 17:44:01 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/28 17:46:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
-#include "ft_lexer.h"
+#include "../../includes/minishell.h"
 
 void	init_struct_lexer(t_lexer *l)
 {
+	if (!l)
+		return ;
+	ft_bzero(l, sizeof(t_lexer));
 	l->state = STATE_NORMAL;
-	l->tmp_token = NULL;
-	l->lst_tokens = NULL;
-	l->input = NULL;
-	l->pos = 0;
 }
 
 char	**ft_lexer(char **input)
@@ -45,11 +44,11 @@ char	**ft_lexer(char **input)
 				handle_normal_state(&lexer);
 			(lexer.pos)++;
 		}
+		if (check_if_not_normal_state(&lexer))
+			return (NULL);
+		finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
 		i++;
 	}
-	if (check_if_not_normal_state(&lexer))
-		return (NULL);
-	finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
 	return (lst_to_array(lexer.lst_tokens));
 }
 
@@ -61,18 +60,17 @@ int	main(int ac, char *av[])
 	int		i;
 
 	i = 0;
-	if (ac == 2)
+	if (ac < 2)
+		return (1);
+	array = ft_lexer(av);
+	if (!array)
+		return (1);
+	while (array[i])
 	{
-		array = ft_lexer(&av[1]);
-		if (!array)
-			return (1);
-		while (array[i])
-		{
-			printf("%s\n", array[i]);
-			free(array[i]);
-			i++;
-		}
-		free(array);
+		printf("%s\n", array[i]);
+		free(array[i]);
+		i++;
 	}
+	free(array);
 	return (0);
 }

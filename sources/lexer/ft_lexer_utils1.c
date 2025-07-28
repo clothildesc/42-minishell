@@ -6,12 +6,49 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/25 17:18:07 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/28 17:40:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
-#include "ft_lexer.h"
+#include "../../includes/minishell.h"
+
+// Ajoutez une fonction pour détecter les opérateurs multi-caractères
+// Au lieu de retourner un char **, retournez une liste chaînée de t_token
+
+// Algorithme de tokenisation amélioré
+	// Skip whitespace au début
+	// Identifier le type de token :
+		// Si c'est un opérateur → créer un token d'opérateur
+		// Si c'est une quote → traiter la chaîne quotée
+		// Sinon → traiter comme un mot
+	// Pour les opérateurs :
+		// Vérifier s'il y a un deuxième caractère pour les opérateurs composés
+		// Créer le token avec le bon type
+	// Pour les mots :
+		// Continuer jusqu'à trouver un espace, une quote ou un opérateur
+
+// Gestion d'erreurs robuste
+	// Quotes non fermées
+	// Opérateurs invalides
+	// Allocation mémoire échouée
+	// Syntaxe invalide
+
+// Logique par état :
+	// STATE_NORMAL :
+		// Espaces → séparent les tokens
+		// Quotes → changent d'état
+		// Opérateurs (|, <, >) → créent des tokens d'opérateur
+		// Caractères normaux → ajoutés au token courant
+	// STATE_SINGLE_QUOTE :
+		// Tout caractère → ajouté littéralement (même $, \, etc.)
+		// Quote simple → retour à STATE_NORMAL
+		// Aucun échappement possible
+	// STATE_DOUBLE_QUOTE :
+		// Quote double → retour à STATE_NORMAL
+		// $ → début d'expansion de variable
+		// \ → échappement du caractère suivant (optionnel selon votre implémentation)
+		// Autres caractères → ajoutés littéralement
 
 t_char_type	classify_char_type(char c)
 {
@@ -21,6 +58,12 @@ t_char_type	classify_char_type(char c)
 		return (CHAR_SINGLE_QUOTE);
 	else if (c == '"')
 		return (CHAR_DOUBLE_QUOTE);
+	else if (c == '|')
+		return (CHAR_PIPE);
+	else if (c == '<')
+		return (CHAR_REDIR_IN);
+	else if (c == '>')
+		return (CHAR_REDIR_OUT);
 	return (CHAR_NORMAL);
 }
 
