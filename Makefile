@@ -6,12 +6,13 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/07/29 15:21:55 by cscache          ###   ########.fr        #
+#    Updated: 2025/07/29 17:42:24 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
+LDFLAGS = -lreadline
 
 NAME = minishell
 
@@ -34,7 +35,7 @@ all: $(NAME)
 
 # Exécutable final
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft $(LDFLAGS) -o $(NAME)
 
 # Compilation des .o dans obj/ en miroir
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(HEADER)

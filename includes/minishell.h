@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 16:26:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:07:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
 
@@ -60,11 +62,11 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef	struct	s_point
-{
-	int	x;
-	int	y;
-}	t_point;
+// typedef	struct	s_point
+// {
+// 	int	x;
+// 	int	y;
+// }	t_point;
 
 typedef struct s_lexer
 {
@@ -72,8 +74,8 @@ typedef struct s_lexer
 	t_list			*tmp_token;
 	t_token			*tokens;
 	t_token_type	type;			
-	t_point			pos;
-	char			**input;
+	int				pos;
+	char			*input;
 }	t_lexer;
 
 /*=============== ENV =============== */
@@ -112,6 +114,6 @@ void		handle_space_state(t_lexer *lexer);
 void		handle_normal_state(t_lexer *lexer);
 void		init_struct_lexer(t_lexer *lexer);
 int			check_if_not_normal_state(t_lexer *lexer);
-t_token		*ft_lexer(char **input);
+t_token		*ft_lexer(char *input);
 
 #endif

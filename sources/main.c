@@ -6,26 +6,36 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 15:23:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:06:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char *av[])
+int	main(void)
 {
+	char	*line;
 	t_token	*tokens;
 
-	if (ac < 2)
-		return (1);
-	tokens = ft_lexer(&av[1]);
-	if (!tokens)
-		return (1);
-	while (tokens->next)
+	while (1)
 	{
-		printf("%s\n", tokens->value);
-		tokens = tokens->next;
+		line = readline("minishell> ");
+		if (line == NULL)
+			return (1);
+		if (*line)
+		{
+			add_history(line);
+			tokens = ft_lexer(line);
+			if (!tokens)
+				return (1);
+			while (tokens)
+			{
+				printf("%s\n", tokens->value);
+				tokens = tokens->next;
+			}
+			clear_tokens_lst(&tokens);
+			free(line);
+		}
 	}
-	clear_tokens_lst(&tokens);
 	return (0);
 }

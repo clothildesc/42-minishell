@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 16:17:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:39:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,13 @@ void	finish_token_with_type(t_lexer *lexer)
 				free(token_value);
 			new_token->value = token_value;
 			new_token->type = lexer->type;
+			new_token->next = NULL;
 			add_to_lst_tokens(&lexer->tokens, new_token);
 		}
 		ft_lstclear(&lexer->tmp_token, free);
 		lexer->tmp_token = NULL;
 		lexer->type = UNDEFINED;
+		lexer->state = STATE_NORMAL;
 	}
 }
 
