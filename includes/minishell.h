@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 13:06:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:26:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,25 @@ typedef enum e_token_type
 	WORD_DOUBLE_QUOTE,
 	PIPE,
 	HERE_DOC,
-	APPEND,
+	APPEND_OUT,
 	REDIR_IN,
-	REDIR_OUT
+	REDIR_OUT,
+	UNDEFINED
 }	t_token_type;
+
+typedef struct s_token
+{
+	char			*value;
+	t_token_type	type;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
+
+typedef	struct	s_point
+{
+	int	x;
+	int	y;
+}	t_point;
 
 typedef struct s_lexer
 {
@@ -57,16 +72,9 @@ typedef struct s_lexer
 	t_list			*tmp_token;
 	t_token			*tokens;
 	t_token_type	type;			
-	int				pos;
+	t_point			pos;
 	char			**input;
 }	t_lexer;
-
-typedef struct s_token
-{
-	char			*value;
-	t_token_type	type;
-	struct s_token	*next;
-}	t_token;
 
 /*=============== ENV =============== */
 
@@ -79,20 +87,20 @@ typedef struct s_env
 
 /*=============== EXEC =============== */
 
-typedef struct s_cmd
-{
-	// ????
-}	t_cmd;
+// typedef struct s_cmd
+// {
+// 	// ????
+// }	t_cmd;
 
 typedef struct s_shell
 {
 	t_env	*env;
-	t_cmd	*cmds;
+	// t_cmd	*cmds;
 	int		exit_status;
 }	t_shell;
 
 t_char_type	classify_char_type(char c);
-void		add_char(t_list **tmp_token, const char *c);
+void		add_char(t_list **tmp_token, char c);
 char		*create_token_value(t_lexer *lexer);
 void		add_to_lst_tokens(t_token **lst, t_token *new);
 void		finish_token_with_type(t_lexer *lexer);

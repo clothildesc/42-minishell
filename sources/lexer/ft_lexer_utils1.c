@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 13:04:26 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:17:22 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_char_type	classify_char_type(char c)
 	return (CHAR_NORMAL);
 }
 
-void	add_char(t_list **tmp_token, const char *c)
+void	add_char(t_list **tmp_token, char c)
 {
 	t_list	*new;
 	char	*new_char;
@@ -75,7 +75,7 @@ void	add_char(t_list **tmp_token, const char *c)
 	new_char = malloc(sizeof(char));
 	if (!new_char)
 		return ;
-	*new_char = *c;
+	*new_char = c;
 	new = ft_lstnew(new_char);
 	if (!new)
 	{
@@ -132,7 +132,7 @@ void	finish_token_with_type(t_lexer *lexer)
 
 	if (lexer->tmp_token)
 	{
-		token_value = create_token_value(lexer->tmp_token);
+		token_value = create_token_value(lexer);
 		if (token_value)
 		{
 			new_token = malloc(sizeof(t_token));
@@ -142,14 +142,15 @@ void	finish_token_with_type(t_lexer *lexer)
 			new_token->type = lexer->type;
 			add_to_lst_tokens(&lexer->tokens, new_token);
 		}
-		ft_lstclear(lexer->tmp_token, free);
+		ft_lstclear(&lexer->tmp_token, free);
 		lexer->tmp_token = NULL;
+		lexer->type = UNDEFINED;
 	}
 }
 
 void	clear_tokens_lst(t_token **lst)
 {
-	t_list	*last;
+	t_token	*last;
 
 	if (lst)
 	{
