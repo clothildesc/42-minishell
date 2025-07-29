@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/28 17:47:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:06:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ typedef enum e_char_type
 	CHAR_REDIR_OUT
 }	t_char_type;
 
-typedef struct s_lexer
-{
-	t_state		state;
-	t_list		*tmp_token;
-	t_token		*lst_tokens;
-	int			pos;
-	char		**input;
-}	t_lexer;
-
 typedef enum e_token_type
 {
 	WORD,
@@ -59,6 +50,16 @@ typedef enum e_token_type
 	REDIR_IN,
 	REDIR_OUT
 }	t_token_type;
+
+typedef struct s_lexer
+{
+	t_state			state;
+	t_list			*tmp_token;
+	t_token			*tokens;
+	t_token_type	type;			
+	int				pos;
+	char			**input;
+}	t_lexer;
 
 typedef struct s_token
 {
@@ -92,15 +93,17 @@ typedef struct s_shell
 
 t_char_type	classify_char_type(char c);
 void		add_char(t_list **tmp_token, const char *c);
-char		*create_token(t_list *tmp_token);
-void		finish_token(t_list **tmp_token, t_list **lst_tokens);
-char		**lst_to_array(t_list *lst_tokens);
-void		handle_single_quote_state(t_lexer *l);
-void		handle_double_quote_state(t_lexer *l);
-void		handle_space_state(t_lexer *l);
-void		handle_normal_state(t_lexer *l);
-void		init_struct_lexer(t_lexer *l);
-char		**ft_lexer(char **input);
-int			check_if_not_normal_state(t_lexer *l);
+char		*create_token_value(t_lexer *lexer);
+void		add_to_lst_tokens(t_token **lst, t_token *new);
+void		finish_token_with_type(t_lexer *lexer);
+void		clear_tokens_lst(t_token **lst);
+// char		**lst_to_array(t_list *lst_tokens);
+void		handle_single_quote_state(t_lexer *lexer);
+void		handle_double_quote_state(t_lexer *lexer);
+void		handle_space_state(t_lexer *lexer);
+void		handle_normal_state(t_lexer *lexer);
+void		init_struct_lexer(t_lexer *lexer);
+int			check_if_not_normal_state(t_lexer *lexer);
+t_token		*ft_lexer(char **input);
 
 #endif

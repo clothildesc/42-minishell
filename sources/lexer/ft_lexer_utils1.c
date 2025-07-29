@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/28 17:40:48 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:04:26 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 	// STATE_DOUBLE_QUOTE :
 		// Quote double → retour à STATE_NORMAL
 		// $ → début d'expansion de variable
-		// \ → échappement du caractère suivant (optionnel selon votre implémentation)
+		// \ → échappement du caractère suivant (optionnel)
 		// Autres caractères → ajoutés littéralement
 
 t_char_type	classify_char_type(char c)
@@ -85,65 +85,108 @@ void	add_char(t_list **tmp_token, const char *c)
 	ft_lstadd_back(tmp_token, new);
 }
 
-char	*create_token(t_list *tmp_token)
+char	*create_token_value(t_lexer *lexer)
 {
-	char	*token;
+	char	*token_value;
 	int		i;
 
-	if (!tmp_token)
+	if (!(lexer->tmp_token))
 		return (NULL);
-	token = malloc(sizeof(char) * (ft_lstsize(tmp_token) + 1));
-	if (!token)
-		return (NULL);
-	i = 0;
-	while (tmp_token)
-	{
-		token[i] = *(char *)tmp_token->content;
-		i++;
-		tmp_token = tmp_token->next;
-	}
-	token[i] = 0;
-	return (token);
-}
-
-void	finish_token(t_list **tmp_token, t_list **lst_tokens)
-{
-	char	*token;
-
-	if (*tmp_token)
-	{
-		token = create_token(*tmp_token);
-		if (token)
-			ft_lstadd_back(lst_tokens, ft_lstnew(token));
-		ft_lstclear(tmp_token, free);
-		*tmp_token = NULL;
-	}
-}
-
-char	**lst_to_array(t_list *lst_tokens)
-{
-	char	**tokens;
-	int		i;
-	t_list	*current;
-	t_list	*to_free;
-
-	tokens = malloc(sizeof(char *) * (ft_lstsize(lst_tokens) + 1));
-	if (!tokens)
+	token_value = malloc(sizeof(char) * (ft_lstsize(lexer->tmp_token) + 1));
+	if (!token_value)
 		return (NULL);
 	i = 0;
-	current = lst_tokens;
-	while (current)
+	while (lexer->tmp_token)
 	{
-		tokens[i] = (char *)current->content;
-		current = current->next;
+		token_value[i] = *(char *)lexer->tmp_token->content;
 		i++;
+		lexer->tmp_token = lexer->tmp_token->next;
 	}
-	tokens[i] = NULL;
-	while (lst_tokens)
-	{
-		to_free = lst_tokens;
-		lst_tokens = lst_tokens->next;
-		free(to_free);
-	}
-	return (tokens);
+	token_value[i] = 0;
+	return (token_value);
 }
+
+void	add_to_lst_tokens(t_token **lst, t_token *new)
+{
+	t_token	*last;
+
+	last = NULL;
+	if (lst && new)
+	{
+		if (*lst)
+		{
+			last = *lst;
+			while (last->next)
+				last = last->next;
+			last->next = new;
+		}
+		else
+			*lst = new;
+	}
+}
+
+void	finish_token_with_type(t_lexer *lexer)
+{
+	char	*token_value;
+	t_token	*new_token;
+
+	if (lexer->tmp_token)
+	{
+		token_value = create_token_value(lexer->tmp_token);
+		if (token_value)
+		{
+			new_token = malloc(sizeof(t_token));
+			if (!new_token)
+				free(token_value);
+			new_token->value = token_value;
+			new_token->type = lexer->type;
+			add_to_lst_tokens(&lexer->tokens, new_token);
+		}
+		ft_lstclear(lexer->tmp_token, free);
+		lexer->tmp_token = NULL;
+	}
+}
+
+void	clear_tokens_lst(t_token **lst)
+{
+	t_list	*last;
+
+	if (lst)
+	{
+		while (*lst)
+		{
+			last = (*lst)->next;
+			free((*lst)->value);
+			free(*lst);
+			*lst = last;
+		}
+	}
+}
+
+// char	**lst_to_array(t_list *lst_tokens)
+// {
+// 	char	**tokens;
+// 	int		i;
+// 	t_list	*current;
+// 	t_list	*to_free;
+
+// 	tokens = malloc(sizeof(char *) * (ft_lstsize(lst_tokens) + 1));
+// 	if (!tokens)
+// 		return (NULL);
+// 	i = 0;
+// 	current = lst_tokens;
+// 	while (current)
+// 	{
+// 		tokens[i] = (char *)current->content;
+// 		current = current->next;
+// 		i++;
+// 	}
+// 	tokens[i] = NULL;
+// 	while (lst_tokens)
+// 	{
+// 		to_free = lst_tokens;
+// 		lst_tokens = lst_tokens->next;
+// 		free(to_free);
+// 	}
+// 	return (tokens);
+// }

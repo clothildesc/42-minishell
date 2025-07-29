@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/28 17:46:35 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:08:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	init_struct_lexer(t_lexer *l)
 	l->state = STATE_NORMAL;
 }
 
-char	**ft_lexer(char **input)
+t_token	*ft_lexer(char **input)
 {
 	t_lexer		lexer;
-	t_char_type	type;
+	t_char_type	char_type;
 	int			i;
 
 	init_struct_lexer(&lexer);
@@ -33,12 +33,12 @@ char	**ft_lexer(char **input)
 	{
 		while (lexer.input[i][lexer.pos])
 		{
-			type = classify_char_type(lexer.input[lexer.pos]);
-			if (type == CHAR_SINGLE_QUOTE)
+			char_type = classify_char_type(lexer.input[lexer.pos]);
+			if (char_type == CHAR_SINGLE_QUOTE)
 				handle_single_quote_state(&lexer);
-			else if (type == CHAR_DOUBLE_QUOTE)
+			else if (char_type == CHAR_DOUBLE_QUOTE)
 				handle_double_quote_state(&lexer);
-			else if (type == CHAR_SPACE)
+			else if (char_type == CHAR_SPACE)
 				handle_space_state(&lexer);
 			else
 				handle_normal_state(&lexer);
@@ -46,31 +46,28 @@ char	**ft_lexer(char **input)
 		}
 		if (check_if_not_normal_state(&lexer))
 			return (NULL);
-		finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
+		finish_token_with_type(lexer);
 		i++;
 	}
-	return (lst_to_array(lexer.lst_tokens));
+	return (lexer.tokens);
 }
 
 #include <stdio.h>
 
 int	main(int ac, char *av[])
 {
-	char	**array;
-	int		i;
-
-	i = 0;
+	t_token	*tokens;
+	
 	if (ac < 2)
 		return (1);
-	array = ft_lexer(av);
-	if (!array)
+	tokens = ft_lexer(av);
+	if (!tokens)
 		return (1);
-	while (array[i])
+	while (tokens->next)
 	{
-		printf("%s\n", array[i]);
-		free(array[i]);
-		i++;
+		printf("%s\n", tokens->value);
+		tokens = tokens->next;
 	}
-	free(array);
+	clear_tokens_lst(tokens);
 	return (0);
 }
