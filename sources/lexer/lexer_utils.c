@@ -6,20 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 10:47:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:51:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
-
-void	init_struct_lexer(t_lexer *lexer)
-{
-	if (!lexer)
-		return ;
-	ft_bzero(lexer, sizeof(t_lexer));
-	lexer->state = STATE_NORMAL;
-}
 
 int	check_if_not_normal_state(t_lexer *lexer)
 {
@@ -36,6 +28,43 @@ int	check_if_not_normal_state(t_lexer *lexer)
 		return (1);
 	}
 	return (0);
+}
+
+static t_token_type	determine_token_type_operator(t_lexer *lexer)
+{
+	char	first;
+
+	first = *(char *)lexer->tmp_token->content;
+	if (first == '|')
+		return (PIPE);
+	if (first == '<')
+	{
+		if (lexer->tmp_token->next && \
+			*(char *)lexer->tmp_token->next->content == '<')
+			return (HERE_DOC);
+		return (REDIR_IN);
+	}
+	if (first == '>')
+	{
+		if (lexer->tmp_token->next \
+			&& *(char *)lexer->tmp_token->next->content == '>')
+			return (APPEND_OUT);
+		return (REDIR_OUT);
+	}
+	return (WORD);
+}
+
+t_token_type	determine_token_type(t_lexer *lexer)
+{
+	if (!lexer->tmp_token)
+		return (UNDEFINED);
+	
+	if (lexer->single_quote)
+		return (WORD_SINGLE_QUOTE);
+	if (lexer->double_quote)
+		return (WORD_DOUBLE_QUOTE);
+	return (determine_token_type_operator(lexer));
+	return (WORD);
 }
 
 void	clear_tokens_lst(t_token **lst)

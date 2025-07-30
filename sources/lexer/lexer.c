@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 11:08:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:11:33 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	handle_normal_state(t_lexer *lexer)
 			(lexer->pos)++;
 			add_char(&lexer->tmp_token, lexer->input[lexer->pos]);
 		}
-		create_token(lexer);	
+		create_token(lexer);
 	}
 	else
 		add_char(&lexer->tmp_token, c);
@@ -68,11 +68,12 @@ static void	process_char(t_lexer *lexer)
 		handle_quote_state(lexer);
 }
 
-t_token	*ft_lexer(char *input)
+t_token	*ft_lexer(char *input, t_shell *shell)
 {
 	t_lexer		lexer;
 
-	init_struct_lexer(&lexer);
+	lexer = shell->lexer;
+	lexer.state = STATE_NORMAL;
 	lexer.input = input;
 	while (lexer.input[lexer.pos])
 	{
@@ -84,3 +85,4 @@ t_token	*ft_lexer(char *input)
 	create_token(&lexer);
 	return (lexer.tokens);
 }
+

@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 10:12:15 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 15:24:42 by cscache          ###   ########.fr       */
+/*   Created: 2025/07/30 14:20:47 by cscache           #+#    #+#             */
+/*   Updated: 2025/07/30 14:31:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
-void	ft_putendl_fd(char *s, int fd)
+void	init_all_structs(t_shell *shell)
 {
-	int	len;
-
-	len = ft_strlen(s);
-	write(fd, s, len);
-	write(fd, "\n", 1);
+	if (!shell)
+		return ;
+	ft_bzero(shell, sizeof(t_shell));
 }
