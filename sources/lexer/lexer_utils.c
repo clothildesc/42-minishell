@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 22:42:47 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/07/30 10:47:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,6 @@ void	init_struct_lexer(t_lexer *lexer)
 		return ;
 	ft_bzero(lexer, sizeof(t_lexer));
 	lexer->state = STATE_NORMAL;
-}
-
-t_char_type	classify_char_type(char c)
-{
-	if (c == ' ')
-		return (CHAR_SPACE);
-	else if (c == '\'')
-		return (CHAR_SINGLE_QUOTE);
-	else if (c == '"')
-		return (CHAR_DOUBLE_QUOTE);
-	else if (c == '|')
-		return (CHAR_PIPE);
-	else if (c == '<')
-		return (CHAR_REDIR_IN);
-	else if (c == '>')
-		return (CHAR_REDIR_OUT);
-	return (CHAR_NORMAL);
 }
 
 int	check_if_not_normal_state(t_lexer *lexer)
@@ -53,4 +36,20 @@ int	check_if_not_normal_state(t_lexer *lexer)
 		return (1);
 	}
 	return (0);
+}
+
+void	clear_tokens_lst(t_token **lst)
+{
+	t_token	*last;
+
+	if (!lst)
+		return ;
+	while (*lst)
+	{
+		last = (*lst)->next;
+		free((*lst)->value);
+		free(*lst);
+		*lst = last;
+	}
+	*lst = NULL;
 }

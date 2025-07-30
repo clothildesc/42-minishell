@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 22:44:37 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/07/30 12:27:02 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	add_char(t_list **tmp_token, char c)
 char	*create_token_value(t_lexer *lexer)
 {
 	char		*token_value;
-	t_list	*current;
+	t_list		*current;
 	int			i;
 
 	if (!(lexer->tmp_token))
@@ -71,40 +71,47 @@ void	add_to_lst_tokens(t_token **lst, t_token *new)
 	else
 		*lst = new;
 }
-t_token_type	determine_token_type(t_lexer *lexer)
+
+static t_token_type	determine_token_type_operator(t_lexer *lexer)
 {
 	char	first;
 
-	if (!lexer->tmp_token)
-		return UNDEFINED;
-	if (lexer->state == STATE_SINGLE_QUOTE)
-		return WORD_SINGLE_QUOTE;
-	if (lexer->state == STATE_DOUBLE_QUOTE)
-		return WORD_DOUBLE_QUOTE;
 	first = *(char *)lexer->tmp_token->content;
-	if (first == CHAR_PIPE)
-		return PIPE;
-	if (first == CHAR_REDIR_IN)
+	if (first == '|')
+		return (PIPE);
+	if (first == '<')
 	{
-		if (lexer->tmp_token->next &&\
-			*(char *)lexer->tmp_token->next->content == CHAR_REDIR_IN)
-			return HERE_DOC;
-		return REDIR_IN;
+		if (lexer->tmp_token->next && \
+			*(char *)lexer->tmp_token->next->content == '<')
+			return (HERE_DOC);
+		return (REDIR_IN);
 	}
-	if (first == CHAR_REDIR_OUT)
+	if (first == '>')
 	{
 		if (lexer->tmp_token->next \
-			&& *(char *)lexer->tmp_token->next->content == CHAR_REDIR_OUT)
-			return APPEND_OUT;
-		return REDIR_OUT;
+			&& *(char *)lexer->tmp_token->next->content == '>')
+			return (APPEND_OUT);
+		return (REDIR_OUT);
 	}
-	return WORD;
+	return (WORD);
+}
+
+t_token_type	determine_token_type(t_lexer *lexer)
+{
+	if (!lexer->tmp_token)
+		return (UNDEFINED);
+	if (lexer->single_quote)
+		return (WORD_SINGLE_QUOTE);
+	if (lexer->double_quote)
+		return (WORD_DOUBLE_QUOTE);
+	return (determine_token_type_operator(lexer));
+	return (WORD);
 }
 
 void	create_token(t_lexer *lexer)
 {
-	char					*token_value;
-	t_token				*new_token;
+	char	*token_value;
+	t_token	*new_token;
 
 	if (lexer->tmp_token)
 	{
@@ -125,21 +132,7 @@ void	create_token(t_lexer *lexer)
 		ft_lstclear(&lexer->tmp_token, free);
 		lexer->tmp_token = NULL;
 		lexer->state = STATE_NORMAL;
+		lexer->double_quote = 0;
+		lexer->single_quote = 0;
 	}
-}
-
-void	clear_tokens_lst(t_token **lst)
-{
-	t_token	*last;
-
-	if (!lst)
-		return ;
-	while (*lst)
-	{
-		last = (*lst)->next;
-		free((*lst)->value);
-		free(*lst);
-		*lst = last;
-	}
-	*lst = NULL;
 }

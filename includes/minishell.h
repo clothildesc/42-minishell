@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/29 22:47:58 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/07/30 10:58:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@ typedef enum e_state
 	STATE_DOUBLE_QUOTE
 }	t_state;
 
-typedef enum e_char_type
-{
-	CHAR_NORMAL,
-	CHAR_SPACE,
-	CHAR_SINGLE_QUOTE,
-	CHAR_DOUBLE_QUOTE,
-	CHAR_PIPE,
-	CHAR_REDIR_IN,
-	CHAR_REDIR_OUT
-}	t_char_type;
-
 typedef enum e_token_type
 {
 	WORD,
@@ -62,18 +51,14 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-// typedef	struct	s_point
-// {
-// 	int	x;
-// 	int	y;
-// }	t_point;
-
 typedef struct s_lexer
 {
 	t_state			state;
 	t_list			*tmp_token;
 	t_token			*tokens;
 	int				pos;
+	int				single_quote;
+	int				double_quote;
 	char			*input;
 }	t_lexer;
 
@@ -100,15 +85,14 @@ typedef struct s_shell
 	int		exit_status;
 }	t_shell;
 
-void					init_struct_lexer(t_lexer *lexer);
-t_char_type		classify_char_type(char c);
-int						check_if_not_normal_state(t_lexer *lexer);
-t_token				*ft_lexer(char *input);
-void					add_char(t_list **tmp_token, char c);
-char					*create_token_value(t_lexer *lexer);
-void					add_to_lst_tokens(t_token **lst, t_token *new);
+void			init_struct_lexer(t_lexer *lexer);
+int				check_if_not_normal_state(t_lexer *lexer);
+t_token			*ft_lexer(char *input);
+void			add_char(t_list **tmp_token, char c);
+char			*create_token_value(t_lexer *lexer);
+void			add_to_lst_tokens(t_token **lst, t_token *new);
 t_token_type	determine_token_type(t_lexer *lexer);
-void					create_token(t_lexer *lexer);
-void					clear_tokens_lst(t_token **lst);
+void			create_token(t_lexer *lexer);
+void			clear_tokens_lst(t_token **lst);
 
 #endif
