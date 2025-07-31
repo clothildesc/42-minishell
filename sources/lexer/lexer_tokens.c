@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:12:56 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/07/31 17:47:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static void	reset_tmp_token(t_lexer *lexer)
 	lexer->tmp_token = NULL;
 	lexer->state = STATE_NORMAL;
 	lexer->to_exp = true;
+	lexer->to_join = 0;
 }
 
 void	create_token(t_lexer *lexer)
@@ -100,6 +101,7 @@ void	create_token(t_lexer *lexer)
 		}
 		new_token->value = token_value;
 		new_token->to_exp = lexer->to_exp;
+		new_token->to_join = lexer->to_join;
 		new_token->type = determine_token_type(lexer);
 		new_token->prev = NULL;
 		new_token->next = NULL;

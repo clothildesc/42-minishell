@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:12:31 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:03:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ typedef enum e_state
 
 typedef enum e_token_type
 {
-	WORD_EXPAND,
-	WORD_NO_EXPAND,
+	WORD,
 	PIPE,
 	HERE_DOC,
 	APPEND_OUT,
@@ -53,6 +52,7 @@ typedef struct s_token
 	char			*value;
 	t_token_type	type;
 	bool			to_exp;
+	bool			to_join;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -64,8 +64,7 @@ typedef struct s_lexer
 	t_token			*tokens;
 	int				pos;
 	bool			to_exp;
-	// int				single_quote;
-	// int				double_quote;
+	bool			to_join;
 	char			*input;
 }	t_lexer;
 

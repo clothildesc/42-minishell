@@ -3,27 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_check_errors.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:12:02 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:52:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-static int	is_word_type(t_token_type type)
-{
-	return (type == WORD_EXPAND || type == WORD_NO_EXPAND);
-}
-
 static int	check_error_pipe(t_token *current)
 {
 	if (!current->prev || !current->next)
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);
-	else if ((current->prev->type != WORD_EXPAND) && \
-			(current->prev->type != WORD_NO_EXPAND))
+	else if (current->prev->type != WORD) 
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);
 	else if (current->next->type == PIPE || current->prev->type == PIPE)
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);
@@ -34,7 +28,7 @@ static int	check_error_redir(t_token *current)
 {
 	if (!current->next)
 		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
-	else if (!is_word_type(current->next->type))
+	else if (current->next->type == WORD)
 		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
 	return (0);
 }

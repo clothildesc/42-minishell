@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:13:10 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:44:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int	check_if_not_normal_state(t_lexer *lexer)
 	return (0);
 }
 
-static t_token_type	determine_token_type_operator(t_lexer *lexer)
+t_token_type	determine_token_type(t_lexer *lexer)
 {
 	char	first;
 
+	if (!lexer->tmp_token)
+		return (UNDEFINED);
 	first = *(char *)lexer->tmp_token->content;
 	if (first == '|')
 		return (PIPE);
@@ -51,19 +53,7 @@ static t_token_type	determine_token_type_operator(t_lexer *lexer)
 			return (APPEND_OUT);
 		return (REDIR_OUT);
 	}
-	return (WORD_EXPAND);
-}
-
-t_token_type	determine_token_type(t_lexer *lexer)
-{
-	if (!lexer->tmp_token)
-		return (UNDEFINED);
-	if (lexer->to_exp)
-		return (WORD_EXPAND);
-	if (!lexer->to_exp)
-		return (WORD_NO_EXPAND);
-	return (determine_token_type_operator(lexer));
-	return (WORD_EXPAND);
+	return (WORD);
 }
 
 void	clear_tokens_lst(t_token **lst)
