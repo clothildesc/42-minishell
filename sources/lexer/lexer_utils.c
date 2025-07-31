@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 15:51:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 10:36:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_token_type	determine_token_type(t_lexer *lexer)
 {
 	if (!lexer->tmp_token)
 		return (UNDEFINED);
-	
 	if (lexer->single_quote)
 		return (WORD_SINGLE_QUOTE);
 	if (lexer->double_quote)

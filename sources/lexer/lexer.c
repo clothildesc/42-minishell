@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 15:11:33 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 10:34:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ static void	process_char(t_lexer *lexer)
 {
 	if (lexer->state == STATE_NORMAL)
 		handle_normal_state(lexer);
-	else if (lexer->state == STATE_SINGLE_QUOTE)
-		handle_quote_state(lexer);
-	else if (lexer->state == STATE_DOUBLE_QUOTE)
+	else
 		handle_quote_state(lexer);
 }
 

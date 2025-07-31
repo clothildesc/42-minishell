@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 18:14:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 12:13:22 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 /*=============== ERRORS =============== */
 
 # define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
-# define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token `newline'"
+# define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 
 /*=============== LEXER =============== */
 
@@ -47,13 +47,6 @@ typedef enum e_token_type
 	REDIR_OUT,
 	UNDEFINED
 }	t_token_type;
-
-/* typedef enum e_quote_type
-{
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
-	NO_QUOTE
-}	t_quote_type; */
 
 typedef struct s_token
 {
@@ -118,6 +111,6 @@ t_token_type	determine_token_type(t_lexer *lexer);
 void			create_token(t_lexer *lexer);
 void			clear_tokens_lst(t_token **lst);
 
-int				check_syntax_errors(t_token *lst_tokens);
+int				get_syntax_error_status(t_token *lst_tokens);
 
 #endif

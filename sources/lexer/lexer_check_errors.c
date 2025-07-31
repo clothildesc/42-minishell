@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 18:29:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 12:12:58 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static int	check_error_pipe(t_token *current)
 static int	check_error_redir(t_token *current)
 {
 	if (!current->next)
-		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 2);
+		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
 	else if (!is_word_type(current->next->type))
-		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 2);
+		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
 	return (0);
 }
 
-int	check_syntax_errors(t_token *lst_tokens)
+static int	check_syntax_errors(t_token *lst_tokens, t_token_type type)
 {
 	t_token	*current;
 
@@ -50,12 +50,31 @@ int	check_syntax_errors(t_token *lst_tokens)
 	current = lst_tokens;
 	while (current)
 	{
-		if (current->type == PIPE)
-			return (check_error_pipe(current));
-		if (current->type == REDIR_IN || current->type == REDIR_OUT \
-		|| current->type == HERE_DOC || current->type == APPEND_OUT)
-			return (check_error_redir(current));
+		if (current->type == type)
+		{
+			if (type == PIPE && check_error_pipe(current))
+				return (2);
+			if ((type == REDIR_IN || type == REDIR_OUT || \
+				type == HERE_DOC || type == APPEND_OUT) && \
+				check_error_redir(current))
+				return (2);
+		}
 		current = current->next;
 	}
+	return (0);
+}
+
+int	get_syntax_error_status(t_token *lst_tokens)
+{
+	if (check_syntax_errors(lst_tokens, PIPE))
+		return (2);
+	else if (check_syntax_errors(lst_tokens, REDIR_IN))
+		return (2);
+	else if (check_syntax_errors(lst_tokens, REDIR_OUT))
+		return (2);
+	else if (check_syntax_errors(lst_tokens, HERE_DOC))
+		return (2);
+	else if (check_syntax_errors(lst_tokens, APPEND_OUT))
+		return (2);
 	return (0);
 }

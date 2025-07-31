@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/30 17:50:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 12:12:20 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	execute_shell(char *input)
 	init_all_structs(&shell);
 	lst_tokens = ft_lexer(input, &shell);
 	//display_lexer_results(lst_tokens);
-	shell.exit_status = check_syntax_errors(lst_tokens);
+	shell.exit_status = get_syntax_error_status(lst_tokens);
 	return (shell.exit_status);
 }
 
