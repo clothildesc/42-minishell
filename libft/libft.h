@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:20:02 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 15:15:07 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/29 14:48:30 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include "ft_printf.h"
 # include "get_next_line.h"
-# include "ft_lexer.h"
 
 typedef struct s_list
 {

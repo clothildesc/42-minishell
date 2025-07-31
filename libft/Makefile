@@ -6,7 +6,7 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/28 16:36:11 by cscache           #+#    #+#              #
-#    Updated: 2025/07/25 17:44:52 by cscache          ###   ########.fr        #
+#    Updated: 2025/07/29 15:05:24 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
-%.o: %.c libft.h ft_printf.h get_next_line.h ft_lexer.h
+%.o: %.c libft.h ft_printf.h get_next_line.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
