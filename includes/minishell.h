@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 12:13:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:12:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -37,9 +38,8 @@ typedef enum e_state
 
 typedef enum e_token_type
 {
-	WORD,
-	WORD_SINGLE_QUOTE,
-	WORD_DOUBLE_QUOTE,
+	WORD_EXPAND,
+	WORD_NO_EXPAND,
 	PIPE,
 	HERE_DOC,
 	APPEND_OUT,
@@ -52,6 +52,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	bool			to_exp;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -62,8 +63,9 @@ typedef struct s_lexer
 	t_list			*tmp_token;
 	t_token			*tokens;
 	int				pos;
-	int				single_quote;
-	int				double_quote;
+	bool			to_exp;
+	// int				single_quote;
+	// int				double_quote;
 	char			*input;
 }	t_lexer;
 

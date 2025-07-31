@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 10:34:00 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:13:37 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ static void	handle_normal_state(t_lexer *lexer)
 
 	c = lexer->input[lexer->pos];
 	if (c == '\'')
+	{
 		lexer->state = STATE_SINGLE_QUOTE;
+		if (lexer->input[lexer->pos + 1] == '$')
+			lexer->to_exp = false;
+	}
 	else if (c == '"')
 		lexer->state = STATE_DOUBLE_QUOTE;
 	else if (c == ' ')
@@ -39,21 +43,24 @@ static void	handle_normal_state(t_lexer *lexer)
 		add_char(&lexer->tmp_token, c);
 }
 
-static void	handle_quote_state(t_lexer *lexer)
+static void	handle_single_quote_state(t_lexer *lexer)
 {
 	char	c;
 
 	c = lexer->input[lexer->pos];
 	if (c == '\'')
-	{
 		lexer->state = STATE_NORMAL;
-		lexer->single_quote = 1;
-	}
-	else if (c == '"')
-	{
+	else
+		add_char(&lexer->tmp_token, c);
+}
+
+static void	handle_double_quote_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '"')
 		lexer->state = STATE_NORMAL;
-		lexer->double_quote = 1;
-	}
 	else
 		add_char(&lexer->tmp_token, c);
 }
@@ -62,8 +69,10 @@ static void	process_char(t_lexer *lexer)
 {
 	if (lexer->state == STATE_NORMAL)
 		handle_normal_state(lexer);
-	else
-		handle_quote_state(lexer);
+	else if (lexer->state == STATE_SINGLE_QUOTE)
+		handle_single_quote_state(lexer);
+	else if (lexer->state == STATE_DOUBLE_QUOTE)
+		handle_double_quote_state(lexer);
 }
 
 t_token	*ft_lexer(char *input, t_shell *shell)
@@ -73,6 +82,7 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 	lexer = shell->lexer;
 	lexer.state = STATE_NORMAL;
 	lexer.input = input;
+	lexer.to_exp = true;
 	while (lexer.input[lexer.pos])
 	{
 		process_char(&lexer);

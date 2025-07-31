@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 10:36:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:13:10 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ static t_token_type	determine_token_type_operator(t_lexer *lexer)
 			return (APPEND_OUT);
 		return (REDIR_OUT);
 	}
-	return (WORD);
+	return (WORD_EXPAND);
 }
 
 t_token_type	determine_token_type(t_lexer *lexer)
 {
 	if (!lexer->tmp_token)
 		return (UNDEFINED);
-	if (lexer->single_quote)
-		return (WORD_SINGLE_QUOTE);
-	if (lexer->double_quote)
-		return (WORD_DOUBLE_QUOTE);
+	if (lexer->to_exp)
+		return (WORD_EXPAND);
+	if (!lexer->to_exp)
+		return (WORD_NO_EXPAND);
 	return (determine_token_type_operator(lexer));
-	return (WORD);
+	return (WORD_EXPAND);
 }
 
 void	clear_tokens_lst(t_token **lst)
