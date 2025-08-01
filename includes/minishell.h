@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:07:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 12:05:52 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ typedef enum e_state
 
 typedef enum e_token_type
 {
-	WORD,
-	PIPE,
-	HERE_DOC,
-	APPEND_OUT,
-	REDIR_IN,
-	REDIR_OUT,
-	UNDEFINED
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_HERE_DOC,
+	TOKEN_APPEND_OUT,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_UNDEFINED
 }	t_token_type;
 
 typedef struct s_token
@@ -77,23 +77,43 @@ typedef struct s_env
 	struct t_env	*next;
 }	t_env;
 
-/*=============== EXEC =============== */
+/*=============== PARSING =============== */
+
+typedef enum e_node_type
+{
+	NODE_CMD,
+	NODE_PIPE
+}	t_node_type;
+
+typedef struct s_ast
+{
+	t_node_type		node_type;
+	t_cmd			*cmds;
+	int				prio;
+	struct s_ast	*right;
+	struct s_ast	*left;
+}	t_ast;
 
 typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
+	char			*abs_path;
 	int				fd_in;
 	int				fd_out;
 	int				pipefd[2];
+	int				exit_status;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }	t_cmd;
+
+/*=============== EXEC =============== */
 
 typedef struct s_shell
 {
 	t_lexer	lexer;
 	t_token	tokens;
+	t_ast	ast;
 	t_env	*env;
 	t_cmd	*cmds;
 	int		exit_status;
