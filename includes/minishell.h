@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 12:05:52 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 18:31:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef enum e_token_type
 	TOKEN_APPEND_OUT,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
-	TOKEN_UNDEFINED
 }	t_token_type;
 
 typedef struct s_token
@@ -85,18 +84,9 @@ typedef enum e_node_type
 	NODE_PIPE
 }	t_node_type;
 
-typedef struct s_ast
-{
-	t_node_type		node_type;
-	t_cmd			*cmds;
-	int				prio;
-	struct s_ast	*right;
-	struct s_ast	*left;
-}	t_ast;
-
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			*name;
 	char			**args;
 	char			*abs_path;
 	int				fd_in;
@@ -107,6 +97,16 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
+typedef struct s_ast
+{
+	t_node_type		node_type;
+	t_list			*tmp_args;
+	t_cmd			*cmds;
+	int				prio;
+	struct s_ast	*right;
+	struct s_ast	*left;
+}	t_ast;
+
 /*=============== EXEC =============== */
 
 typedef struct s_shell
@@ -114,8 +114,8 @@ typedef struct s_shell
 	t_lexer	lexer;
 	t_token	tokens;
 	t_ast	ast;
-	t_env	*env;
 	t_cmd	*cmds;
+	t_env	*env;
 	int		exit_status;
 }	t_shell;
 
@@ -129,12 +129,13 @@ void			handle_double_quote_state(t_lexer *lexer);
 void			handle_single_quote_state(t_lexer *lexer);
 void			handle_normal_state(t_lexer *lexer);
 
-void			create_token(t_lexer *lexer);
+void			create_token(t_lexer *lexer, bool to_join);
 void			add_char(t_list **tmp_token, char c);
-t_token_type	determine_token_type(t_lexer *lexer);
 void			clear_tokens_lst(t_token **lst);
+t_token_type	determine_token_type(t_lexer *lexer);
 
 int				get_syntax_error_status(t_token *lst_tokens);
-void			set_to_join(t_lexer *lexer);
+
+void			set_ast(t_shell *shell, t_token *lst_tokens);
 
 #endif

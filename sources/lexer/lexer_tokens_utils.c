@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:47:56 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 14:08:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_token_type	determine_token_type(t_lexer *lexer)
 	char	first;
 
 	if (!lexer->tmp_token)
-		return (TOKEN_UNDEFINED);
+		return (0);
 	first = *(char *)lexer->tmp_token->content;
 	if (first == '|')
 		return (TOKEN_PIPE);

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:00:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 15:00:26 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,13 @@ static void	set_to_join(t_lexer *lexer)
 		lexer->to_join = 1;
 }
 
-void	create_token(t_lexer *lexer)
+void	create_token(t_lexer *lexer, bool to_join)
 {
 	char	*token_value;
 	t_token	*new_token;
 
-	set_to_join(lexer);
+	if (to_join)
+		set_to_join(lexer);
 	if (lexer->tmp_token)
 	{
 		token_value = create_token_value(lexer);

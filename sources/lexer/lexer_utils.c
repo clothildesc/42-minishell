@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:05:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 13:58:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ static void	manage_operators(t_lexer *lexer, char c)
 		(lexer->pos)++;
 		add_char(&lexer->tmp_token, lexer->input[lexer->pos]);
 	}
+	create_token(lexer, false);
+}
+
+static int	is_operator(t_lexer *lexer)
+{
+	char	next;
+
+	next = lexer->input[lexer->pos + 1];
+	return (next == '|' || next == '>' || next == '>');
 }
 
 void	handle_normal_state(t_lexer *lexer)
@@ -32,7 +41,7 @@ void	handle_normal_state(t_lexer *lexer)
 	if (c == '\'')
 	{
 		if (lexer->state == STATE_NORMAL && lexer->tmp_token)
-			create_token(lexer);
+			create_token(lexer, true);
 		lexer->state = STATE_SINGLE_QUOTE;
 		if (lexer->input[lexer->pos + 1] == '$')
 			lexer->to_exp = false;
@@ -40,15 +49,19 @@ void	handle_normal_state(t_lexer *lexer)
 	else if (c == '"')
 	{
 		if (lexer->state == STATE_NORMAL && lexer->tmp_token)
-			create_token(lexer);
+			create_token(lexer, true);
 		lexer->state = STATE_DOUBLE_QUOTE;
 	}
 	else if (c == ' ')
-		create_token(lexer);
+		create_token(lexer, true);
 	else if (c == '|' || c == '<' || c == '>')
 		manage_operators(lexer, c);
 	else
+	{
 		add_char(&lexer->tmp_token, c);
+		if (is_operator(lexer))
+			create_token(lexer, false);
+	}
 }
 
 void	handle_single_quote_state(t_lexer *lexer)
