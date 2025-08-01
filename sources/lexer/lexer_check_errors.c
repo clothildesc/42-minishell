@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:52:00 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:03:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_error_pipe(t_token *current)
 {
 	if (!current->prev || !current->next)
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);
-	else if (current->prev->type != WORD) 
+	else if (current->prev->type != WORD)
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);
 	else if (current->next->type == PIPE || current->prev->type == PIPE)
 		return (ft_putendl_fd(SYNTAX_ERROR_PIPE, 2), 2);

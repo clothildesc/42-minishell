@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:23:51 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:10:28 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/01 11:11:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_count_WORD_EXPANDs(char const *s, char c)
+static int	ft_count_words(char const *s, char c)
 {
 	int	i;
 	int	count;
@@ -31,7 +31,7 @@ static int	ft_count_WORD_EXPANDs(char const *s, char c)
 	return (count);
 }
 
-static char	*ft_extract_WORD_EXPAND(char const *s, int start, int end)
+static char	*ft_extract_word(char const *s, int start, int end)
 {
 	char	*tab;
 	int		i;
@@ -68,14 +68,14 @@ static char	**ft_split_fill(char const *s, char **result, char c)
 
 	i = 0;
 	j = 0;
-	while (s[i] && j < ft_count_WORD_EXPANDs(s, c))
+	while (s[i] && j < ft_count_words(s, c))
 	{
 		if (s[i] != c)
 		{
 			start = i;
 			while (s[i] && s[i] != c)
 				i++;
-			result[j] = ft_extract_WORD_EXPAND(s, start, i);
+			result[j] = ft_extract_word(s, start, i);
 			if (!result[j])
 			{
 				ft_free(result, j);
@@ -93,7 +93,7 @@ char	**ft_split(char const *s, char c)
 {
 	char	**result;
 
-	result = (char **)malloc(sizeof(char *) * (ft_count_WORD_EXPANDs(s, c) + 1));
+	result = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
 	if (!result)
 		return (NULL);
 	return (ft_split_fill(s, result, c));

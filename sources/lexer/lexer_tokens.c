@@ -6,33 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 17:47:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:00:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	add_char(t_list **tmp_token, char c)
-{
-	t_list	*new;
-	char	*new_char;
-
-	new_char = malloc(sizeof(char));
-	if (!new_char)
-		return ;
-	*new_char = c;
-	new = ft_lstnew(new_char);
-	if (!new)
-	{
-		free(new_char);
-		new_char = NULL;
-		return ;
-	}
-	ft_lstadd_back(tmp_token, new);
-}
-
-char	*create_token_value(t_lexer *lexer)
+static char	*create_token_value(t_lexer *lexer)
 {
 	char		*token_value;
 	t_list		*current;
@@ -54,7 +35,7 @@ char	*create_token_value(t_lexer *lexer)
 	return (token_value);
 }
 
-void	add_to_lst_tokens(t_token **lst, t_token *new)
+static void	add_to_lst_tokens(t_token **lst, t_token *new)
 {
 	t_token	*last;
 
@@ -82,11 +63,18 @@ static void	reset_tmp_token(t_lexer *lexer)
 	lexer->to_join = 0;
 }
 
+static void	set_to_join(t_lexer *lexer)
+{
+	if (lexer->input[lexer->pos] && lexer->input[lexer->pos] != ' ' )
+		lexer->to_join = 1;
+}
+
 void	create_token(t_lexer *lexer)
 {
 	char	*token_value;
 	t_token	*new_token;
 
+	set_to_join(lexer);
 	if (lexer->tmp_token)
 	{
 		token_value = create_token_value(lexer);

@@ -6,12 +6,72 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 15:44:35 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:05:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
+
+static void	manage_operators(t_lexer *lexer, char c)
+{
+	add_char(&lexer->tmp_token, c);
+	if ((c == '<' && lexer->input[lexer->pos + 1] == '<') || \
+		(c == '>' && lexer->input[lexer->pos + 1] == '>'))
+	{
+		(lexer->pos)++;
+		add_char(&lexer->tmp_token, lexer->input[lexer->pos]);
+	}
+}
+
+void	handle_normal_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '\'')
+	{
+		if (lexer->state == STATE_NORMAL && lexer->tmp_token)
+			create_token(lexer);
+		lexer->state = STATE_SINGLE_QUOTE;
+		if (lexer->input[lexer->pos + 1] == '$')
+			lexer->to_exp = false;
+	}
+	else if (c == '"')
+	{
+		if (lexer->state == STATE_NORMAL && lexer->tmp_token)
+			create_token(lexer);
+		lexer->state = STATE_DOUBLE_QUOTE;
+	}
+	else if (c == ' ')
+		create_token(lexer);
+	else if (c == '|' || c == '<' || c == '>')
+		manage_operators(lexer, c);
+	else
+		add_char(&lexer->tmp_token, c);
+}
+
+void	handle_single_quote_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '\'')
+		lexer->state = STATE_NORMAL;
+	else
+		add_char(&lexer->tmp_token, c);
+}
+
+void	handle_double_quote_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '"')
+		lexer->state = STATE_NORMAL;
+	else
+		add_char(&lexer->tmp_token, c);
+}
 
 int	check_if_not_normal_state(t_lexer *lexer)
 {
@@ -28,46 +88,4 @@ int	check_if_not_normal_state(t_lexer *lexer)
 		return (1);
 	}
 	return (0);
-}
-
-t_token_type	determine_token_type(t_lexer *lexer)
-{
-	char	first;
-
-	if (!lexer->tmp_token)
-		return (UNDEFINED);
-	first = *(char *)lexer->tmp_token->content;
-	if (first == '|')
-		return (PIPE);
-	if (first == '<')
-	{
-		if (lexer->tmp_token->next && \
-			*(char *)lexer->tmp_token->next->content == '<')
-			return (HERE_DOC);
-		return (REDIR_IN);
-	}
-	if (first == '>')
-	{
-		if (lexer->tmp_token->next \
-			&& *(char *)lexer->tmp_token->next->content == '>')
-			return (APPEND_OUT);
-		return (REDIR_OUT);
-	}
-	return (WORD);
-}
-
-void	clear_tokens_lst(t_token **lst)
-{
-	t_token	*last;
-
-	if (!lst)
-		return ;
-	while (*lst)
-	{
-		last = (*lst)->next;
-		free((*lst)->value);
-		free(*lst);
-		*lst = last;
-	}
-	*lst = NULL;
 }

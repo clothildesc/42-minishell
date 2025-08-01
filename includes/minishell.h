@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 16:03:34 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:07:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,18 @@ typedef struct s_shell
 
 void			init_all_structs(t_shell *shell);
 
-int				check_if_not_normal_state(t_lexer *lexer);
 t_token			*ft_lexer(char *input, t_shell *shell);
-void			add_char(t_list **tmp_token, char c);
-char			*create_token_value(t_lexer *lexer);
-void			add_to_lst_tokens(t_token **lst, t_token *new);
-t_token_type	determine_token_type(t_lexer *lexer);
+int				check_if_not_normal_state(t_lexer *lexer);
+void			handle_double_quote_state(t_lexer *lexer);
+void			handle_single_quote_state(t_lexer *lexer);
+void			handle_normal_state(t_lexer *lexer);
+
 void			create_token(t_lexer *lexer);
+void			add_char(t_list **tmp_token, char c);
+t_token_type	determine_token_type(t_lexer *lexer);
 void			clear_tokens_lst(t_token **lst);
 
 int				get_syntax_error_status(t_token *lst_tokens);
+void			set_to_join(t_lexer *lexer);
 
 #endif

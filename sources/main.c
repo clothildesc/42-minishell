@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/07/31 16:14:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:10:14 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	display_lexer_results(t_token *lst_tokens)
 	head = lst_tokens;
 	while (lst_tokens)
 	{
-		printf("VALUE: [%s]			TYPE: [%u]	TO_EXP: [%d]	TO_JOIN: [%d]\n", \
+		printf("VALUE: [%s]		TYPE: [%u]	TO_EXP: [%d]	TO_JOIN: [%d]\n", \
 		lst_tokens->value, lst_tokens->type, \
 		lst_tokens->to_exp, lst_tokens->to_join);
 		lst_tokens = lst_tokens->next;
