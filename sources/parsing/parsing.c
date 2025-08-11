@@ -3,160 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 18:44:23 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/11 10:28:24 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-/* static void	add_to_lst_cmd(t_cmd **lst, t_cmd *new)
+static t_ast	*create_pipe_node(t_ast *left, t_ast *right)
 {
-	t_cmd	*last;
+	t_ast	*new;
 
-	last = NULL;
-	if (!lst || !new)
-		return ;
-	if (*lst)
-	{
-		last = *lst;
-		while (last->next)
-			last = last->next;
-		new->prev = last;
-		last->next = new;
-	}
-	else
-		*lst = new;
-} */
-
-void	create_args_lst(char *name, t_ast *ast)
-{
-	t_list	*new_arg;
-
-	new_arg = malloc(sizeof(t_list));
-	if (!new_arg)
-		return ;
-	new_arg->content = ft_strdup(name);
-	if (!new_arg->content)
-		return ;
-	ft_lstadd_back(&ast->tmp_args, new_arg);
-}
-
-static void	free_args(char **result, int i)
-{
-	while (i >= 0)
-	{
-		if (result[i])
-			free(result[i]);
-		i--;
-	}
-	if (result[i])
-		free(result[i]);
-}
-
-char	**convert_list_args_to_array(t_ast *ast)
-{
-	char	**args;
-	t_list	*current;
-	int		i;
-
-	args = (char **)malloc(sizeof(char *) * ft_lstsize(ast->tmp_args));
-	if (!args)
-	{
-		ft_lstclear(&ast->tmp_args, free);
-		return (NULL);
-	}
-	i = 0;
-	current = ast->tmp_args;
-	while (current)
-	{
-		args[i] = ft_strdup((char *)current->content);
-		if (!args[i])
-		{
-			free_args(args, i);
-			return (NULL);
-		}
-		current = current->next;
-		i++;
-	}
-	args[i] = NULL;
-	ft_lstclear(&ast->tmp_args, free);
-	return (args);
-}
-
-static void	add_node_to_lst_cmds(t_cmd **lst, t_cmd *new)
-{
-	t_cmd	*last;
-
-	last = NULL;
-	if (!lst || !new)
-		return ;
-	if (*lst)
-	{
-		last = *lst;
-		while (last->next)
-			last = last->next;
-		new->prev = last;
-		last->next = new;
-	}
-	else
-		*lst = new;
-	new->next = NULL;
-}
-
-static t_cmd *create_cmd_node(t_shell *shell, char *cmd_name)
-{
-	t_cmd	*new;
-
-	new = (t_cmd *)malloc(sizeof(t_cmd));
+	new = malloc(sizeof (t_ast));
 	if (!new)
 		return (NULL);
-	new->name = ft_strdup(cmd_name);
-	if (!new->name)
+	new->node_type = NODE_PIPE;
+	new->cmds = NULL;
+	new->left = left;
+	new->right = right;
+	return (new);
+}
+
+static t_ast	*init_ast_node(void)
+{
+	t_ast	*new;
+
+	new = malloc(sizeof(t_ast));
+	if (!new)
+		return (NULL);
+	new->node_type = NODE_CMD;
+	new->cmds = malloc(sizeof(t_cmd));
+	if (!new->cmds)
 	{
 		free(new);
 		return (NULL);
 	}
-	add_node_to_lst_cmds(&shell->ast.cmds, new);
+	ft_bzero(new->cmds, sizeof(t_cmd));
+	new->left = NULL;
+	new->right = NULL;
 	return (new);
 }
 
-void	set_ast(t_shell *shell, t_token *lst_tokens)
+/*
+- Je n'arrive pas a reduire d'une ligne ... ^^'
+*/
+t_ast	*create_ast_node(t_token **lst_tokens)
 {
 	t_token	*current;
+	t_ast	*new;
 	bool	first;
-	t_cmd	*new;
 
 	first = true;
-	current = lst_tokens;
-	while (current)
+	new = init_ast_node();
+	current = *lst_tokens;
+	while (current && current->type != TOKEN_PIPE)
 	{
-		if (current->type == TOKEN_WORD)
+		if (first && current && current->type == TOKEN_WORD)
 		{
-			if (first)
-			{
-				new = create_cmd_node(shell, current->value);
-				first = false;
-			}
-			else
-				create_args_lst(current->value, &shell->ast);
+			parse_cmd_name(new->cmds, current->value);
+			first = false;
+		}
+		else if (current && current->type != TOKEN_WORD)
+		{
+			create_redir_lst(current, new->cmds);
+			current = current->next->next;
+			continue ;
 		}
 		else
-		{
-			if (shell->ast.tmp_args)
-			{
-				new->args = convert_list_args_to_array(&shell->ast);
-				first = true;
-			}
-		}
+			create_args_lst(current, new->cmds);
 		current = current->next;
 	}
-	if (shell->ast.tmp_args)
+	*lst_tokens = current;
+	return (new);
+}
+
+t_ast	*set_ast(t_shell *shell, t_token *lst_tokens)
+{
+	t_ast	*left;
+	t_ast	*new_pipe;
+	t_ast	*right;
+
+	left = create_ast_node(&lst_tokens);
+	while (lst_tokens && is_pipe(lst_tokens))
 	{
-		new->args = convert_list_args_to_array(&shell->ast);
-		first = true;
+		lst_tokens = lst_tokens->next;
+		right = create_ast_node(&lst_tokens);
+		new_pipe = create_pipe_node(left, right);
+		left = new_pipe;
 	}
+	if (left)
+		shell->ast = *left;
+	return (left);
 }
