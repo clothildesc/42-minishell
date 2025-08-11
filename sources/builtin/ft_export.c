@@ -6,25 +6,25 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 11:51:48 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:41:34 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_env	*check_if_exist(t_env **env, char *input)
-{
-	t_env	*current;
+// static t_env	*check_if_exist(t_env **env, char *input)
+// {
+// 	t_env	*current;
 
-	current = *env;
-	while (current)
-	{
-		if (!compare_key(current->key, input))
-			return (current);
-		current = current->next;
-	}
-	return (NULL);
-}
+// 	current = *env;
+// 	while (current)
+// 	{
+// 		if (!compare_key(current->key, input))
+// 			return (current);
+// 		current = current->next;
+// 	}
+// 	return (NULL);
+// }
 
 // static char	*get_value_content(char *src)
 // {
@@ -72,25 +72,30 @@ void	update_env_value(char *input, t_env **node)
 */
 void	ft_export(t_env *env, char *input)
 {
-	int		i;
 	t_env	*new;
+	t_env	*tmp;
+	char	*key;
 
-	i = 0;
-	new = check_if_exist(&env, input);
-	if (new)
+	key = get_input_key(input);
+	if (key)
 	{
-		update_env_value(input, &new);
+		tmp = env;
+		while (tmp)
+		{
+			if (!ft_strcmp(key, tmp->key))
+			{
+				update_env_value(input, &tmp);
+				return ;
+			}
+			tmp = tmp->next;
+		}
+	}
+	new = malloc(sizeof(t_env));
+	if (!new)
 		return ;
-	}
-	else
-	{
-		new = malloc(sizeof(t_env));
-		if (!new)
-			return ;
-		ft_bzero(new, sizeof(t_env));
-		new = create_env_node(new, input);
-		if (!new)
-			return ;
-		ft_lstadd_back_env(&env, new);
-	}
+	ft_bzero(new, sizeof(t_env));
+	new = create_env_node(new, input);
+	if (!new)
+		return ;
+	ft_lstadd_back_env(&env, new);
 }

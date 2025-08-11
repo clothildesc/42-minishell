@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 12:00:16 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:29:15 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	compare_key(char *env, char *inpt)
 	while (env[i] && inpt[i] && env[i] != '=' && inpt[i] != '='\
 		&& env[i] == inpt[i])
 		i++;
-	return (env[i - 1] - inpt[i - 1]);
+	return (env[i] - inpt[i]);
 }
 
 t_env	*get_node(t_env **head, char *key)
@@ -35,28 +35,6 @@ t_env	*get_node(t_env **head, char *key)
 		current = current->next;
 	}
 	return (NULL);
-}
-
-int	get_value_len(char *src)
-{
-	int	i;
-
-	i = 0;
-	if (!src)
-		return (0);
-	while (src[i] && !ft_isspace(src[i]))
-		i++;
-	return (i);
-}
-
-int	get_key_len(char *input)
-{
-	int	index;
-
-	index = 0;
-	while (input[index] && input[index] != '=')
-		index++;
-	return (index);
 }
 
 char	*get_input_value(char *input)

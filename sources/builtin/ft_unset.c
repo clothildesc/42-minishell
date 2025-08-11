@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:48:37 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/09 18:49:13 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:58:58 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_unset(t_env **env, char *to_delete)
 	current = *env;
 	while (current)
 	{
-		if (ft_strcmp(to_delete, current->key) == 0)
+		if (!ft_strcmp(to_delete, current->key))
 		{
 			ft_delete(current);
 			return ;

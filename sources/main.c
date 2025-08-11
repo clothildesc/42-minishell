@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/10 17:26:52 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:04:13 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	commande_test(char *input, t_shell *shell)
 		i = 5;
 		while (ft_isspace(input[i]))
 			i++;
-		ft_unset(&shell->env, &input[i + 1]);
+		ft_unset(&shell->env, &input[i]);
 	}
 	if (ft_strncmp(input, "export", 6) == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 11:47:23 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:29:05 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,10 +180,9 @@ void			ft_lstadd_back_env(t_env **lst, t_env *new);
 /*-------Builtin-------*/
 void			ft_env(t_env *env);
 void			ft_unset(t_env **env, char *to_delete);
+char			*ft_expand(char *input, int fd, t_env *env);
 /* ft_export */
 void			ft_export(t_env *env, char *input);
-int				get_key_len(char *input);
-int				get_value_len(char *src);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);

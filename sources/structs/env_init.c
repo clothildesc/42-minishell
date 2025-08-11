@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 14:29:31 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/09 19:23:28 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:02:01 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,9 @@ static void	make_env_node(char *env, t_env **head)
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
-	new->key = NULL;
-	new->value = NULL;
-	new->prev = NULL;
-	new->next = NULL;
 	if (!new)
 		return ;
+	ft_bzero(new, sizeof(t_env));
 	i = 0;
 	while (env[i])
 	{
@@ -53,6 +50,8 @@ static void	make_env_node(char *env, t_env **head)
 		{
 			new->key = ft_strndup(env, i);
 			new->value = ft_strdup(&env[i + 1]);
+			if (!new->key || !new->value)
+				return (free(new));
 			break ;
 		}
 		i++;
