@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:11:43 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/01 14:17:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 {
 	t_lexer		lexer;
 
+	if (!shell || !input)
+		return (NULL);
 	lexer = shell->lexer;
 	lexer.state = STATE_NORMAL;
 	lexer.input = input;
@@ -39,6 +41,6 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 	}
 	if (check_if_not_normal_state(&lexer))
 		return (NULL);
-	create_token(&lexer);
+	create_token(&lexer, true);
 	return (lexer.tokens);
 }
