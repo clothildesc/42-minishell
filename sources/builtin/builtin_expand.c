@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_expand.c                                        :+:      :+:    :+:   */
+/*   builtin_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 15:37:14 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:01:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	check_arg(char *input)
 	{
 		if (input[0] != '$')
 			return (false);
-		if (!ft_isuper(input[i]))
+		if (!ft_isupper(input[i]))
 			return (false);
 		i++;
 	}
@@ -47,7 +47,7 @@ static char	*get_result(t_env **head, char *input)
 	return (result);
 }
 
-char	*ft_expand(char *input, t_env *env)
+char	*builtin_expand(char *input, t_env *env)
 {
 	char	*ret;
 

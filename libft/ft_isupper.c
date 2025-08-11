@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_isuppercase.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/10 15:39:30 by barmarti         ###   ########.fr       */
+/*   Created: 2025/08/11 16:54:44 by cscache           #+#    #+#             */
+/*   Updated: 2025/08/11 17:01:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *env)
+int	ft_isupper(char c)
 {
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		ft_printf("%s=%s\n", tmp->key, tmp->value);
-		tmp = tmp->next;
-	}
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	return (0);
 }

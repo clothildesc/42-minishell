@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 15:04:13 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:17:24 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	commande_test(char *input, t_shell *shell)
 	int	i;
 
 	if (ft_strncmp(input, "env", 3) == 0)
-		ft_env(shell->env);
+		builtin_env(shell->env);
 	if (ft_strncmp(input, "ast", 3) == 0)
 		display_ast_results(&shell->ast, 0, ' ');
 	if (ft_strncmp(input, "unset", 5) == 0)
@@ -25,14 +25,14 @@ void	commande_test(char *input, t_shell *shell)
 		i = 5;
 		while (ft_isspace(input[i]))
 			i++;
-		ft_unset(&shell->env, &input[i]);
+		builtin_unset(&shell->env, &input[i]);
 	}
 	if (ft_strncmp(input, "export", 6) == 0)
 	{
 		i = 6;
 		while (ft_isspace(input[i]))
 			i++;
-		ft_export(shell->env, &input[i]);
+		builtin_export(shell->env, &input[i]);
 	}
 }
 
@@ -47,6 +47,7 @@ int	execute_shell(char *input, t_env *env)
 	init_all_structs(&shell);
 	shell.env = env;
 	lst_tokens = ft_lexer(input, &shell);
+	display_lexer_results(lst_tokens);
 	shell.exit_status = get_syntax_error_status(lst_tokens);
 	set_ast(&shell, lst_tokens);
 	commande_test(input, &shell);

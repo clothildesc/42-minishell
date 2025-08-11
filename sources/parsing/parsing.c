@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 10:28:24 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:07:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_ast	*init_ast_node(void)
 /*
 - Je n'arrive pas a reduire d'une ligne ... ^^'
 */
-t_ast	*create_ast_node(t_token **lst_tokens)
+static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env)
 {
 	t_token	*current;
 	t_ast	*new;
@@ -63,7 +63,7 @@ t_ast	*create_ast_node(t_token **lst_tokens)
 	{
 		if (first && current && current->type == TOKEN_WORD)
 		{
-			parse_cmd_name(new->cmds, current->value);
+			parse_cmd_name(new->cmds, current->value, env);
 			first = false;
 		}
 		else if (current && current->type != TOKEN_WORD)
@@ -73,7 +73,7 @@ t_ast	*create_ast_node(t_token **lst_tokens)
 			continue ;
 		}
 		else
-			create_args_lst(current, new->cmds);
+			create_args_lst(current, new->cmds, env);
 		current = current->next;
 	}
 	*lst_tokens = current;
@@ -86,11 +86,11 @@ t_ast	*set_ast(t_shell *shell, t_token *lst_tokens)
 	t_ast	*new_pipe;
 	t_ast	*right;
 
-	left = create_ast_node(&lst_tokens);
+	left = create_ast_node(&lst_tokens, shell->env);
 	while (lst_tokens && is_pipe(lst_tokens))
 	{
 		lst_tokens = lst_tokens->next;
-		right = create_ast_node(&lst_tokens);
+		right = create_ast_node(&lst_tokens, shell->env);
 		new_pipe = create_pipe_node(left, right);
 		left = new_pipe;
 	}

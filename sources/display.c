@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dispaly.c                                          :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/09 17:04:14 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:15:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,6 @@ void	print_cmd_node(t_cmd *cmd, int depth)
 			{
 				ft_printf("Args (%d) = %s\n", i, cmd->args->arg);
 				print_indent(depth);
-				if (cmd->args->to_exp)
-				{
-					ft_printf("Need to be expend (%d)\n", cmd->args->to_exp);
-					print_indent(depth);
-				}
 				i++;
 				cmd->args = cmd->args->next;
 			}

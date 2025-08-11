@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_lst.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/10 17:38:16 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:40:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,30 @@ void	ft_lstadd_redir(t_redir **lst, t_redir *new)
 	}
 }
 
-void	create_args_lst(t_token *token, t_cmd *cmd)
+void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 {
 	t_arg	*new_arg;
+	char	*arg_expanded;
 
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
 		return ;
-	ft_bzero(new_arg, sizeof(t_arg));
-	new_arg->arg = ft_strdup(token->value);
+	ft_bzero(new_arg, sizeof(t_arg)); 
+	if (token->to_exp == true)
+	{
+		arg_expanded = builtin_expand(token->value, env);
+		if (arg_expanded)
+			new_arg->arg = ft_strdup(arg_expanded);
+		else
+			new_arg->arg = ft_strdup(token->value);
+	}
+	else
+		new_arg->arg = ft_strdup(token->value);
 	if (!new_arg->arg)
 	{
 		free(new_arg);
 		return ;
 	}
-	new_arg->to_exp = false;
-	if (token->to_exp == true)
-		new_arg->to_exp = true;
 	new_arg->next = NULL;
 	ft_lstadd_args(&cmd->args, new_arg);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 15:29:05 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:06:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef enum e_node_type
 typedef struct s_args
 {
 	char			*arg;
-	bool			to_exp;
 	struct s_args	*next;
 }	t_arg;
 
@@ -165,8 +164,8 @@ t_ast			*set_ast(t_shell *shell, t_token *lst_tokens);
 void			ft_lstadd_redir(t_redir **lst, t_redir *new);
 void			ft_lstadd_args(t_arg **lst, t_arg *new);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
-void			create_args_lst(t_token *token, t_cmd *cmd);
-t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name);
+void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
+t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			free_args(char **result, int i);
 bool			is_pipe(t_token *lst_token);
 t_token			*find_pipe(t_token *lst_token);
@@ -178,11 +177,11 @@ void			ft_lstadd_back_env(t_env **lst, t_env *new);
 * Les builtin ne sont pas a 100% fonctionel
 */
 /*-------Builtin-------*/
-void			ft_env(t_env *env);
-void			ft_unset(t_env **env, char *to_delete);
-char			*ft_expand(char *input, int fd, t_env *env);
+void			builtin_env(t_env *env);
+void			builtin_unset(t_env **env, char *to_delete);
+char			*builtin_expand(char *input, t_env *env);
 /* ft_export */
-void			ft_export(t_env *env, char *input);
+void			builtin_export(t_env *env, char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);
