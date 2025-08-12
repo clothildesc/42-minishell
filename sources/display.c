@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 18:15:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:55:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ void	print_cmd_node(t_cmd *cmd, int depth)
 				cmd->args = cmd->args->next;
 			}
 		}
-		if (cmd->fds)
-		{
-			while (cmd->fds)
-			{
-				ft_printf("Redir '%s' vers %s\n", cmd->fds->redir, cmd->fds->file);
-				print_indent(depth);
-				cmd->fds = cmd->fds->next;
-			}
-		}
+		if (cmd->fd_infile)
+			ft_printf("fd_infile: %d\n", cmd->fd_infile);
+		else
+			ft_printf("fd_infile: (null)\n");
+		print_indent(depth);
+		if (cmd->fd_outfile)
+			ft_printf("fd_outfile: %d\n", cmd->fd_outfile);
+		else
+			ft_printf("fd_outfile: (null)\n");
 		ft_printf("\n");
 		cmd = cmd->next;
 	}

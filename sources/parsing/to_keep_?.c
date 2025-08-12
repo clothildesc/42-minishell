@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   to_keep_?.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:26:58 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/09 16:27:42 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:57:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,46 @@
 	}
 	else
 		*lst = new;
+} */
+
+/* void	ft_lstadd_redir(t_redir **lst, t_redir *new)
+{
+	t_redir	*last;
+
+	last = NULL;
+	if (lst && new)
+	{
+		if (*lst)
+		{
+			last = *lst;
+			while (last->next)
+				last = last->next;
+			last->next = new;
+		}
+		else
+			*lst = new;
+	}
+}
+
+void	create_redir_lst(t_token *token, t_cmd *cmd)
+{
+	t_redir	*new_redir;
+
+	new_redir = malloc(sizeof(t_redir));
+	ft_bzero(new_redir, sizeof(t_redir));
+	if (!new_redir)
+		return ;
+	new_redir->file = ft_strdup(token->next->value);
+	if (!new_redir->file)
+	{
+		free(new_redir);
+		return ;
+	}
+	new_redir->redir = ft_strdup(token->value);
+	if (!new_redir->redir)
+	{
+		free(new_redir);
+		return ;
+	}
+	ft_lstadd_redir(&cmd->fds, new_redir);
 } */

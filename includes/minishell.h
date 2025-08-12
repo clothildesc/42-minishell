@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 16:21:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:47:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,23 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_arg;
 
-typedef struct s_redir
-{
-	char			*redir;
-	char			*file;
-	int				fd_in;
-	int				fd_out;
-	struct s_redir	*next;
-}	t_redir;
+// typedef struct s_redir
+// {
+// 	char			*redir;
+// 	char			*file;
+// 	int				fd_in;
+// 	int				fd_out;
+// 	struct s_redir	*next;
+// }	t_redir;
 
 typedef struct s_cmd
 {
 	char			*name;
 	t_arg			*args;
 	char			*abs_path;
-	t_redir			*fds;
+	// t_redir			*fds;
+	int				fd_infile;
+	int				fd_outfile;
 	int				pipefd[2];
 	int				exit_status;
 	struct s_cmd	*prev;
@@ -159,14 +161,17 @@ t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*set_ast(t_shell *shell, t_token *lst_tokens);
-void			ft_lstadd_redir(t_redir **lst, t_redir *new);
+// void			ft_lstadd_redir(t_redir **lst, t_redir *new);
 void			ft_lstadd_args(t_arg **lst, t_arg *new);
-void			create_redir_lst(t_token *token, t_cmd *cmd);
+// void			create_redir_lst(t_token *token, t_cmd *cmd);
+void			set_redir_fd(t_token *token, t_cmd *cmd);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			free_args(char **result, int i);
 bool			is_pipe(t_token *lst_token);
 t_token			*find_pipe(t_token *lst_token);
+int				open_infile(char *infile);
+int				open_outfile(char *outfile, t_token_type type);
 
 /*-------Env-------*/
 void			ft_lstadd_back_env(t_env **lst, t_env *new);

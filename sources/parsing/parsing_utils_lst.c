@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/12 15:02:34 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:57:11 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,44 +68,12 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	ft_lstadd_args(&cmd->args, new_arg);
 }
 
-void	ft_lstadd_redir(t_redir **lst, t_redir *new)
+void	set_redir_fd(t_token *token, t_cmd *cmd)
 {
-	t_redir	*last;
-
-	last = NULL;
-	if (lst && new)
-	{
-		if (*lst)
-		{
-			last = *lst;
-			while (last->next)
-				last = last->next;
-			last->next = new;
-		}
-		else
-			*lst = new;
-	}
-}
-
-void	create_redir_lst(t_token *token, t_cmd *cmd)
-{
-	t_redir	*new_redir;
-
-	new_redir = malloc(sizeof(t_redir));
-	ft_bzero(new_redir, sizeof(t_redir));
-	if (!new_redir)
-		return ;
-	new_redir->file = ft_strdup(token->next->value);
-	if (!new_redir->file)
-	{
-		free(new_redir);
-		return ;
-	}
-	new_redir->redir = ft_strdup(token->value);
-	if (!new_redir->redir)
-	{
-		free(new_redir);
-		return ;
-	}
-	ft_lstadd_redir(&cmd->fds, new_redir);
+	if (token->type == TOKEN_REDIR_IN)
+		cmd->fd_infile = open_infile(token->next->value);
+	else if (token->type == TOKEN_REDIR_OUT)
+		cmd->fd_outfile = open_outfile(token->next->value, token->type);
+	else if (token->type == TOKEN_APPEND_OUT)
+		cmd->fd_outfile = open_outfile(token->next->value, token->type);
 }

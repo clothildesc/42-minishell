@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 14:36:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:11:14 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static t_ast	*init_ast_node(void)
 	new = malloc(sizeof(t_ast));
 	if (!new)
 		return (NULL);
+	ft_bzero(new, sizeof(t_ast));
 	new->node_type = NODE_CMD;
 	new->cmds = malloc(sizeof(t_cmd));
 	if (!new->cmds)
@@ -42,8 +43,8 @@ static t_ast	*init_ast_node(void)
 		return (NULL);
 	}
 	ft_bzero(new->cmds, sizeof(t_cmd));
-	new->left = NULL;
-	new->right = NULL;
+	new->cmds->fd_infile = -1;
+	new->cmds->fd_outfile = -1;
 	return (new);
 }
 
@@ -63,7 +64,7 @@ static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env, bool first)
 		}
 		else if (current && current->type != TOKEN_WORD)
 		{
-			create_redir_lst(current, new->cmds);
+			set_redir_fd(current, new->cmds);
 			current = current->next->next;
 			continue ;
 		}
