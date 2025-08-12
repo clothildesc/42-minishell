@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 17:07:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 11:46:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static t_ast	*init_ast_node(void)
 static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env)
 {
 	t_token	*current;
+	t_token	*tmp;
 	t_ast	*new;
 	bool	first;
 
@@ -73,7 +74,23 @@ static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env)
 			continue ;
 		}
 		else
-			create_args_lst(current, new->cmds, env);
+		{
+			if (current->to_join)
+			{
+				tmp = current;
+				printf("current value avant: %s\n", tmp->value);
+				printf("current next value avant: %s\n", tmp->next->value);
+				tmp->next->value = ft_strjoin(tmp->value, tmp->next->value);
+				printf("current value apres: %s\n", tmp->value);
+				printf("current next value apres: %s\n", tmp->next->value);
+				current = tmp->next;
+				free(tmp->value);
+				printf("===================\n");
+				continue ;
+			}
+			else
+				create_args_lst(current, new->cmds, env);
+		}
 		current = current->next;
 	}
 	*lst_tokens = current;

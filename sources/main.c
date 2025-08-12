@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 18:17:24 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 12:15:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	execute_shell(char *input, t_env *env)
 	init_all_structs(&shell);
 	shell.env = env;
 	lst_tokens = ft_lexer(input, &shell);
-	display_lexer_results(lst_tokens);
 	shell.exit_status = get_syntax_error_status(lst_tokens);
+	//display_lexer_results(lst_tokens);
 	set_ast(&shell, lst_tokens);
 	commande_test(input, &shell);
 	return (shell.exit_status);

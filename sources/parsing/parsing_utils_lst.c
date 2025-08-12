@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 18:40:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 11:48:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
 		return ;
-	ft_bzero(new_arg, sizeof(t_arg)); 
+	ft_bzero(new_arg, sizeof(t_arg));
 	if (token->to_exp == true)
 	{
 		arg_expanded = builtin_expand(token->value, env);
