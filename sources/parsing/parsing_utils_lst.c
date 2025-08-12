@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/12 11:48:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 15:02:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,17 @@ void	ft_lstadd_args(t_arg **lst, t_arg *new)
 			last = *lst;
 			while (last->next)
 				last = last->next;
-			last->next = new;
+			if (last->to_join)
+			{
+				last->arg = ft_strjoin(last->arg, new->arg);
+				free(new->arg);
+				last->next = NULL;
+			}
+			else
+				last->next = new;
 		}
 		else
-		{
 			*lst = new;
-		}
-	}
-}
-
-void	ft_lstadd_redir(t_redir **lst, t_redir *new)
-{
-	t_redir	*last;
-
-	last = NULL;
-	if (lst && new)
-	{
-		if (*lst)
-		{
-			last = *lst;
-			while (last->next)
-				last = last->next;
-			last->next = new;
-		}
-		else
-		{
-			*lst = new;
-		}
 	}
 }
 
@@ -79,8 +63,28 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 		free(new_arg);
 		return ;
 	}
+	new_arg->to_join = token->to_join;
 	new_arg->next = NULL;
 	ft_lstadd_args(&cmd->args, new_arg);
+}
+
+void	ft_lstadd_redir(t_redir **lst, t_redir *new)
+{
+	t_redir	*last;
+
+	last = NULL;
+	if (lst && new)
+	{
+		if (*lst)
+		{
+			last = *lst;
+			while (last->next)
+				last = last->next;
+			last->next = new;
+		}
+		else
+			*lst = new;
+	}
 }
 
 void	create_redir_lst(t_token *token, t_cmd *cmd)

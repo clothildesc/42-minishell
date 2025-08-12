@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/11 18:06:23 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 16:21:16 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef enum e_node_type
 typedef struct s_args
 {
 	char			*arg;
+	bool			to_join;
 	struct s_args	*next;
 }	t_arg;
 
@@ -148,10 +149,7 @@ t_env			*get_env(char **envp);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
-int				check_if_not_normal_state(t_lexer *lexer);
-void			handle_double_quote_state(t_lexer *lexer);
-void			handle_single_quote_state(t_lexer *lexer);
-void			handle_normal_state(t_lexer *lexer);
+void			process_normal_state(t_lexer *lexer);
 
 /*-------Token-------*/
 void			create_token(t_lexer *lexer, bool to_join);

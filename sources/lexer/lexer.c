@@ -6,21 +6,68 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 14:17:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 16:22:09 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-static void	process_char(t_lexer *lexer)
+static void	process_single_quote_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '\'')
+	{
+		lexer->state = STATE_NORMAL;
+		if (lexer->input[lexer->pos + 1] != ' ')
+			create_token(lexer, true);
+	}
+	else
+		add_char(&lexer->tmp_token, c);
+}
+
+static void	process_double_quote_state(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '"')
+	{
+		lexer->state = STATE_NORMAL;
+		if (lexer->input[lexer->pos + 1] != ' ')
+			create_token(lexer, true);
+	}
+	else
+		add_char(&lexer->tmp_token, c);
+}
+
+static int	check_if_not_normal_state(t_lexer *lexer)
+{
+	if (lexer->state != STATE_NORMAL)
+	{
+		if (lexer->tmp_token)
+		{
+			ft_lstclear(&(lexer->tmp_token), free);
+			lexer->tmp_token = NULL;
+		}
+		if (lexer->tokens)
+			clear_tokens_lst(&lexer->tokens);
+		write(2, "error: missing quote\n", 22);
+		return (1);
+	}
+	return (0);
+}
+
+static void	process_current_char(t_lexer *lexer)
 {
 	if (lexer->state == STATE_NORMAL)
-		handle_normal_state(lexer);
+		process_normal_state(lexer);
 	else if (lexer->state == STATE_SINGLE_QUOTE)
-		handle_single_quote_state(lexer);
+		process_single_quote_state(lexer);
 	else if (lexer->state == STATE_DOUBLE_QUOTE)
-		handle_double_quote_state(lexer);
+		process_double_quote_state(lexer);
 }
 
 t_token	*ft_lexer(char *input, t_shell *shell)
@@ -36,7 +83,7 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 	lexer.to_join = 0;
 	while (lexer.input[lexer.pos])
 	{
-		process_char(&lexer);
+		process_current_char(&lexer);
 		(lexer.pos)++;
 	}
 	if (check_if_not_normal_state(&lexer))

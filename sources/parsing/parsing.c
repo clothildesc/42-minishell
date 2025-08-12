@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 11:46:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/12 14:36:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,11 @@ static t_ast	*init_ast_node(void)
 	return (new);
 }
 
-/*
-- Je n'arrive pas a reduire d'une ligne ... ^^'
-*/
-static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env)
+static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env, bool first)
 {
 	t_token	*current;
-	t_token	*tmp;
 	t_ast	*new;
-	bool	first;
 
-	first = true;
 	new = init_ast_node();
 	current = *lst_tokens;
 	while (current && current->type != TOKEN_PIPE)
@@ -74,23 +68,7 @@ static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env)
 			continue ;
 		}
 		else
-		{
-			if (current->to_join)
-			{
-				tmp = current;
-				printf("current value avant: %s\n", tmp->value);
-				printf("current next value avant: %s\n", tmp->next->value);
-				tmp->next->value = ft_strjoin(tmp->value, tmp->next->value);
-				printf("current value apres: %s\n", tmp->value);
-				printf("current next value apres: %s\n", tmp->next->value);
-				current = tmp->next;
-				free(tmp->value);
-				printf("===================\n");
-				continue ;
-			}
-			else
-				create_args_lst(current, new->cmds, env);
-		}
+			create_args_lst(current, new->cmds, env);
 		current = current->next;
 	}
 	*lst_tokens = current;
@@ -103,11 +81,11 @@ t_ast	*set_ast(t_shell *shell, t_token *lst_tokens)
 	t_ast	*new_pipe;
 	t_ast	*right;
 
-	left = create_ast_node(&lst_tokens, shell->env);
+	left = create_ast_node(&lst_tokens, shell->env, true);
 	while (lst_tokens && is_pipe(lst_tokens))
 	{
 		lst_tokens = lst_tokens->next;
-		right = create_ast_node(&lst_tokens, shell->env);
+		right = create_ast_node(&lst_tokens, shell->env, true);
 		new_pipe = create_pipe_node(left, right);
 		left = new_pipe;
 	}
