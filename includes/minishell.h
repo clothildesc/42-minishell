@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 11:29:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:31:24 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,11 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_arg;
 
-// typedef struct s_redir
-// {
-// 	char			*redir;
-// 	char			*file;
-// 	int				fd_in;
-// 	int				fd_out;
-// 	struct s_redir	*next;
-// }	t_redir;
-
 typedef struct s_cmd
 {
 	char			*name;
 	t_arg			*args;
 	char			*abs_path;
-	// t_redir			*fds;
 	int				fd_infile;
 	int				fd_outfile;
 	int				pipefd[2];
@@ -117,7 +107,6 @@ typedef struct s_cmd
 }	t_cmd;
 
 typedef struct s_ast
-{
 {
 	t_node_type		node_type;
 	t_cmd			*cmds;
