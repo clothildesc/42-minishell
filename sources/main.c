@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 14:21:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:28:03 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,17 @@ void	commande_test(char *input, t_shell *shell)
 
 	if (ft_strncmp(input, "env", 3) == 0)
 		builtin_env(shell->env);
+	if (ft_strncmp(input, "pwd", 3) == 0)
+		builtin_pwd();
 	if (ft_strncmp(input, "ast", 3) == 0)
 		display_ast_results(&shell->ast, 0, ' ');
+	if (ft_strncmp(input, "cd", 2) == 0)
+	{
+		i = 2;
+		while (ft_isspace(input[i]))
+			i++;
+		builtin_cd(&input[i]);
+	}
 	if (ft_strncmp(input, "unset", 5) == 0)
 	{
 		i = 5;

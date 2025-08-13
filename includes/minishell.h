@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 17:47:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:29:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -117,6 +118,7 @@ typedef struct s_cmd
 
 typedef struct s_ast
 {
+{
 	t_node_type		node_type;
 	t_cmd			*cmds;
 	int				prio;
@@ -161,28 +163,29 @@ t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*set_ast(t_shell *shell, t_token *lst_tokens);
-// void			ft_lstadd_redir(t_redir **lst, t_redir *new);
-void			ft_lstadd_args(t_arg **lst, t_arg *new);
-// void			create_redir_lst(t_token *token, t_cmd *cmd);
-void			set_redir_fd(t_token *token, t_cmd *cmd);
-void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
-t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
-void			free_args(char **result, int i);
 bool			is_pipe(t_token *lst_token);
 t_token			*find_pipe(t_token *lst_token);
+t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
+void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
+void			ft_lstadd_args(t_arg **lst, t_arg *new);
+void			free_args(char **result, int i);
+void			set_redir_fd(t_token *token, t_cmd *cmd);
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
+int				create_here_doc(char *limiter);
 
 /*-------Env-------*/
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
 
 /*
-* Les builtin ne sont pas a 100% fonctionel
+* Les builtin ne sont pas a 100% fonctionnel
 */
 /*-------Builtin-------*/
 void			builtin_env(t_env *env);
 void			builtin_unset(t_env **env, char *to_delete);
 char			*builtin_expand(char *input, t_env *env);
+int				builtin_pwd(void);
+int				builtin_cd(char *path);
 /* ft_export */
 void			builtin_export(t_env *env, char *input);
 char			*get_input_value(char *input);

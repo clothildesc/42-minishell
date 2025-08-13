@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 18:09:33 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 10:49:30 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,21 @@
 // Écrire dans le fichier temporaire
 // Retourner un fd en lecture sur ce fichier temporaire
 
-void	read_and_write_heredoc(int fd, char *limiter)
+// ne pas oublier de unlink le heredoc ensuite : unlink("/tmp/.heredoc_tmp")
+//	ATTENTION -> Si je fais un cat du heredoc et que j'ai des variables a expand
+//	je dois bien les expand (ex : $USER)
+
+static void	read_and_write_heredoc(int fd, char *limiter)
 {
 	char	*line;
 	int		limiter_reached;
 
 	limiter_reached = 0;
-	write(1, "> ", 1);
+	write(1, "> ", 2);
 	line = get_next_line(0);
 	while (line)
 	{
-		write(1, "> ", 1);
+		write(1, "> ", 2);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
 			&& line[ft_strlen(limiter)] == '\n')
 		{
@@ -41,7 +45,10 @@ void	read_and_write_heredoc(int fd, char *limiter)
 		line = get_next_line(0);
 	}
 	if (!limiter_reached)
-		write(2, "[minishell] warning: there is no limiter\n", 42);
+	{
+		ft_putendl_fd_no_nl("bash: warning: here-document delimited by end-of-file, wanted ", 2);
+		ft_putendl_fd_no_nl(limiter, 2);
+	}
 	if (line)
 		free(line);
 }
@@ -49,13 +56,16 @@ void	read_and_write_heredoc(int fd, char *limiter)
 int	create_here_doc(char *limiter)
 {
 	int		fd;
-	char	*line;
 
-	fd = open(0, O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open("/tmp/.heredoc_tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
+	{
+		perror("open heredoc");
 		return (-1);
+	}
 	read_and_write_heredoc(fd, limiter);
-	return (fd);
+	close(fd);
+	return (open("/tmp/.heredoc_tmp", O_RDONLY));
 }
 
 int	open_infile(char *infile)
