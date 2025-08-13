@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/10 17:30:06 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/13 14:31:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ static char	*create_token_value(t_lexer *lexer)
 		return (NULL);
 	token_value = malloc(sizeof(char) * (ft_lstsize(lexer->tmp_token) + 1));
 	if (!token_value)
+	{
+		ft_lstclear(&lexer->tmp_token, free);
 		return (NULL);
+	}
 	i = 0;
 	current = lexer->tmp_token;
 	while (current)
@@ -32,6 +35,7 @@ static char	*create_token_value(t_lexer *lexer)
 		current = current->next;
 	}
 	token_value[i] = 0;
+	ft_lstclear(&lexer->tmp_token, free);
 	return (token_value);
 }
 
@@ -82,13 +86,13 @@ void	create_token(t_lexer *lexer, bool to_join)
 		if (!token_value)
 			return ;
 		new_token = malloc(sizeof(t_token));
-		ft_bzero(new_token, sizeof(t_token));
 		if (!new_token)
 		{
 			free(token_value);
 			token_value = NULL;
 			return ;
 		}
+		ft_bzero(new_token, sizeof(t_token));
 		new_token->value = token_value;
 		new_token->to_exp = lexer->to_exp;
 		new_token->to_join = lexer->to_join;

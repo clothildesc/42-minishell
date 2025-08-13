@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 10:22:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:42:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	ft_lstadd_args(t_arg **lst, t_arg *new)
 {
 	t_arg	*last;
+	char	*old_arg;
 
 	last = NULL;
 	if (lst && new)
@@ -27,9 +28,12 @@ void	ft_lstadd_args(t_arg **lst, t_arg *new)
 				last = last->next;
 			if (last->to_join)
 			{
+				old_arg = last->arg;
 				last->arg = ft_strjoin(last->arg, new->arg);
+				free(old_arg);
 				free(new->arg);
-				last->next = NULL;
+				free(new);
+				last->to_join = false;
 			}
 			else
 				last->next = new;
@@ -52,7 +56,10 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	{
 		arg_expanded = builtin_expand(token->value, env);
 		if (arg_expanded)
+		{
 			new_arg->arg = ft_strdup(arg_expanded);
+			free(arg_expanded);
+		}
 		else
 			new_arg->arg = ft_strdup(token->value);
 	}

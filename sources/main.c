@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 11:28:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 18:08:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	commande_test(char *input, t_shell *shell)
 	if (ft_strncmp(input, "pwd", 3) == 0)
 		builtin_pwd();
 	if (ft_strncmp(input, "ast", 3) == 0)
-		display_ast_results(&shell->ast, 0, ' ');
+		display_ast_results(shell->ast, 0, ' ');
 	if (ft_strncmp(input, "cd", 2) == 0)
 	{
 		i = 2;
@@ -48,19 +48,19 @@ void	commande_test(char *input, t_shell *shell)
 /*
 -	Peut-etre deplacer l'initialisation des struct dans le main
 */
-int	execute_shell(char *input, t_env *env)
+int	execute_shell(char *input, t_shell *shell)
 {
-	t_token	*lst_tokens;
-	t_shell	shell;
+	shell->tokens = NULL;
+	shell->ast = NULL;
 
-	init_all_structs(&shell);
-	shell.env = env;
-	lst_tokens = ft_lexer(input, &shell);
-	shell.exit_status = get_syntax_error_status(lst_tokens);
-	//display_lexer_results(lst_tokens);
-	set_ast(&shell, lst_tokens);
-	commande_test(input, &shell);
-	return (shell.exit_status);
+	shell->tokens = ft_lexer(input, shell);
+	shell->exit_status = get_syntax_error_status(shell->tokens);
+	//display_lexer_results(shell->tokens);
+	shell->ast = set_ast(shell, &shell->tokens);
+	commande_test(input, shell);
+	clear_tokens_lst(&shell->tokens);
+	clear_ast(&shell->ast);
+	return (shell->exit_status);
 }
 
 /*
@@ -69,24 +69,29 @@ int	execute_shell(char *input, t_env *env)
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
-	t_env	*env;
+	t_shell	shell;
 
 	(void)av;
 	if (ac == 1)
 	{
-		env = get_env(envp);
+		init_all_structs(&shell);
+		shell.env = get_env(envp);
 		while (1)
 		{
 			line = readline("minishell> ");
 			if (line == NULL)
+			{
+				clear_env_lst(&shell.env);
 				return (1);
+			}
 			if (*line)
 			{
 				add_history(line);
-				execute_shell(line, env);
-				free(line);
+				execute_shell(line, &shell);
 			}
+			free(line);
 		}
+		clear_env_lst(&shell.env);
 		return (0);
 	}
 	return (-1);

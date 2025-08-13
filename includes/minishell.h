@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 12:09:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 18:22:16 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,11 @@ typedef struct s_ast
 
 /*=============== EXEC =============== */
 
-/*
-- Peut-etre plus facile d'utilise des pointeur pour :
-	- tokens -> liste chaine donc pointe vers une suite de variable
-	- ast -> idem
-*/
 typedef struct s_shell
 {
 	t_lexer	lexer;
-	t_token	tokens;
-	t_ast	ast;
-	t_cmd	*cmds;
+	t_token	*tokens;
+	t_ast	*ast;
 	t_env	*env;
 	int		exit_status;
 }	t_shell;
@@ -139,7 +133,10 @@ int				get_syntax_error_status(t_token *lst_tokens);
 
 /*-------STRUCT-------*/
 void			init_all_structs(t_shell *shell);
-t_env			*get_env(char **envp);
+void			clear_args_lst(t_arg **lst);
+void			clear_cmd(t_cmd *cmd);
+void			clear_ast(t_ast **ast);
+void			clear_env_lst(t_env **env);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -152,8 +149,8 @@ void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
-t_ast			*set_ast(t_shell *shell, t_token *lst_tokens);
-bool			is_pipe(t_token *lst_token);
+t_ast			*set_ast(t_shell *shell, t_token **tokens);
+// bool			is_pipe(t_token *lst_token);
 t_token			*find_pipe(t_token *lst_token);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
@@ -164,24 +161,26 @@ int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
 
-/*-------Env-------*/
-void			ft_lstadd_back_env(t_env **lst, t_env *new);
-
-/*
-* Les builtin ne sont pas a 100% fonctionnel
-*/
 /*-------Builtin-------*/
+/* env */
+t_env			*get_env(char **envp);
+void			ft_lstadd_back_env(t_env **lst, t_env *new);
 void			builtin_env(t_env *env);
+/* unset */
 void			builtin_unset(t_env **env, char *to_delete);
-char			*builtin_expand(char *input, t_env *env);
-int				builtin_pwd(void);
-int				builtin_cd(char *path);
-/* ft_export */
+/* export */
 void			builtin_export(t_env *env, char *input);
+int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);
 t_env			*get_node(t_env **head, char *key);
+/* expand */
+char			*builtin_expand(char *input, t_env *env);
+/* pwd */
+int				builtin_pwd(void);
+/* cd */
+int				builtin_cd(char *path);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

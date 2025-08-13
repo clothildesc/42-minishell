@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/12 13:35:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:39:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,15 @@ static bool	check_uppercase(char *input, int i)
 static char	*get_expanded_result(t_env **head, char *input)
 {
 	t_env	*current;
-	char	*result;
 
 	current = *head;
 	while (current)
 	{
 		if (!ft_strcmp(input, current->key))
-		{
-			result = ft_strdup(current->value);
-			if (!result)
-				return (NULL);
-		}
+			return (ft_strdup(current->value));
 		current = current->next;
 	}
-	return (result);
+	return (NULL);
 }
 
 char	*builtin_expand(char *input, t_env *env)

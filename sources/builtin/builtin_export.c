@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 12:20:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:30:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 static t_env	*create_env_node(t_env *new, char *input)
 {
 	new->key = get_input_key(input);
-	new->value = get_input_value(input);
-	if (!new->value || !new->key)
+	if (!new->key)
 	{
+		free(new);
+		return (NULL);
+	}
+	new->value = get_input_value(input);
+	if (!new->value)
+	{
+		free(new->key);
 		free(new);
 		return (NULL);
 	}
@@ -26,8 +32,24 @@ static t_env	*create_env_node(t_env *new, char *input)
 
 static void	update_env_value(char *input, t_env **node)
 {
-	free((*node)->value);
-	(*node)->value = get_input_value(input);
+	char	*new_value;
+	char	*old_value;
+
+	new_value = get_input_value(input);
+	if (value_to_append(input))
+	{
+		if (!new_value)
+			return ;
+		old_value = (*node)->value;
+		(*node)->value = ft_strjoin((*node)->value, new_value);
+		free(old_value);
+		free(new_value);
+	}
+	else
+	{
+		free((*node)->value);
+		(*node)->value = get_input_value(input);
+	}
 	if (!(*node)->value)
 		return ;
 }
@@ -82,9 +104,15 @@ void	builtin_export(t_env *env, char *input)
 	t_env	*new;
 
 	key = get_input_key(input);
-	if (!key || !key_name_is_valid(key))
+	if (!key)
 		return ;
+	if (!key_name_is_valid(key))
+	{
+		free(key);
+		return ;
+	}
 	new = find_or_create_env(env, input, key);
 	if (new)
 		ft_lstadd_back_env(&env, new);
+	free(key);
 }

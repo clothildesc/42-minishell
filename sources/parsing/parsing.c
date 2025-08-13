@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/12 17:11:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 18:09:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static t_ast	*init_ast_node(void)
 	return (new);
 }
 
-static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env, bool first)
+static t_ast	*create_ast_node(t_token **tokens, t_env *env, bool first)
 {
 	t_token	*current;
 	t_ast	*new;
 
 	new = init_ast_node();
-	current = *lst_tokens;
+	current = *tokens;
 	while (current && current->type != TOKEN_PIPE)
 	{
 		if (first && current && current->type == TOKEN_WORD)
@@ -72,25 +72,23 @@ static t_ast	*create_ast_node(t_token **lst_tokens, t_env *env, bool first)
 			create_args_lst(current, new->cmds, env);
 		current = current->next;
 	}
-	*lst_tokens = current;
+	*tokens = current;
 	return (new);
 }
 
-t_ast	*set_ast(t_shell *shell, t_token *lst_tokens)
+t_ast	*set_ast(t_shell *shell, t_token **tokens)
 {
 	t_ast	*left;
 	t_ast	*new_pipe;
 	t_ast	*right;
 
-	left = create_ast_node(&lst_tokens, shell->env, true);
-	while (lst_tokens && is_pipe(lst_tokens))
+	left = create_ast_node(tokens, shell->env, true);
+	while (*tokens && (*tokens)->type == TOKEN_PIPE)
 	{
-		lst_tokens = lst_tokens->next;
-		right = create_ast_node(&lst_tokens, shell->env, true);
+		*tokens = (*tokens)->next;
+		right = create_ast_node(tokens, shell->env, true);
 		new_pipe = create_pipe_node(left, right);
 		left = new_pipe;
 	}
-	if (left)
-		shell->ast = *left;
 	return (left);
 }

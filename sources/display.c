@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/12 17:55:19 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 17:12:40 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,64 +43,103 @@ void	print_indent(int depth)
 
 void	print_cmd_node(t_cmd *cmd, int depth)
 {
-	t_cmd	*current;
 	int		i;
+	t_arg	*current_arg;
 
-	current = cmd;
-	while (cmd)
+	if (!cmd)
+		return ;
+	print_indent(depth);
+	if (cmd->name)
+		ft_printf("Command: %s\n", cmd->name);
+	else
+		ft_printf("Command: (null)\n");
+	if (cmd->args)
 	{
 		print_indent(depth);
-		if (cmd->name)
-			ft_printf("Command: %s\n", cmd->name);
-		else
-			ft_printf("Command: (null)\n");
-
-		print_indent(depth);
-		if (cmd->args)
+		ft_printf("Args: ");
+		current_arg = cmd->args;
+		i = 0;
+		while (current_arg)
 		{
-			i = 0;
-			while (cmd->args)
-			{
-				ft_printf("Args (%d) = %s\n", i, cmd->args->arg);
-				print_indent(depth);
-				i++;
-				cmd->args = cmd->args->next;
-			}
+			ft_printf("[%d]=%s ", i, current_arg->arg);
+			current_arg = current_arg->next;
+			i++;
 		}
-		if (cmd->fd_infile)
-			ft_printf("fd_infile: %d\n", cmd->fd_infile);
-		else
-			ft_printf("fd_infile: (null)\n");
-		print_indent(depth);
-		if (cmd->fd_outfile)
-			ft_printf("fd_outfile: %d\n", cmd->fd_outfile);
-		else
-			ft_printf("fd_outfile: (null)\n");
 		ft_printf("\n");
-		cmd = cmd->next;
 	}
+	print_indent(depth);
+	if (cmd->fd_infile != -1)
+		ft_printf("fd_infile: %d\n", cmd->fd_infile);
+	else
+		ft_printf("fd_infile: (null)\n");
+	print_indent(depth);
+	if (cmd->fd_outfile != -1)
+		ft_printf("fd_outfile: %d\n", cmd->fd_outfile);
+	else
+		ft_printf("fd_outfile: (null)\n");
+	ft_printf("\n");
 }
 
-void	display_ast_results(t_ast *node, int depth, char branch)
+/* void	display_ast_results(t_ast *ast, int depth, char branch)
 {
-	if (!node)
+	if (!ast)
 		return ;
-
+	ast = ast;
 	print_indent(depth);
 	if (branch != ' ')
 		ft_printf("%c── ", branch);
 	else
 		ft_printf("    ");
-	if (node->node_type == NODE_PIPE)
-		ft_printf("[PIPE]\n");
-	else if (node->node_type == NODE_CMD)
+	if (ast->node_type == NODE_PIPE)
+		ft_printf("🔗 [PIPE]\n");
+	else if (ast->node_type == NODE_CMD)
 	{
-		ft_printf("[CMD]\n");
-		print_cmd_node(node->cmds, depth + 1);
+		ft_printf("⚡ [CMD]\n");
+		if (ast->cmds)
+			print_cmd_node(ast->cmds, depth + 1);
 	}
+	if (ast->left)
+		display_ast_results(ast->left, depth + 1, 'L');
+	if (ast->right)
+		display_ast_results(ast->right, depth + 1, 'R');
+} */
 
-	if (node->left)
-		display_ast_results(node->left, depth + 1, 'L');
-	if (node->right)
-		display_ast_results(node->right, depth + 1, 'R');
+void	display_ast_results(t_ast *ast, int depth, char branch)
+{
+	int	i;
+
+	if (!ast)
+		return ;
+	i = 0;
+	while (i < depth)
+	{
+		if (i == depth - 1)
+			ft_printf("├── ");
+		else
+			ft_printf("│   ");
+		i++;
+	}
+	if (depth > 0)
+	{
+		if (branch == 'L')
+			ft_printf("LEFT: ");
+		else if (branch == 'R')
+			ft_printf("RIGHT: ");
+	}
+	if (ast->node_type == NODE_PIPE)
+		ft_printf("[PIPE]\n");
+	else if (ast->node_type == NODE_CMD)
+	{
+		if (ast->cmds)
+		{
+			ft_printf("[CMD] %s\n", ast->cmds->name);
+			print_cmd_node(ast->cmds, depth + 1);
+		}
+		else
+			ft_printf("[CMD] %s\n", "(null)");
+	}
+	if (ast->left)
+		display_ast_results(ast->left, depth + 1, 'L');
+	if (ast->right)
+		display_ast_results(ast->right, depth + 1, 'R');
 }

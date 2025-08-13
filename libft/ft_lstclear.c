@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:12:53 by clothildesc       #+#    #+#             */
-/*   Updated: 2025/05/03 15:17:11 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:17:07 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*last;
 
-	if (lst && del)
+	if (!lst || !*lst || !del)
+		return ;
+	while (*lst)
 	{
-		while (*lst)
-		{
-			last = (*lst)->next;
-			ft_lstdelone(*lst, del);
-			*lst = last;
-		}
+		last = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = last;
 	}
 }
