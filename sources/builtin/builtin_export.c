@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 12:10:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:20:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 	return (create_env_node(tmp, input));
 }
 
-static int	check_key_name(char *key)
+static int	key_name_is_valid(char *key)
 {
 	int	i;
 
@@ -82,17 +82,9 @@ void	builtin_export(t_env *env, char *input)
 	t_env	*new;
 
 	key = get_input_key(input);
-	if (!key || !check_key_name(key))
+	if (!key || !key_name_is_valid(key))
 		return ;
 	new = find_or_create_env(env, input, key);
 	if (new)
 		ft_lstadd_back_env(&env, new);
 }
-
-
-// Premier caractère
-	// Doit être une lettre (a-z, A-Z) ou un underscore (_)
-	// Ne peut pas commencer par un chiffre ou un symbole (1VAR, -PATH, @home, …)
-// Caractères suivants
-	// Peuvent être lettres, chiffres (0-9) ou underscore (_)
-	// Pas d’espace, de tiret, d’accent, etc.
