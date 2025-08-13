@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 16:38:58 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:35:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 			new->prev = last;
 		}
 		else
-		{
 			*lst = new;
-		}
 	}
 }
 
-static void	make_env_node(char *env, t_env **head)
+static void	create_env_node(char *env, t_env **head)
 {
 	int		i;
 	t_env	*new;
@@ -70,7 +68,7 @@ t_env	*get_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		make_env_node(envp[i], &env);
+		create_env_node(envp[i], &env);
 		i++;
 	}
 	return (env);

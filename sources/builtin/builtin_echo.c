@@ -6,8 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 16:38:52 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:33:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	builtin_echo(void)
+{
+	
+	return (0);
+}

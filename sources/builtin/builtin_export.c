@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/12 16:34:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:10:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,46 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 	return (create_env_node(tmp, input));
 }
 
+static int	check_key_name(char *key)
+{
+	int	i;
+
+	i = 0;
+	while (key[i])
+	{
+		if (!ft_isalpha(key[0]) && key[0] != '_')
+		{
+			ft_putendl_fd(SYNTAX_ERROR_KEY_ENV, 2);
+			return (0);
+		}
+		else if (!ft_isalpha(key[i]) && !ft_isdigit(key[i]) && key[i] != '_')
+		{
+			ft_putendl_fd(SYNTAX_ERROR_KEY_ENV, 2);
+			return (0);
+		}
+		else
+			i++;
+	}
+	return (1);
+}
+
 void	builtin_export(t_env *env, char *input)
 {
 	char	*key;
 	t_env	*new;
 
 	key = get_input_key(input);
-	if (!key)
+	if (!key || !check_key_name(key))
 		return ;
 	new = find_or_create_env(env, input, key);
 	if (new)
 		ft_lstadd_back_env(&env, new);
 }
+
+
+// Premier caractère
+	// Doit être une lettre (a-z, A-Z) ou un underscore (_)
+	// Ne peut pas commencer par un chiffre ou un symbole (1VAR, -PATH, @home, …)
+// Caractères suivants
+	// Peuvent être lettres, chiffres (0-9) ou underscore (_)
+	// Pas d’espace, de tiret, d’accent, etc.

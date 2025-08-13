@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 11:31:24 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:09:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
+# define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 
 /*=============== LEXER =============== */
 
