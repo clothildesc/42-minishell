@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 15:36:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:05:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,21 @@ t_token_type	determine_token_type(t_lexer *lexer)
 	return (TOKEN_WORD);
 }
 
-void	clear_tokens_lst(t_token **lst)
+void	clear_tokens_lst(t_token **tokens)
 {
-	t_token	*last;
+	t_token	*next;
+	t_token	*current;
 
-	if (!lst)
+	if (!tokens || !*tokens)
 		return ;
-	while (*lst)
+	current = *tokens;
+	while (current)
 	{
-		last = (*lst)->next;
-		free((*lst)->value);
-		free(*lst);
-		*lst = last;
+		next = current->next;
+		if (current->value)
+			free(current->value);
+		free(current);
+		current = next;
 	}
-	*lst = NULL;
+	*tokens = NULL;
 }

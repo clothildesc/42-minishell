@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 14:49:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:34:50 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ t_token			*find_pipe(t_token *lst_token);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
 void			ft_lstadd_args(t_arg **lst, t_arg *new);
+int				args_lst_size(t_arg *args);
 void			free_args(char **result, int i);
 void			set_redir_fd(t_token *token, t_cmd *cmd);
 int				open_infile(char *infile);
@@ -171,6 +172,7 @@ int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
 
 /*-------Builtin-------*/
+int				exec_builtins(t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -178,7 +180,7 @@ int				builtin_env(t_env *env);
 /* unset */
 int				builtin_unset(t_env **env, char *to_delete);
 /* export */
-int				builtin_export(t_env *env, char *input);
+int				builtin_export(t_env *env, t_arg *args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
@@ -189,7 +191,9 @@ char			*builtin_expand(char *input, t_env *env);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
-int				builtin_cd(char *path);
+int				builtin_cd(t_arg *args);
+/* echo */
+int				builtin_echo(t_arg *args);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

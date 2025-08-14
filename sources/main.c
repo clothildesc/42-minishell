@@ -6,45 +6,47 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 15:40:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:48:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	builtins_test(char *input, t_shell *shell)
-{
-	int	i;
+// int	builtins_test(char *input, t_shell *shell)
+// {
+// 	int	i;
 
-	if (ft_strncmp(input, "env", 3) == 0)
-		return (builtin_env(shell->env));
-	if (ft_strncmp(input, "pwd", 3) == 0)
-		return (builtin_pwd());
-	if (ft_strncmp(input, "ast", 3) == 0)
-		display_ast_results(shell->ast, 0, ' ');
-	if (ft_strncmp(input, "cd", 2) == 0)
-	{
-		i = 2;
-		while (ft_isspace(input[i]))
-			i++;
-		return (builtin_cd(&input[i]));
-	}
-	if (ft_strncmp(input, "unset", 5) == 0)
-	{
-		i = 5;
-		while (ft_isspace(input[i]))
-			i++;
-		return (builtin_unset(&shell->env, &input[i]));
-	}
-	if (ft_strncmp(input, "export", 6) == 0)
-	{
-		i = 6;
-		while (ft_isspace(input[i]))
-			i++;
-		return (builtin_export(shell->env, &input[i]));
-	}
-	return (EXIT_SUCCESS);
-}
+// 	if (ft_strncmp(input, "env", 3) == 0)
+// 		return (builtin_env(shell->env));
+// 	if (ft_strncmp(input, "pwd", 3) == 0)
+// 		return (builtin_pwd());
+// 	if (ft_strncmp(input, "ast", 3) == 0)
+// 		display_ast_results(shell->ast, 0, ' ');
+// 	if (ft_strncmp(input, "echo", 3) == 0)
+// 		return (builtin_echo(shell->ast->cmds));
+// 	if (ft_strncmp(input, "cd", 2) == 0)
+// 	{
+// 		i = 2;
+// 		while (ft_isspace(input[i]))
+// 			i++;
+// 		return (builtin_cd(&input[i]));
+// 	}
+// 	if (ft_strncmp(input, "unset", 5) == 0)
+// 	{
+// 		i = 5;
+// 		while (ft_isspace(input[i]))
+// 			i++;
+// 		return (builtin_unset(&shell->env, &input[i]));
+// 	}
+// 	if (ft_strncmp(input, "export", 6) == 0)
+// 	{
+// 		i = 6;
+// 		while (ft_isspace(input[i]))
+// 			i++;
+// 		return (builtin_export(shell->env, &input[i]));
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
 
 int	execute_shell(char *input, t_shell *shell)
 {
@@ -59,7 +61,7 @@ int	execute_shell(char *input, t_shell *shell)
 	}
 	//display_lexer_results(shell->tokens);
 	shell->ast = set_ast(shell, &shell->tokens);
-	shell->exit_status = builtins_test(input, shell);
+	shell->exit_status = exec_builtins(shell);
 	clear_tokens_lst(&shell->tokens);
 	clear_ast(&shell->ast);
 	return (shell->exit_status);

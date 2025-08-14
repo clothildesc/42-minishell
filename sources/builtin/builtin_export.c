@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 13:34:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:07:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,22 +106,32 @@ static int	key_name_is_valid(char *key)
 	return (1);
 }
 
-int	builtin_export(t_env *env, char *input)
+int	builtin_export(t_env *env, t_arg *args)
 {
 	char	*key;
 	t_env	*new;
+	t_arg	*current;
+	int		exit_code;
 
-	key = get_input_key(input);
-	if (!key)
-		return (EXIT_SUCCESS);
-	if (!key_name_is_valid(key))
+	exit_code = EXIT_SUCCESS;
+	current = args;
+	while (current)
 	{
+		key = get_input_key(current->arg);
+		if (!key)
+			return (EXIT_SUCCESS);
+		if (!key_name_is_valid(key))
+		{
+			free(key);
+			exit_code = EXIT_FAILURE;
+			current = current->next;
+			continue ;
+		}
+		new = find_or_create_env(env, current->arg, key);
+		if (new)
+			ft_lstadd_back_env(&env, new);
 		free(key);
-		return (EXIT_FAILURE);
+		current = current->next;
 	}
-	new = find_or_create_env(env, input, key);
-	if (new)
-		ft_lstadd_back_env(&env, new);
-	free(key);
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }

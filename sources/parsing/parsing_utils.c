@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 15:42:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:54:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ void	free_args(char **result, int i)
 	}
 	if (result)
 		free(result);
+}
+
+int	args_lst_size(t_arg *args)
+{
+	int	size;
+
+	size = 0;
+	while (args)
+	{
+		size++;
+		args = args->next;
+	}
+	return (size);
 }
 
 t_token	*find_pipe(t_token *lst_token)
