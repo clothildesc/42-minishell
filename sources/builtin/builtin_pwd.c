@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:39:20 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 11:13:40 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 13:35:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	builtin_pwd(void)
 	}
 	else
 	{
-		perror("getcwd");
-		return (1);
+		perror("bash: pwd");
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

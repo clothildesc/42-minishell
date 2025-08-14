@@ -6,27 +6,29 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 13:33:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 13:40:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	compare_key(char *env, char *inpt)
+int	compare_key(char *env, char *input)
 {
 	int	i;
 
 	i = 0;
-	while (env[i] && inpt[i] && env[i] != '=' && inpt[i] != '='\
-		&& env[i] == inpt[i])
+	while (env[i] && input[i] && env[i] != '=' && input[i] != '='\
+		&& env[i] == input[i])
 		i++;
-	return (env[i] - inpt[i]);
+	return (env[i] - input[i]);
 }
 
 t_env	*get_node(t_env **head, char *key)
 {
 	t_env	*current;
 
+	if (!head || !*head || !key)
+		return (NULL);
 	current = *head;
 	while (current)
 	{
@@ -72,6 +74,8 @@ char	*get_input_key(char *input)
 	int	i;
 
 	i = 0;
+	if (!input)
+		return (NULL);
 	while (input[i] && input[i] != '=')
 		i++;
 	if (input[i] == '\0')

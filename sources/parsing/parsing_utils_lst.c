@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 11:43:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:43:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	t_arg	*new_arg;
 	char	*arg_expanded;
 
-	if (!token || !cmd || !env)
-		return ;
 	new_arg = malloc(sizeof(t_arg));
 	if (!new_arg)
 		return ;
@@ -78,8 +76,6 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 
 void	set_redir_fd(t_token *token, t_cmd *cmd)
 {
-	if (!token || !cmd)
-		return ;
 	if (token->type == TOKEN_REDIR_IN)
 		cmd->fd_infile = open_infile(token->next->value);
 	else if (token->type == TOKEN_HERE_DOC)

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 11:58:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:45:52 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static t_ast	*create_pipe_node(t_ast *left, t_ast *right)
 	new->cmds = NULL;
 	new->left = left;
 	new->right = right;
+	printf("j'ai cree pipe node\n");
 	return (new);
 }
 
@@ -54,8 +55,6 @@ static t_ast	*create_ast_node(t_token **tokens, t_env *env, bool first)
 	t_ast	*new;
 
 	new = init_ast_node();
-	if (!new)
-		return (NULL);
 	current = *tokens;
 	while (current && current->type != TOKEN_PIPE)
 	{
@@ -84,8 +83,6 @@ t_ast	*set_ast(t_shell *shell, t_token **tokens)
 	t_ast	*new_pipe;
 	t_ast	*right;
 
-	if (!shell || !tokens ||*tokens)
-		return (NULL);
 	left = create_ast_node(tokens, shell->env, true);
 	if (!left)
 		return (NULL);
@@ -100,5 +97,6 @@ t_ast	*set_ast(t_shell *shell, t_token **tokens)
 			return (clear_ast(&left), clear_ast(&right), NULL);
 		left = new_pipe;
 	}
+	printf("ok pour left node\n");
 	return (left);
 }

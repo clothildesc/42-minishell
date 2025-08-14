@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 10:48:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:40:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void	add_to_lst_tokens(t_token **lst, t_token *new)
 	t_token	*last;
 
 	last = NULL;
-	if (!lst || !new)
-		return ;
 	if (*lst)
 	{
 		last = *lst;

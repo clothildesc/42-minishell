@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 11:42:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 15:42:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ t_token	*find_pipe(t_token *lst_token)
 {
 	t_token	*current;
 
-	if (!lst_token)
-		return (NULL);
 	current = lst_token;
 	while (current && current->type != TOKEN_PIPE)
 		current = current->next;
@@ -46,8 +44,6 @@ t_cmd	*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env)
 {
 	char	*cmd_expanded;
 
-	if (!new || !env || !cmd_name)
-		return (NULL);
 	cmd_expanded = builtin_expand(cmd_name, env);
 	if (cmd_expanded)
 		new->name = ft_strdup(cmd_expanded);

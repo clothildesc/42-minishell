@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 16:45:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 14:32:55 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,18 @@ t_env	*get_env(char **envp)
 	return (env);
 }
 
-void	builtin_env(t_env *env)
+int	builtin_env(t_env *env)
 {
 	t_env	*tmp;
 
+	if (!env)
+		return (EXIT_SUCCESS);
 	tmp = env;
 	while (tmp)
 	{
-		ft_printf("%s=%s\n", tmp->key, tmp->value);
+		if (ft_printf("%s=%s\n", tmp->key, tmp->value) < 0)
+			return (EXIT_FAILURE);
 		tmp = tmp->next;
 	}
+	return (EXIT_SUCCESS);
 }

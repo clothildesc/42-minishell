@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 10:49:30 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 14:00:11 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	create_here_doc(char *limiter)
 	fd = open("/tmp/.heredoc_tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror("open heredoc");
+		perror("bash: open heredoc");
 		return (-1);
 	}
 	read_and_write_heredoc(fd, limiter);

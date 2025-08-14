@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:38:45 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 11:25:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 13:28:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 int	builtin_cd(char *path)
 {
+	if (!path)
+		return (EXIT_FAILURE);
 	if (chdir(path) == -1)
 	{
-		perror("bash: cd: x: No such file or directory");
-		return (1);
+		perror(ERROR_CD);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

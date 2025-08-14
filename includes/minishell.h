@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 11:08:26 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 14:49:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,21 @@
 # include <fcntl.h>
 # include "../libft/libft.h"
 
+/*=============== EXIT CODES =============== */
+# define EXIT_SUCCESS 		0
+# define EXIT_FAILURE 		1
+# define EXIT_SYNTAX_ERROR	2
+# define EXIT_CMD_NOT_FOUND	127
+# define EXIT_SIGNAL		128
+# define EXIT_CTRL_C 		130
+# define EXIT_CTRL_D 		131
+
 /*=============== ERRORS =============== */
 
 # define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
+# define ERROR_CD "bash: cd: No such file or directory"
 
 /*=============== LEXER =============== */
 
@@ -132,7 +142,7 @@ typedef struct s_shell
 int				get_syntax_error_status(t_token *lst_tokens);
 
 /*-------STRUCT-------*/
-void			init_all_structs(t_shell *shell);
+void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
@@ -164,11 +174,11 @@ int				create_here_doc(char *limiter);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
-void			builtin_env(t_env *env);
+int				builtin_env(t_env *env);
 /* unset */
-void			builtin_unset(t_env **env, char *to_delete);
+int				builtin_unset(t_env **env, char *to_delete);
 /* export */
-void			builtin_export(t_env *env, char *input);
+int				builtin_export(t_env *env, char *input);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
