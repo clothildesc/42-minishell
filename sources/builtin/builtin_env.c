@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_init.c                                         :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/08 14:29:31 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 15:02:01 by barmarti         ###   ########.fr       */
+/*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
+/*   Updated: 2025/08/13 16:45:44 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 			new->prev = last;
 		}
 		else
-		{
 			*lst = new;
-		}
 	}
 }
 
-static void	make_env_node(char *env, t_env **head)
+static void	create_env_node(char *env, t_env **head)
 {
 	int		i;
 	t_env	*new;
@@ -70,8 +68,20 @@ t_env	*get_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		make_env_node(envp[i], &env);
+		create_env_node(envp[i], &env);
 		i++;
 	}
 	return (env);
+}
+
+void	builtin_env(t_env *env)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		ft_printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
 }

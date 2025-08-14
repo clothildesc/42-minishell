@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:48:37 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 14:58:58 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:03:07 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	ft_delete(t_env *to_delete)
+static void	delete_node_env(t_env *to_delete)
 {
 	if (to_delete->next != NULL)
 		to_delete->next->prev = to_delete->prev;
@@ -22,7 +22,7 @@ static void	ft_delete(t_env *to_delete)
 	free(to_delete);
 }
 
-void	ft_unset(t_env **env, char *to_delete)
+void	builtin_unset(t_env **env, char *to_delete)
 {
 	t_env	*current;
 
@@ -31,7 +31,7 @@ void	ft_unset(t_env **env, char *to_delete)
 	{
 		if (!ft_strcmp(to_delete, current->key))
 		{
-			ft_delete(current);
+			delete_node_env(current);
 			return ;
 		}
 		current = current->next;

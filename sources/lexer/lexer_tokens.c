@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/10 17:30:06 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/14 10:48:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	create_token(t_lexer *lexer, bool to_join)
 		if (!token_value)
 			return ;
 		new_token = malloc(sizeof(t_token));
-		ft_bzero(new_token, sizeof(t_token));
 		if (!new_token)
 		{
 			free(token_value);
 			token_value = NULL;
 			return ;
 		}
+		ft_bzero(new_token, sizeof(t_token));
 		new_token->value = token_value;
 		new_token->to_exp = lexer->to_exp;
 		new_token->to_join = lexer->to_join;

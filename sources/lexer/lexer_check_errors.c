@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:48:55 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:00:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_error_redir(t_token *current)
 {
 	if (!current->next)
 		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
-	else if (current->next->type == TOKEN_WORD)
+	else if (current->next->type != TOKEN_WORD)
 		return (ft_putendl_fd(SYNTAX_ERROR_REDIR, 2), 1);
 	return (0);
 }

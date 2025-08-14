@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export_utils.c                                  :+:      :+:    :+:   */
+/*   builtin_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/11 15:29:15 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:33:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ t_env	*get_node(t_env **head, char *key)
 	return (NULL);
 }
 
+int	value_to_append(char *input)
+{
+	int	i;
+
+	i = 1;
+	if (!input)
+		return (0);
+	while (input[i])
+	{
+		if (input[i] == '=' && input[i - 1] == '+')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*get_input_value(char *input)
 {
 	int	i;
@@ -60,5 +76,8 @@ char	*get_input_key(char *input)
 		i++;
 	if (input[i] == '\0')
 		return (NULL);
-	return (ft_strndup(input, i));
+	if (value_to_append(input))
+		return (ft_strndup(input, i - 1));
+	else
+		return (ft_strndup(input, i));
 }
