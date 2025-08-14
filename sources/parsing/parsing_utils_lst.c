@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 14:42:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 11:10:55 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_lstadd_args(t_arg **lst, t_arg *new)
 				free(old_arg);
 				free(new->arg);
 				free(new);
-				last->to_join = false;
 			}
 			else
 				last->next = new;

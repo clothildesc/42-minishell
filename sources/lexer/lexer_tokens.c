@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 14:31:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 10:48:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static char	*create_token_value(t_lexer *lexer)
 		return (NULL);
 	token_value = malloc(sizeof(char) * (ft_lstsize(lexer->tmp_token) + 1));
 	if (!token_value)
-	{
-		ft_lstclear(&lexer->tmp_token, free);
 		return (NULL);
-	}
 	i = 0;
 	current = lexer->tmp_token;
 	while (current)
@@ -35,7 +32,6 @@ static char	*create_token_value(t_lexer *lexer)
 		current = current->next;
 	}
 	token_value[i] = 0;
-	ft_lstclear(&lexer->tmp_token, free);
 	return (token_value);
 }
 

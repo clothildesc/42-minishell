@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 18:22:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 11:08:26 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*set_ast(t_shell *shell, t_token **tokens);
-// bool			is_pipe(t_token *lst_token);
 t_token			*find_pipe(t_token *lst_token);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
