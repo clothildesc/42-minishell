@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 14:08:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/14 11:50:01 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	add_char(t_list **tmp_token, char c)
 	t_list	*new;
 	char	*new_char;
 
+	if (!tmp_token || !*tmp_token)
+		return ;
 	new_char = malloc(sizeof(char));
 	if (!new_char)
 		return ;
