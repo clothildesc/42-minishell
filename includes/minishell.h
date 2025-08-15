@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 18:34:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 18:52:18 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,26 +104,52 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_arg;
 
+typedef struct s_redir
+{
+	t_token_type	type;
+	char			*file;
+	struct s_redir	*next;
+}	t_redir;
+
 typedef struct s_cmd
 {
 	char			*name;
 	t_arg			*args;
+	t_redir			*redirs;
 	char			*abs_path;
-	int				fd_infile;
-	int				fd_outfile;
-	int				pipefd[2];
 	int				exit_status;
-	struct s_cmd	*prev;
-	struct s_cmd	*next;
+	// struct s_cmd	*prev;
+	// struct s_cmd	*next;
 }	t_cmd;
+
+struct	s_ast;
+
+typedef struct s_ast_binary
+{
+	struct s_ast	*left;
+	struct s_ast	*right;
+}	t_ast_binary;
+
+typedef struct s_ast_unary_cmd
+{
+	t_cmd	*cmd;
+}	t_ast_unary_cmd;
+
+typedef union u_ast_data
+{
+	t_ast_binary	binary;
+	t_ast_unary_cmd	cmd;
+}	t_ast_data;
+
+typedef struct s_ast_unary
+{
+	t_cmd	*cmd;
+}	t_ast_unary;
 
 typedef struct s_ast
 {
 	t_node_type		node_type;
-	t_cmd			*cmds;
-	int				prio;
-	struct s_ast	*right;
-	struct s_ast	*left;
+	t_ast_data		data;
 }	t_ast;
 
 /*=============== EXEC =============== */

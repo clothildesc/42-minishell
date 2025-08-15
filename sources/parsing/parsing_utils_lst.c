@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:32:22 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 15:43:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 18:46:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	ft_lstadd_args(&cmd->args, new_arg);
 }
 
-void	set_redir_fd(t_token *token, t_cmd *cmd)
-{
-	if (token->type == TOKEN_REDIR_IN)
-		cmd->fd_infile = open_infile(token->next->value);
-	else if (token->type == TOKEN_HERE_DOC)
-		cmd->fd_infile = create_here_doc(token->next->value);
-	else if (token->type == TOKEN_REDIR_OUT)
-		cmd->fd_outfile = open_outfile(token->next->value, token->type);
-	else if (token->type == TOKEN_APPEND_OUT)
-		cmd->fd_outfile = open_outfile(token->next->value, token->type);
-}
+// void	set_redir_fd(t_token *token, t_cmd *cmd)
+// {
+// 	if (token->type == TOKEN_REDIR_IN)
+// 		cmd->fd_infile = open_infile(token->next->value);
+// 	else if (token->type == TOKEN_HERE_DOC)
+// 		cmd->fd_infile = create_here_doc(token->next->value);
+// 	else if (token->type == TOKEN_REDIR_OUT)
+// 		cmd->fd_outfile = open_outfile(token->next->value, token->type);
+// 	else if (token->type == TOKEN_APPEND_OUT)
+// 		cmd->fd_outfile = open_outfile(token->next->value, token->type);
+// }

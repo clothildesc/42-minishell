@@ -6,12 +6,26 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/13 16:44:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 19:16:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
+
+void	free_args(char **result, int i)
+{
+	if (!result)
+		return ;
+	while (i >= 0)
+	{
+		if (result[i])
+			free(result[i]);
+		i--;
+	}
+	if (result)
+		free(result);
+}
 
 void	clear_args_lst(t_arg **lst)
 {
