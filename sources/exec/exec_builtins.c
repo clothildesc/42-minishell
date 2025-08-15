@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 18:30:10 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 21:06:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,33 @@ static int	is_a_builtin(char *cmd_name)
 		return (0);
 }
 
+void	traverse_ast(t_ast *node)
+{
+	
+}
+
 /* Il va falloir la modifier un peu quand on l'incluera dans l'exec complete */
 int	exec_builtins(t_shell *shell)
 {
 	t_ast	*current;
 
-	if (!shell)
-		return (EXIT_FAILURE);
 	current = shell->ast;
 	while (current)
 	{
-		if (is_a_builtin(current->cmds->name))
+		if (is_a_builtin(current->data.cmd.cmd->name))
 		{
-			if (ft_strcmp(current->cmds->name, "env") == 0)
+			if (ft_strcmp(current->data.cmd.cmd->name, "env") == 0)
 				return (builtin_env(shell->env));
-			// else if (ft_strcmp(current->cmds->name, "pwd") == 0)
+			// else if (ft_strcmp(current->data.cmd.cmd->name, "pwd") == 0)
 			// 	return (builtin_pwd());
-			else if (ft_strcmp(current->cmds->name, "echo") == 0)
-				return (builtin_echo(current->cmds->args));
-			// else if (ft_strcmp(current->cmds->name, "cd") == 0)
-			// 	return (builtin_cd(current->cmds->args));
-			// else if (ft_strcmp(current->cmds->name, "unset") == 0)
-			// 	return (builtin_unset(&shell->env, current->cmds->args));
-			else if (ft_strcmp(current->cmds->name, "export") == 0)
-				return (builtin_export(shell->env, current->cmds->args));
+			else if (ft_strcmp(current->data.cmd.cmd->name, "echo") == 0)
+				return (builtin_echo(current->data.cmd.cmd->args));
+			// else if (ft_strcmp(current->data.cmd.cmd->name, "cd") == 0)
+			// 	return (builtin_cd(current->data.cmd.cmd->args));
+			// else if (ft_strcmp(current->data.cmd.cmd->name, "unset") == 0)
+			// 	return (builtin_unset(&shell->env, current->data.cmd.cmd->args));
+			else if (ft_strcmp(current->data.cmd.cmd->name, "export") == 0)
+				return (builtin_export(shell->env, current->data.cmd.cmd->args));
 		}
 		current = current->left;
 	}

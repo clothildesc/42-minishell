@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 14:00:11 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 20:39:07 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		line = get_next_line(0);
 	}
 	if (!limiter_reached)
-	{
-		ft_putendl_fd_no_nl("bash: warning: here-document delimited by end-of-file, wanted ", 2);
-		ft_putendl_fd_no_nl(limiter, 2);
-	}
+		ft_putendl_fd_no_nl("bash: warning: here-doc delimited by eof", 2);
 	if (line)
 		free(line);
 }

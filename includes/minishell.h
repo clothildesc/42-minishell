@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 18:52:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/15 20:36:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ typedef struct s_cmd
 	t_redir			*redirs;
 	char			*abs_path;
 	int				exit_status;
-	// struct s_cmd	*prev;
-	// struct s_cmd	*next;
 }	t_cmd;
 
 struct	s_ast;
@@ -185,14 +183,11 @@ void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
-t_ast			*set_ast(t_shell *shell, t_token **tokens);
-t_token			*find_pipe(t_token *lst_token);
+t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
+t_ast			*parse_cmd(t_token **tokens, t_env *env, bool first);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
+void			create_redir_lst(t_token *token, t_cmd *cmd);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
-void			ft_lstadd_args(t_arg **lst, t_arg *new);
-int				args_lst_size(t_arg *args);
-void			free_args(char **result, int i);
-void			set_redir_fd(t_token *token, t_cmd *cmd);
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
