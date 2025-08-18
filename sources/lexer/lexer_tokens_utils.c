@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 14:08:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:06:50 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,43 @@ t_token_type	determine_token_type(t_lexer *lexer)
 	return (TOKEN_WORD);
 }
 
-void	clear_tokens_lst(t_token **lst)
+void	clear_tokens_lst(t_token **tokens)
 {
-	t_token	*last;
+	t_token	*next;
+	t_token	*current;
 
-	if (!lst)
+	if (!tokens || !*tokens)
 		return ;
-	while (*lst)
+	current = *tokens;
+	while (current)
 	{
-		last = (*lst)->next;
-		free((*lst)->value);
-		free(*lst);
-		*lst = last;
+		next = current->next;
+		if (current->value)
+			free(current->value);
+		free(current);
+		current = next;
 	}
-	*lst = NULL;
+	*tokens = NULL;
+}
+
+char	*create_token_value(t_lexer *lexer)
+{
+	char		*token_value;
+	t_list		*current;
+	int			i;
+
+	if (!(lexer->tmp_token))
+		return (NULL);
+	token_value = malloc(sizeof(char) * (ft_lstsize(lexer->tmp_token) + 1));
+	if (!token_value)
+		return (NULL);
+	i = 0;
+	current = lexer->tmp_token;
+	while (current)
+	{
+		token_value[i++] = *(char *)current->content;
+		current = current->next;
+	}
+	token_value[i] = 0;
+	return (token_value);
 }

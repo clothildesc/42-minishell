@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/13 14:30:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 14:44:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static t_env	*create_env_node(t_env *new, char *input)
 {
+	if (!new || !input)
+		return (NULL);
 	new->key = get_input_key(input);
 	if (!new->key)
 	{
@@ -35,7 +37,11 @@ static void	update_env_value(char *input, t_env **node)
 	char	*new_value;
 	char	*old_value;
 
+	if (!input || !node || !*node)
+		return ;
 	new_value = get_input_value(input);
+	if (!new_value)
+		return ;
 	if (value_to_append(input))
 	{
 		if (!new_value)
@@ -48,7 +54,7 @@ static void	update_env_value(char *input, t_env **node)
 	else
 	{
 		free((*node)->value);
-		(*node)->value = get_input_value(input);
+		(*node)->value = new_value;
 	}
 	if (!(*node)->value)
 		return ;
@@ -58,6 +64,8 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 {
 	t_env	*tmp;
 
+	if (!env || !input || !key)
+		return (NULL);
 	tmp = env;
 	while (tmp)
 	{
@@ -98,21 +106,33 @@ static int	key_name_is_valid(char *key)
 	return (1);
 }
 
-void	builtin_export(t_env *env, char *input)
+int	builtin_export(t_env *env, t_arg *args)
 {
 	char	*key;
 	t_env	*new;
+	t_arg	*current;
+	int		exit_code;
 
-	key = get_input_key(input);
-	if (!key)
-		return ;
-	if (!key_name_is_valid(key))
+	exit_code = EXIT_SUCCESS;
+	current = args;
+	while (current)
 	{
-		free(key);
-		return ;
+		key = get_input_key(current->arg);
+		if (!key)
+			return (EXIT_SUCCESS);
+		if (!key_name_is_valid(key))
+		{
+			free(key);
+			exit_code = EXIT_FAILURE;
+		}
+		else
+		{
+			new = find_or_create_env(env, current->arg, key);
+			if (new)
+				ft_lstadd_back_env(&env, new);
+			free(key);
+		}
+		current = current->next;
 	}
-	new = find_or_create_env(env, input, key);
-	if (new)
-		ft_lstadd_back_env(&env, new);
-	free(key);
+	return (exit_code);
 }

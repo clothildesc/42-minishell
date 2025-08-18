@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 11:08:26 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:55:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,21 @@
 # include <fcntl.h>
 # include "../libft/libft.h"
 
+/*=============== EXIT CODES =============== */
+# define EXIT_SUCCESS 		0
+# define EXIT_FAILURE 		1
+# define EXIT_SYNTAX_ERROR	2
+# define EXIT_CMD_NOT_FOUND	127
+# define EXIT_SIGNAL		128
+# define EXIT_CTRL_C 		130
+# define EXIT_CTRL_D 		131
+
 /*=============== ERRORS =============== */
 
 # define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
+# define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
 
 /*=============== LEXER =============== */
 
@@ -94,26 +104,50 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_arg;
 
+typedef struct s_redir
+{
+	t_token_type	type;
+	char			*file;
+	struct s_redir	*next;
+}	t_redir;
+
 typedef struct s_cmd
 {
 	char			*name;
 	t_arg			*args;
+	t_redir			*redirs;
 	char			*abs_path;
-	int				fd_infile;
-	int				fd_outfile;
-	int				pipefd[2];
 	int				exit_status;
-	struct s_cmd	*prev;
-	struct s_cmd	*next;
 }	t_cmd;
+
+struct	s_ast;
+
+typedef struct s_ast_binary
+{
+	struct s_ast	*left;
+	struct s_ast	*right;
+}	t_ast_binary;
+
+typedef struct s_ast_unary_cmd
+{
+	t_cmd	*cmd;
+}	t_ast_unary_cmd;
+
+typedef union u_ast_data
+{
+	t_ast_binary	binary;
+	t_ast_unary_cmd	cmd;
+}	t_ast_data;
+
+typedef struct s_ast_unary
+{
+	t_cmd	*cmd;
+}	t_ast_unary;
 
 typedef struct s_ast
 {
 	t_node_type		node_type;
-	t_cmd			*cmds;
-	int				prio;
-	struct s_ast	*right;
-	struct s_ast	*left;
+	t_ast_data		data;
 }	t_ast;
 
 /*=============== EXEC =============== */
@@ -127,16 +161,24 @@ typedef struct s_shell
 	int		exit_status;
 }	t_shell;
 
+/*=============== GLOBAL VARIABLE =============== */
+
+extern int	g_exit_status;
+
 /*=============== FUNCTIONS =============== */
 
 int				get_syntax_error_status(t_token *lst_tokens);
 
 /*-------STRUCT-------*/
-void			init_all_structs(t_shell *shell);
+void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
+void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
 void			clear_env_lst(t_env **env);
+void			clear_lexer_tmp(t_lexer *lexer);
+void			clear_shell(t_shell *shell);
+
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -147,28 +189,28 @@ void			create_token(t_lexer *lexer, bool to_join);
 void			add_char(t_list **tmp_token, char c);
 void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
+char			*create_token_value(t_lexer *lexer);
 
 /*-------AST-------*/
-t_ast			*set_ast(t_shell *shell, t_token **tokens);
-t_token			*find_pipe(t_token *lst_token);
+t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
+t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
+void			create_redir_lst(t_token *token, t_cmd *cmd);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
-void			ft_lstadd_args(t_arg **lst, t_arg *new);
-void			free_args(char **result, int i);
-void			set_redir_fd(t_token *token, t_cmd *cmd);
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
 
 /*-------Builtin-------*/
+int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
-void			builtin_env(t_env *env);
+int				builtin_env(t_env *env);
 /* unset */
-void			builtin_unset(t_env **env, char *to_delete);
+int				builtin_unset(t_env **env, t_arg *args);
 /* export */
-void			builtin_export(t_env *env, char *input);
+int				builtin_export(t_env *env, t_arg *args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
@@ -179,7 +221,11 @@ char			*builtin_expand(char *input, t_env *env);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
-int				builtin_cd(char *path);
+int				builtin_cd(t_arg *args, t_env *env);
+/* echo */
+int				builtin_echo(t_arg *args);
+/* exit */
+// int				builtin_exit(t_shell *shell, t_arg *args);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);
