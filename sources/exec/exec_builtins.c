@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 17:41:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 17:49:37 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,17 @@ int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 	return (EXIT_FAILURE);
 }
 
-// int	exec_one_cmd(t_shell *shell)
-// {
-// 	t_cmd	*cmd;
+int	exec_one_cmd(t_shell *shell)
+{
+	t_cmd	*cmd;
 
-// 	if (!shell->ast)
-// 		return (EXIT_FAILURE);
-// 	cmd = shell->ast->data.cmd.cmd;
-// 	if (is_a_builtin(cmd->name))
-// 		return (exec_builtin(cmd->name, cmd->args, shell));
-// 	else
-// 	{
-		
-// 	}
-// }
+	if (!shell->ast)
+		return (EXIT_FAILURE);
+	cmd = shell->ast->data.cmd.cmd;
+	if (is_a_builtin(cmd->name))
+		return (exec_builtin(cmd->name, cmd->args, shell));
+	else
+	{
+		//
+	}
+}
