@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:10:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:55:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,10 @@ typedef struct s_shell
 	int		exit_status;
 }	t_shell;
 
+/*=============== GLOBAL VARIABLE =============== */
+
+extern int	g_exit_status;
+
 /*=============== FUNCTIONS =============== */
 
 int				get_syntax_error_status(t_token *lst_tokens);
@@ -220,6 +224,8 @@ int				builtin_pwd(void);
 int				builtin_cd(t_arg *args, t_env *env);
 /* echo */
 int				builtin_echo(t_arg *args);
+/* exit */
+// int				builtin_exit(t_shell *shell, t_arg *args);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);
