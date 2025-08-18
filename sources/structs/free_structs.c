@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 19:44:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 10:45:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	clear_ast(t_ast **ast)
 		return ;
 	clear_ast(&(*ast)->data.binary.left);
 	clear_ast(&(*ast)->data.binary.right);
-	if ((*ast)->data.cmd)
+	if ((*ast)->data.cmd.cmd)
 	{
-		clear_cmd((*ast)->data.cmd);
-		free((*ast)->data.cmd);
+		clear_cmd((*ast)->data.cmd.cmd);
+		free((*ast)->data.cmd.cmd);
 	}
 	free(*ast);
 	*ast = NULL;

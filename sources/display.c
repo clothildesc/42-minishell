@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 11:17:27 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 10:40:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ void	print_cmd_node(t_cmd *cmd, int depth)
 		}
 		ft_printf("\n");
 	}
-	print_indent(depth);
-	ft_printf("fd_infile: %d\n", cmd->fd_infile);
-	print_indent(depth);
-	ft_printf("fd_outfile: %d\n", cmd->fd_outfile);
-	ft_printf("\n");
 }
 
 void	display_ast_results(t_ast *ast, int depth, char branch)
@@ -88,11 +83,11 @@ void	display_ast_results(t_ast *ast, int depth, char branch)
 	else if (ast->node_type == NODE_CMD)
 	{
 		ft_printf("[CMD]\n");
-		if (ast->cmds)
-			print_cmd_node(ast->cmds, depth + 1);
+		if (ast->data.cmd.cmd)
+			print_cmd_node(ast->data.cmd.cmd, depth + 1);
 	}
-	if (ast->left)
-		display_ast_results(ast->left, depth + 1, 'L');
-	if (ast->right)
-		display_ast_results(ast->right, depth + 1, 'R');
+	if (ast->data.binary.left)
+		display_ast_results(ast->data.binary.left, depth + 1, 'L');
+	if (ast->data.binary.right)
+		display_ast_results(ast->data.binary.right, depth + 1, 'R');
 }

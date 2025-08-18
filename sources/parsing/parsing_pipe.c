@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 20:33:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 11:24:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static t_ast	*create_pipe_node(t_ast *left, t_ast *right)
 {
 	t_ast	*new_pipe;
 
+	if (!right || !left)
+		return (NULL);
 	new_pipe = malloc(sizeof (t_ast));
 	if (!new_pipe)
 		return (clear_ast(&left), clear_ast(&right), NULL);
@@ -32,13 +34,13 @@ t_ast	*parse_pipeline(t_shell *shell, t_token **tokens)
 	t_ast	*new_pipe;
 	t_ast	*right;
 
-	left = parse_cmd(tokens, shell->env, true);
+	left = parse_cmd(tokens, shell->env);
 	if (!left)
 		return (NULL);
 	while (*tokens && (*tokens)->type == TOKEN_PIPE)
 	{
 		*tokens = (*tokens)->next;
-		right = parse_cmd(tokens, shell->env, true);
+		right = parse_cmd(tokens, shell->env);
 		if (!right)
 			return (clear_ast(&left), NULL);
 		new_pipe = create_pipe_node(left, right);

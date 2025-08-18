@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 20:35:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 10:47:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,19 @@ static int	is_redir(t_token_type type)
 static void	process_word(t_token **current, t_cmd *new_cmd, t_env *env)
 {
 	if (!new_cmd->name)
-		parse_cmd_name(new_cmd->name, (*current)->value, env);
+		parse_cmd_name(new_cmd, (*current)->value, env);
 	else
-		create_args_lst(current, new_cmd, env);
+		create_args_lst(*current, new_cmd, env);
 	*current = (*current)->next;
 }
 
 static void	process_redir(t_token **current, t_cmd *new_cmd)
 {
-	create_redir_lst(&current, new_cmd);
+	create_redir_lst(*current, new_cmd);
 	*current = (*current)->next->next;
 }
 
-t_ast	*parse_cmd(t_token **tokens, t_env *env, bool first)
+t_ast	*parse_cmd(t_token **tokens, t_env *env)
 {
 	t_token	*current;
 	t_ast	*new_cmd;

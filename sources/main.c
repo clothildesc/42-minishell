@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 17:48:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 11:09:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	execute_shell(char *input, t_shell *shell)
 		return (shell->exit_status);
 	}
 	//display_lexer_results(shell->tokens);
-	shell->ast = set_ast(shell, &shell->tokens);
-	shell->exit_status = exec_builtins(shell);
+	shell->ast = parse_pipeline(shell, &shell->tokens);
+	shell->exit_status = traverse_ast_and_exec_builtin(shell->ast, shell);
 	clear_tokens_lst(&shell->tokens);
 	clear_ast(&shell->ast);
 	return (shell->exit_status);

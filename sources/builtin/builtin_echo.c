@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 17:49:41 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 11:56:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_n_option(t_arg *arg)
 	int	i;
 
 	i = 2;
-	if (ft_strncmp(arg->arg, "-n", 2))
+	if (ft_strncmp(arg->arg, "-n", 2) == 0)
 	{
 		while (arg->arg[i])
 		{
@@ -25,22 +25,32 @@ static int	is_n_option(t_arg *arg)
 				return (0);
 			i++;
 		}
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 int	builtin_echo(t_arg *args)
 {
 	t_arg	*current;
 	bool	option;
+	bool	first;
 
-	option = true;
+	option = false;
+	first = true;
 	current = args;
 	while (is_n_option(current))
+	{
+		if (is_n_option(current))
+			option = true;
 		current = current->next;
+	}
 	while (current)
 	{
+		if (!first)
+			ft_printf(" ");
 		ft_printf("%s", current->arg);
+		first = false;
 		current = current->next;
 	}
 	if (!option)

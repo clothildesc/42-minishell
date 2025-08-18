@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 17:15:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 11:42:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, char *token_va
 	new_token->to_exp = lexer->to_exp;
 	new_token->to_join = lexer->to_join;
 	new_token->type = determine_token_type(lexer);
-		add_to_lst_tokens(&lexer->tokens, new_token);
+	add_to_lst_tokens(&lexer->tokens, new_token);
 	return (new_token);
 }
 
@@ -100,8 +100,7 @@ void	create_token(t_lexer *lexer, bool to_join)
 			free(token_value);
 			return ;
 		}
-		new_token = set_new_token(lexer, &new_token, token_value);
-		add_to_lst_tokens(&lexer->tokens, new_token);
+		new_token = set_new_token(lexer, new_token, token_value);
 		reset_tmp_token(lexer);
 	}
 }

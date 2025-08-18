@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 20:36:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 11:13:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ t_token_type	determine_token_type(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
-t_ast			*parse_cmd(t_token **tokens, t_env *env, bool first);
+t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
@@ -193,7 +193,7 @@ int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
 
 /*-------Builtin-------*/
-int				exec_builtins(t_shell *shell);
+int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
