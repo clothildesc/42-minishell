@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 11:47:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:03:55 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ static int	is_a_builtin(char *name)
 {
 	if (ft_strcmp(name, "env") == 0)
 		return (1);
-	// else if (ft_strcmp(name, "pwd") == 0)
-	// 	return (1);
-	// else if (ft_strcmp(name, "cd") == 0)
-	// 	return (1);
-	// else if (ft_strcmp(name, "unset") == 0)
-	// 	return (1);
+	else if (ft_strcmp(name, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(name, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(name, "unset") == 0)
+		return (1);
 	else if (ft_strcmp(name, "export") == 0)
 		return (1);
 	else if (ft_strcmp(name, "echo") == 0)
@@ -34,21 +34,20 @@ static int	exec_builtins(char *name, t_arg *args, t_shell *shell)
 {
 	if (ft_strcmp(name, "env") == 0)
 		return (builtin_env(shell->env));
-	// else if (ft_strcmp(name, "pwd") == 0)
-	// 	return (builtin_pwd());
+	else if (ft_strcmp(name, "pwd") == 0)
+		return (builtin_pwd());
 	else if (ft_strcmp(name, "echo") == 0)
 		return (builtin_echo(args));
-	// else if (ft_strcmp(name, "cd") == 0)
-	// 	return (builtin_cd(args));
-	// else if (ft_strcmp(name, "unset") == 0)
-	// 	return (builtin_unset(&shell->env, args));
+	else if (ft_strcmp(name, "cd") == 0)
+		return (builtin_cd(args, shell->env));
+	else if (ft_strcmp(name, "unset") == 0)
+		return (builtin_unset(&shell->env, args));
 	else if (ft_strcmp(name, "export") == 0)
 		return (builtin_export(shell->env, args));
 	else
 		return (EXIT_FAILURE);
 }
 
-// modifier le else quand on aura fait la fonction pour trouver le path de la commande
 int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 {
 	char	*name;
@@ -70,4 +69,3 @@ int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 	}
 	return (EXIT_FAILURE);
 }
-

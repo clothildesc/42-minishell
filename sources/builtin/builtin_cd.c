@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:38:45 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 20:06:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:00:50 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,33 @@ static int	args_lst_size(t_arg *args)
 	return (size);
 }
 
-int	builtin_cd(t_arg *args)
+char	*get_env_value(t_env *env, char *key)
 {
+	while (env)
+	{
+		if (!ft_strcmp(env->key, key))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+int	builtin_cd(t_arg *args, t_env *env)
+{
+	char	*path;
+
 	if (args_lst_size(args) > 1)
 	{
-		perror("cd: string not in pwd");
+		ft_putendl_fd(ERROR_CD_MANY_ARGS, 2);
 		return (EXIT_FAILURE);
 	}
-	if (chdir(args->arg) == -1)
+	if (!args)
+		path = get_env_value(env, "HOME");
+	else
+		path = args->arg;
+	if (chdir(path) == -1)
 	{
-		perror(ERROR_CD);
+		perror("cd");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

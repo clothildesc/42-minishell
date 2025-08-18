@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 11:13:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:10:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
-# define ERROR_CD "bash: cd: No such file or directory"
+# define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
 
 /*=============== LEXER =============== */
 
@@ -168,9 +168,13 @@ int				get_syntax_error_status(t_token *lst_tokens);
 /*-------STRUCT-------*/
 void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
+void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
 void			clear_env_lst(t_env **env);
+void			clear_lexer_tmp(t_lexer *lexer);
+void			clear_shell(t_shell *shell);
+
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -181,6 +185,7 @@ void			create_token(t_lexer *lexer, bool to_join);
 void			add_char(t_list **tmp_token, char c);
 void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
+char			*create_token_value(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
@@ -199,7 +204,7 @@ t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
 int				builtin_env(t_env *env);
 /* unset */
-int				builtin_unset(t_env **env, char *to_delete);
+int				builtin_unset(t_env **env, t_arg *args);
 /* export */
 int				builtin_export(t_env *env, t_arg *args);
 int				value_to_append(char *input);
@@ -212,7 +217,7 @@ char			*builtin_expand(char *input, t_env *env);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
-int				builtin_cd(t_arg *args);
+int				builtin_cd(t_arg *args, t_env *env);
 /* echo */
 int				builtin_echo(t_arg *args);
 

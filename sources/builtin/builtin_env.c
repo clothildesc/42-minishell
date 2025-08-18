@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 14:32:55 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 14:35:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	}
 }
 
+static void	free_new(t_env *new)
+{
+	if (new->key)
+		free(new->key);
+	if (!new->value)
+		free(new->value);
+	free(new);
+}
+
 static void	create_env_node(char *env, t_env **head)
 {
 	int		i;
@@ -49,7 +58,10 @@ static void	create_env_node(char *env, t_env **head)
 			new->key = ft_strndup(env, i);
 			new->value = ft_strdup(&env[i + 1]);
 			if (!new->key || !new->value)
-				return (free(new));
+			{
+				free_new(new);
+				return ;
+			}
 			break ;
 		}
 		i++;

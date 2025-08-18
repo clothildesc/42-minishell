@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 18:07:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 14:44:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,14 @@ int	builtin_export(t_env *env, t_arg *args)
 		{
 			free(key);
 			exit_code = EXIT_FAILURE;
-			current = current->next;
-			continue ;
 		}
-		new = find_or_create_env(env, current->arg, key);
-		if (new)
-			ft_lstadd_back_env(&env, new);
-		free(key);
+		else
+		{
+			new = find_or_create_env(env, current->arg, key);
+			if (new)
+				ft_lstadd_back_env(&env, new);
+			free(key);
+		}
 		current = current->next;
 	}
 	return (exit_code);

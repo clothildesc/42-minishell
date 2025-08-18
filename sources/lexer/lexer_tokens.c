@@ -6,34 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 11:42:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 15:06:20 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
-
-static char	*create_token_value(t_lexer *lexer)
-{
-	char		*token_value;
-	t_list		*current;
-	int			i;
-
-	if (!(lexer->tmp_token))
-		return (NULL);
-	token_value = malloc(sizeof(char) * (ft_lstsize(lexer->tmp_token) + 1));
-	if (!token_value)
-		return (NULL);
-	i = 0;
-	current = lexer->tmp_token;
-	while (current)
-	{
-		token_value[i++] = *(char *)current->content;
-		current = current->next;
-	}
-	token_value[i] = 0;
-	return (token_value);
-}
 
 static void	add_to_lst_tokens(t_token **lst, t_token *new)
 {
@@ -67,7 +45,8 @@ static void	set_to_join(t_lexer *lexer)
 		lexer->to_join = 1;
 }
 
-static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, char *token_value)
+static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, \
+	char *token_value)
 {
 	ft_bzero(new_token, sizeof(t_token));
 	new_token->value = token_value;

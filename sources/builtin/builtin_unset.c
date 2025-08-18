@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:48:37 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 13:38:37 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/18 14:28:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,25 @@ static void	delete_node_env(t_env *to_delete)
 	free(to_delete);
 }
 
-int	builtin_unset(t_env **env, char *to_delete)
+int	builtin_unset(t_env **env, t_arg *args)
 {
 	t_env	*current;
 
-	if (!env || !*env || !to_delete)
+	if (!env || !*env || !args)
 		return (EXIT_FAILURE);
-	current = *env;
-	while (current)
+	while (args)
 	{
-		if (!ft_strcmp(to_delete, current->key))
+		current = *env;
+		while (current)
 		{
-			delete_node_env(current);
-			return (EXIT_SUCCESS);
+			if (!ft_strcmp(args->arg, current->key))
+			{
+				delete_node_env(current);
+				break ;
+			}
+			current = current->next;
 		}
-		current = current->next;
+		args = args->next;
 	}
 	return (EXIT_SUCCESS);
 }
