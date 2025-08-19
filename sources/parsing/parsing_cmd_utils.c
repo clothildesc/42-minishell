@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/15 20:33:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 12:39:56 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	ft_lstadd_args(t_arg **lst, t_arg *new)
 	}
 }
 
-void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
+t_arg	*create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 {
 	t_arg	*new_arg;
 	char	*exp;
@@ -86,6 +86,61 @@ void	create_args_lst(t_token *token, t_cmd *cmd, t_env *env)
 	}
 	new_arg->to_join = token->to_join;
 	ft_lstadd_args(&cmd->args, new_arg);
+}
+
+static int	args_lst_size(t_arg *args)
+{
+	int	size;
+
+	size = 0;
+	while (args)
+	{
+		size++;
+		args = args->next;
+	}
+	return (size);
+}
+
+void	clean_args_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
+void	lst_args_to_array(t_cmd *cmd, t_arg *args)
+{
+	char	**args_array;
+	int		i;
+
+	i = 0;
+	args_array = (char **)malloc(sizeof(char *) * (args_lst_size(args) + 1));
+	while (!args_array)
+	{
+		clear_args_lst(&args);
+		return ;
+	}
+	while (args)
+	{
+		args_array[i] = ft_strdup(args);
+		if (!args_array[i])
+		{
+			clean_args_array(args_array);
+			clear_args_lst(&args);
+			return ;
+		}
+		i++;
+		args = args->next;
+	}
+	clean_args_lst(&args);
+	args_array[i] = NULL;
+	cmd->args = args_array;
 }
 
 static void	ft_lstadd_redirs(t_redir **lst, t_redir *new)

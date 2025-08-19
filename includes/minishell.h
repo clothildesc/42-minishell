@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:55:41 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 12:19:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 
 /*=============== EXIT CODES =============== */
@@ -114,7 +116,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char			*name;
-	t_arg			*args;
+	char			**args;
 	t_redir			*redirs;
 	char			*abs_path;
 	int				exit_status;

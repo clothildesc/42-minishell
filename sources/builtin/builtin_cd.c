@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:38:45 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:00:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 12:32:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 //verifier que ca fonctionne aussi sans args ->renvoie vers home
 
-static int	args_lst_size(t_arg *args)
-{
-	int	size;
+// static int	args_lst_size(t_arg *args)
+// {
+// 	int	size;
 
-	size = 0;
-	while (args)
-	{
-		size++;
-		args = args->next;
-	}
-	return (size);
-}
+// 	size = 0;
+// 	while (args)
+// 	{
+// 		size++;
+// 		args = args->next;
+// 	}
+// 	return (size);
+// }
 
 char	*get_env_value(t_env *env, char *key)
 {
