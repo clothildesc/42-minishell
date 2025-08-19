@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/19 12:19:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 18:16:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 # define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
+# define ERROR_MISSING_FILE "bash: No such file or directory"
 
 /*=============== LEXER =============== */
 
@@ -174,13 +175,13 @@ int				get_syntax_error_status(t_token *lst_tokens);
 /*-------STRUCT-------*/
 void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
+void			clear_args_array(char **args);
 void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
-
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -198,7 +199,9 @@ t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
-void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
+void			ft_lstadd_args(t_arg **args, t_arg *new);
+void			create_args_lst(t_arg **args, t_token *token, t_env *env);
+void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
@@ -210,24 +213,26 @@ t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
 int				builtin_env(t_env *env);
 /* unset */
-int				builtin_unset(t_env **env, t_arg *args);
+int				builtin_unset(t_env **env, char **args);
 /* export */
-int				builtin_export(t_env *env, t_arg *args);
+int				builtin_export(t_env *env, char **args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);
 t_env			*get_node(t_env **head, char *key);
+t_env			*create_new_env_node(t_env *new, char *input);
+int				print_env_export(t_env *env);
 /* expand */
 char			*builtin_expand(char *input, t_env *env);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
-int				builtin_cd(t_arg *args, t_env *env);
+int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				builtin_echo(t_arg *args);
+int				builtin_echo(char **args);
 /* exit */
-// int				builtin_exit(t_shell *shell, t_arg *args);
+// int				builtin_exit(t_shell *shell, char **args);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

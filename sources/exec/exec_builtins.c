@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/19 12:05:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 15:10:37 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	is_a_builtin(char *name)
 		return (0);
 }
 
-static int	exec_builtin(char *name, t_arg *args, t_shell *shell)
+static int	exec_builtin(char *name, char **args, t_shell *shell)
 {
 	if (!ft_strcmp(name, "env"))
 		return (builtin_env(shell->env));
@@ -51,14 +51,14 @@ static int	exec_builtin(char *name, t_arg *args, t_shell *shell)
 int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 {
 	char	*name;
-	t_arg	*args;
+	char	**args;
 
 	if (!node)
 		return (EXIT_FAILURE);
 	if (node->node_type == NODE_PIPE)
 	{
 		traverse_ast_and_exec_builtin(node->data.binary.left, shell);
-		traverse_ast_and_exec_builtin(node->data.binary.right, shell);
+		return (traverse_ast_and_exec_builtin(node->data.binary.right, shell));
 	}
 	else if (node->node_type == NODE_CMD)
 	{
@@ -70,47 +70,46 @@ int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 	return (EXIT_FAILURE);
 }
 
-static int	is_valid_executable_path(char *path)
-{
-	struct stat	s;
+// static int	is_valid_executable_path(char *path)
+// {
+// 	struct stat	s;
 
-	if (stat(path, &s) == -1)
-	{
-		ft_putendl_fd("bash: No such file or directory", 2);
-		return (EXIT_FAILURE);
-	}
-	if (S_ISDIR(s.st_mode))
-	{
-		ft_putendl_fd("bash: Is a directory", 2);
-		return (EXIT_FAILURE);
-	}
-	if (access(path, X_OK) != 0)
-	{
-		ft_putendl_fd("	bash: Permission denied", 2);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
+// 	if (stat(path, &s) == -1)
+// 	{
+// 		ft_putendl_fd("bash: No such file or directory", 2);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	if (S_ISDIR(s.st_mode))
+// 	{
+// 		ft_putendl_fd("bash: Is a directory", 2);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	if (access(path, X_OK) != 0)
+// 	{
+// 		ft_putendl_fd("	bash: Permission denied", 2);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
 
-int	execute_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return (EXIT_FAILURE);
-	if (ft_strchr(cmd->name, '/') && (is_valid_executable_path(cmd->name)))
-		execve(cmd->name, cmd->args)
-	}
-}
+// int	execute_cmd(t_cmd *cmd)
+// {
+// 	if (!cmd)
+// 		return (EXIT_FAILURE);
+// 	if (ft_strchr(cmd->name, '/') && (is_valid_executable_path(cmd->name)))
+// 		execve(cmd->name, cmd->args)
+// 	}
+// }
 
+// int	exec_one_cmd(t_shell *shell)
+// {
+// 	t_cmd	*cmd;
 
-int	exec_one_cmd(t_shell *shell)
-{
-	t_cmd	*cmd;
-
-	if (!shell->ast)
-		return (EXIT_FAILURE);
-	cmd = shell->ast->data.cmd.cmd;
-	if (is_a_builtin(cmd->name))
-		return (exec_builtin(cmd->name, cmd->args, shell));
-	else
-		return (execute_cmd(cmd));
-}
+// 	if (!shell->ast)
+// 		return (EXIT_FAILURE);
+// 	cmd = shell->ast->data.cmd.cmd;
+// 	if (is_a_builtin(cmd->name))
+// 		return (exec_builtin(cmd->name, cmd->args, shell));
+// 	else
+// 		return (execute_cmd(cmd));
+// }

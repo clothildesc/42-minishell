@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/19 12:15:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 17:22:20 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static int	is_redir(t_token_type type)
 			type == TOKEN_HERE_DOC || type == TOKEN_APPEND_OUT);
 }
 
-static void	process_word(t_token **current, t_cmd *new_cmd, t_env *env)
+static void	process_word(t_arg **args, t_token **current, t_cmd *new_cmd, \
+						t_env *env)
 {
 	if (!new_cmd->name)
 		parse_cmd_name(new_cmd, (*current)->value, env);
 	else
-		create_args_lst(*current, new_cmd, env);
+		create_args_lst(args, *current, env);
 	*current = (*current)->next;
 }
 
@@ -57,7 +58,9 @@ t_ast	*parse_cmd(t_token **tokens, t_env *env)
 {
 	t_token	*current;
 	t_ast	*new_cmd;
+	t_arg	*args;
 
+	args = NULL;
 	current = *tokens;
 	new_cmd = init_cmd_node();
 	if (!new_cmd)
@@ -65,17 +68,14 @@ t_ast	*parse_cmd(t_token **tokens, t_env *env)
 	while (current && current->type != TOKEN_PIPE)
 	{
 		if (current->type == TOKEN_WORD)
-		{
-			process_word(&current, new_cmd->data.cmd.cmd, env);
-			continue ;
-		}
-		if (is_redir(current->type))
-		{
+			process_word(&args, &current, new_cmd->data.cmd.cmd, env);
+		else if (is_redir(current->type))
 			process_redir(&current, new_cmd->data.cmd.cmd);
-			continue ;
-		}
-		break ;
+		else
+			break ;
 	}
+	if (args)
+		lst_args_to_array(new_cmd->data.cmd.cmd, &args);
 	*tokens = current;
 	return (new_cmd);
 }

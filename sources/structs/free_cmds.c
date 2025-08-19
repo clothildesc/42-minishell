@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:08:33 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:08:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 16:28:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,22 @@ void	clear_args_lst(t_arg **lst)
 			free(tmp->arg);
 		free(tmp);
 	}
+	*lst = NULL;
+}
+
+void	clear_args_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args)
+		return ;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 
 void	clear_redirs_lst(t_redir **lst)
@@ -53,6 +69,6 @@ void	clear_cmd(t_cmd *cmd)
 		free(cmd->name);
 	if (cmd->abs_path)
 		free(cmd->abs_path);
-	clear_args_lst(&cmd->args);
+	clear_args_array(cmd->args);
 	clear_redirs_lst(&cmd->redirs);
 }

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/18 14:35:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 17:36:58 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	free_new(t_env *new)
 {
 	if (new->key)
 		free(new->key);
-	if (!new->value)
+	if (new->value)
 		free(new->value);
 	free(new);
 }
@@ -91,7 +91,10 @@ int	builtin_env(t_env *env)
 	t_env	*tmp;
 
 	if (!env)
-		return (EXIT_SUCCESS);
+	{
+		ft_putendl_fd(ERROR_MISSING_FILE, 2);
+		return (EXIT_CMD_NOT_FOUND);
+	}
 	tmp = env;
 	while (tmp)
 	{
