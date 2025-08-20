@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/19 18:16:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 11:46:21 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void			clear_args_array(char **args);
 void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
+void			clear_env_array(char **env);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
@@ -207,6 +208,8 @@ int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
 
 /*-------Builtin-------*/
+int				is_a_builtin(char *name);
+int				exec_builtin(char *name, char **args, t_shell *shell);
 int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
@@ -233,6 +236,10 @@ int				builtin_cd(char **args, t_env *env);
 int				builtin_echo(char **args);
 /* exit */
 // int				builtin_exit(t_shell *shell, char **args);
+
+/*-------Execution-------*/
+char			**lst_env_to_array(t_env *env);
+int				exec_one_cmd(t_shell *shell);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

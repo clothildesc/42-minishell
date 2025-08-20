@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:09:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 11:38:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ void	clear_ast(t_ast **ast)
 	}
 	free(*ast);
 	*ast = NULL;
+}
+
+void	clear_env_array(char **env)
+{
+	int	i;
+
+	i = 0;
+	if (!env)
+		return ;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
 }
 
 void	clear_env_lst(t_env **env)
