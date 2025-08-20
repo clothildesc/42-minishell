@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/19 14:25:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:19:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	create_redir_lst(t_token *token, t_cmd *cmd)
 	if (!new_redir)
 		return ;
 	ft_bzero(new_redir, sizeof(t_redir));
-	new_redir->file = ft_strdup(token->next->value);
-	if (!new_redir->file)
+	new_redir->target = ft_strdup(token->next->value);
+	if (!new_redir->target)
 	{
 		free(new_redir);
 		return ;

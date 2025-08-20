@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 11:45:58 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:35:18 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,24 @@ int	exec_builtin(char *name, char **args, t_shell *shell)
 		return (EXIT_FAILURE);
 }
 
-int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
-{
-	char	*name;
-	char	**args;
+// int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
+// {
+// 	char	*name;
+// 	char	**args;
 
-	if (!node)
-		return (EXIT_FAILURE);
-	if (node->node_type == NODE_PIPE)
-	{
-		traverse_ast_and_exec_builtin(node->data.binary.left, shell);
-		return (traverse_ast_and_exec_builtin(node->data.binary.right, shell));
-	}
-	else if (node->node_type == NODE_CMD)
-	{
-		name = node->data.cmd.cmd->name;
-		args = node->data.cmd.cmd->args;
-		if (is_a_builtin(name))
-			return (exec_builtin(name, args, shell));
-	}
-	return (EXIT_FAILURE);
-}
+// 	if (!node)
+// 		return (EXIT_FAILURE);
+// 	if (node->node_type == NODE_PIPE)
+// 	{
+// 		traverse_ast_and_exec_builtin(node->data.binary.left, shell);
+// 		return (traverse_ast_and_exec_builtin(node->data.binary.right, shell));
+// 	}
+// 	else if (node->node_type == NODE_CMD)
+// 	{
+// 		name = node->data.cmd.cmd->name;
+// 		args = node->data.cmd.cmd->args;
+// 		if (is_a_builtin(name))
+// 			return (exec_builtin(name, args, shell));
+// 	}
+// 	return (EXIT_FAILURE);
+// }

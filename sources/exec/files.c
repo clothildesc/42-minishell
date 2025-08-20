@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/15 20:39:07 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 18:10:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,40 +29,63 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 	int		limiter_reached;
 
 	limiter_reached = 0;
-	write(1, "> ", 2);
-	line = get_next_line(0);
-	while (line)
+	while (1)
 	{
-		write(1, "> ", 2);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
-			&& line[ft_strlen(limiter)] == '\n')
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (ft_strlen(line) > 0 && line[ft_strlen(line - 1)] == '\n')
+			line[ft_strlen(line - 1)] = '\0';
+		if (!ft_strcmp(line, limiter))
 		{
 			limiter_reached = 1;
+			free(line);
 			break ;
 		}
 		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
-		line = get_next_line(0);
 	}
 	if (!limiter_reached)
 		ft_putendl_fd_no_nl("bash: warning: here-doc delimited by eof", 2);
-	if (line)
-		free(line);
+}
+
+static int	get_unique_id(void)
+{
+	static int	counter;
+
+	counter++;
+	return (counter);
 }
 
 int	create_here_doc(char *limiter)
 {
 	int		fd;
+	int		unique_id;
+	char	*tmp_file_name;
+	char	*id_str;
 
-	fd = open("/tmp/.heredoc_tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	unique_id = get_unique_id();
+	id_str = ft_itoa(unique_id);
+	if (!id_str)
+		return (-1);
+	tmp_file_name = ft_strjoin("/tmp/.heredoc_", id_str);
+	free(id_str);
+	if (!tmp_file_name)
+		return (-1);
+	fd = open(tmp_file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("bash: open heredoc");
+		free(tmp_file_name);
 		return (-1);
 	}
 	read_and_write_heredoc(fd, limiter);
 	close(fd);
-	return (open("/tmp/.heredoc_tmp", O_RDONLY));
+	fd = open(tmp_file_name, O_RDONLY);
+	unlink(tmp_file_name);
+	return (free(tmp_file_name), fd);
 }
 
 int	open_infile(char *infile)
@@ -104,4 +127,37 @@ int	open_outfile(char *outfile, t_token_type type)
 		ft_putendl_fd(": Permission denied", 2);
 	}
 	return (fd);
+}
+
+void	handle_all_heredocs(t_ast *node)
+{
+	t_cmd	*cmd;
+	t_redir	*current_redir;
+
+	if (!node)
+		return ;
+	if (node->node_type == NODE_PIPE)
+	{
+		handle_all_heredocs(node->data.binary.left);
+		handle_all_heredocs(node->data.binary.right);
+	}
+	else if (node->node_type == NODE_CMD)
+	{
+		cmd = node->data.cmd.cmd;
+		current_redir = cmd->redirs;
+		while (current_redir)
+		{
+			if (current_redir->type == TOKEN_HERE_DOC)
+			{
+				if (cmd->fd_heredoc != -1)
+				{
+					//printf("old fd heredoc: %d\n", cmd->fd_heredoc);
+					close(cmd->fd_heredoc);
+				}
+				//printf("new fd heredoc: %d\n", cmd->fd_heredoc);
+				cmd->fd_heredoc = create_here_doc(current_redir->target);
+			}
+			current_redir = current_redir->next;
+		}
+	}
 }

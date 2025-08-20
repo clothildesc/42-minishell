@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:48:37 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/19 17:48:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 16:14:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	builtin_unset(t_env **env, char **args)
 		return (EXIT_FAILURE);
 	if (!args)
 		return (EXIT_SUCCESS);
-	i = 0;
+	i = 1;
 	while (args[i])
 	{
 		current = *env;

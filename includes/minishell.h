@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 11:46:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:49:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@
 # include "../libft/libft.h"
 
 /*=============== EXIT CODES =============== */
-# define EXIT_SUCCESS 		0
-# define EXIT_FAILURE 		1
-# define EXIT_SYNTAX_ERROR	2
-# define EXIT_CMD_NOT_FOUND	127
-# define EXIT_SIGNAL		128
-# define EXIT_CTRL_C 		130
-# define EXIT_CTRL_D 		131
+# define EXIT_SUCCESS 			0
+# define EXIT_FAILURE 			1
+# define EXIT_SYNTAX_ERROR		2
+# define EXIT_CMD_NOT_FOUND		127
+# define EXIT_PERMISSION_DENIED 126
+# define EXIT_SIGNAL			128
+# define EXIT_CTRL_C 			130
+# define EXIT_CTRL_D 			131
 
 /*=============== ERRORS =============== */
 
@@ -110,7 +111,7 @@ typedef struct s_args
 typedef struct s_redir
 {
 	t_token_type	type;
-	char			*file;
+	char			*target;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -120,6 +121,9 @@ typedef struct s_cmd
 	char			**args;
 	t_redir			*redirs;
 	char			*abs_path;
+	int				fd_in;
+	int				fd_out;
+	int				fd_heredoc;
 	int				exit_status;
 }	t_cmd;
 
@@ -175,11 +179,10 @@ int				get_syntax_error_status(t_token *lst_tokens);
 /*-------STRUCT-------*/
 void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
-void			clear_args_array(char **args);
 void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
-void			clear_env_array(char **env);
+void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
@@ -199,13 +202,15 @@ char			*create_token_value(t_lexer *lexer);
 t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
-void			create_redir_lst(t_token *token, t_cmd *cmd);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
 void			create_args_lst(t_arg **args, t_token *token, t_env *env);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
+void			create_redir_lst(t_token *token, t_cmd *cmd);
+/* redir file */
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
+void			handle_all_heredocs(t_ast *node);
 
 /*-------Builtin-------*/
 int				is_a_builtin(char *name);

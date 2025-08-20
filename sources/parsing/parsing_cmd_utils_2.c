@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_cmd_args.c                                 :+:      :+:    :+:   */
+/*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/19 17:16:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 13:52:21 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	**fill_args_array(char **args_array, t_arg *args)
 		args_array[i] = ft_strdup(current->arg);
 		if (!args_array[i])
 		{
-			clear_args_array(args_array);
+			free_tab_chars(args_array);
 			return (NULL);
 		}
 		i++;

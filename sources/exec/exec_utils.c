@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 11:45:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 14:37:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,23 @@ static char	**fill_env_array(char **env_array, t_env *env)
 {
 	int		i;
 	t_env	*current;
+	char	*tmp;
 
 	i = 0;
 	current = env;
 	while (current)
 	{
-		env_array[i] = ft_strdup(current->value);
+		tmp = ft_strjoin(current->key, "=");
+		if (!tmp)
+			return (NULL);
+		env_array[i] = ft_strjoin(tmp, current->value);
 		if (!env_array[i])
 		{
-			clear_env_array(env_array);
+			free(tmp);
+			free_tab_chars(env_array);
 			return (NULL);
 		}
+		free(tmp);
 		i++;
 		current = current->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/19 17:22:20 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:26:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static t_ast	*init_cmd_node(void)
 		return (NULL);
 	}
 	ft_bzero(new_cmd->data.cmd.cmd, sizeof(t_cmd));
+	new_cmd->data.cmd.cmd->fd_in = -1;
+	new_cmd->data.cmd.cmd->fd_out = -1;
+	new_cmd->data.cmd.cmd->fd_heredoc = -1;
 	return (new_cmd);
 }
 
@@ -43,8 +46,7 @@ static void	process_word(t_arg **args, t_token **current, t_cmd *new_cmd, \
 {
 	if (!new_cmd->name)
 		parse_cmd_name(new_cmd, (*current)->value, env);
-	else
-		create_args_lst(args, *current, env);
+	create_args_lst(args, *current, env);
 	*current = (*current)->next;
 }
 
