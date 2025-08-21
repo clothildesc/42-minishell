@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 13:43:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 10:57:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@ static int	check_dollar(char *input)
 		i++;
 	}
 	return (-1);
-}
-
-static bool	check_uppercase(char *input, int i)
-{
-	if (!input)
-		return (false);
-	if (input[i])
-	{
-		i++;
-		while (input[i])
-		{
-			if (!ft_isupper(input[i]))
-				return (false);
-			i++;
-		}
-	}
-	return (true);
 }
 
 static char	*get_expanded_result(t_env **head, char *input)
@@ -68,8 +51,6 @@ char	*builtin_expand(char *input, t_env *env)
 		return (NULL);
 	dollar_index = check_dollar(input);
 	if (dollar_index < 0)
-		return (NULL);
-	if (!check_uppercase(input, dollar_index))
 		return (NULL);
 	result = get_expanded_result(&env, &input[dollar_index + 1]);
 	if (!result)

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 17:47:55 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 12:04:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,12 @@ int	exec_one_cmd(t_shell *shell)
 
 	if (!shell->ast)
 		return (EXIT_FAILURE);
-	handle_all_heredocs(shell->ast);
+	if (handle_all_heredocs(shell->ast) == 1);
+		return (EXIT_FAILURE);
 	cmd = shell->ast->data.cmd.cmd;
+	apply_redirections(cmd);
+	if (!cmd->name)
+		return (EXIT_SUCCESS);
 	if (is_a_builtin(cmd->name))
 		return (exec_builtin(cmd->name, cmd->args, shell));
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:11:29 by cscache           #+#    #+#             */
-/*   Updated: 2025/04/30 09:32:10 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 11:15:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strchr(const char *s, int c)
 	char	*str;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	str = (char *)s;
 	while (str[i])
 	{

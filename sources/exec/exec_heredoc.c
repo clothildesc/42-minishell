@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   files.c                                            :+:      :+:    :+:   */
+/*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 18:10:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 12:18:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 // Retourner un fd en lecture sur ce fichier temporaire
 
 // ne pas oublier de unlink le heredoc ensuite : unlink("/tmp/.heredoc_tmp")
-//	ATTENTION -> Si je fais un cat du heredoc et que j'ai des variables a expand
-//	je dois bien les expand (ex : $USER)
+// (optionnel) -> Si je fais un cat du heredoc et que j'ai des variables a expand
+//	idealement il faudrait que je les expand (ex : $USER)
 
 static void	read_and_write_heredoc(int fd, char *limiter)
 {
@@ -35,20 +35,18 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		if (ft_strlen(line) > 0 && line[ft_strlen(line - 1)] == '\n')
-			line[ft_strlen(line - 1)] = '\0';
-		if (!ft_strcmp(line, limiter))
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 \
+			&& line[ft_strlen(limiter)] == '\n')
 		{
 			limiter_reached = 1;
 			free(line);
 			break ;
 		}
 		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
 		free(line);
 	}
 	if (!limiter_reached)
-		ft_putendl_fd_no_nl("bash: warning: here-doc delimited by eof", 2);
+		ft_putstr_fd("bash: warning: here-doc delimited by eof", 2);
 }
 
 static int	get_unique_id(void)
@@ -59,7 +57,7 @@ static int	get_unique_id(void)
 	return (counter);
 }
 
-int	create_here_doc(char *limiter)
+static int	create_here_doc(char *limiter)
 {
 	int		fd;
 	int		unique_id;
@@ -74,7 +72,7 @@ int	create_here_doc(char *limiter)
 	free(id_str);
 	if (!tmp_file_name)
 		return (-1);
-	fd = open(tmp_file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd = open(tmp_file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("bash: open heredoc");
@@ -88,48 +86,7 @@ int	create_here_doc(char *limiter)
 	return (free(tmp_file_name), fd);
 }
 
-int	open_infile(char *infile)
-{
-	int	fd;
-
-	if (access(infile, F_OK | R_OK) == -1)
-	{
-		ft_putendl_fd_no_nl("bash: ", 2);
-		ft_putendl_fd_no_nl(infile, 2);
-		ft_putendl_fd(": No such file or directory", 2);
-		return (-1);
-	}
-	else
-	{
-		fd = open(infile, O_RDONLY);
-		if (fd == -1)
-		{
-			ft_putendl_fd_no_nl("bash: ", 2);
-			ft_putendl_fd_no_nl(infile, 2);
-			ft_putendl_fd(": Permission denied", 2);
-		}
-	}
-	return (fd);
-}
-
-int	open_outfile(char *outfile, t_token_type type)
-{
-	int	fd;
-
-	if (type == TOKEN_APPEND_OUT)
-		fd = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
-	else
-	fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		ft_putendl_fd_no_nl("bash: ", 2);
-		ft_putendl_fd_no_nl(outfile, 2);
-		ft_putendl_fd(": Permission denied", 2);
-	}
-	return (fd);
-}
-
-void	handle_all_heredocs(t_ast *node)
+int	handle_all_heredocs(t_ast *node)
 {
 	t_cmd	*cmd;
 	t_redir	*current_redir;
@@ -140,6 +97,7 @@ void	handle_all_heredocs(t_ast *node)
 	{
 		handle_all_heredocs(node->data.binary.left);
 		handle_all_heredocs(node->data.binary.right);
+		return ;
 	}
 	else if (node->node_type == NODE_CMD)
 	{
@@ -150,14 +108,13 @@ void	handle_all_heredocs(t_ast *node)
 			if (current_redir->type == TOKEN_HERE_DOC)
 			{
 				if (cmd->fd_heredoc != -1)
-				{
-					//printf("old fd heredoc: %d\n", cmd->fd_heredoc);
 					close(cmd->fd_heredoc);
-				}
-				//printf("new fd heredoc: %d\n", cmd->fd_heredoc);
 				cmd->fd_heredoc = create_here_doc(current_redir->target);
+				if (cmd->fd_heredoc == -1)
+					return (EXIT_FAILURE);
 			}
 			current_redir = current_redir->next;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

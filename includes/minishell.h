@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 17:49:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 12:05:11 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void			create_redir_lst(t_token *token, t_cmd *cmd);
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				create_here_doc(char *limiter);
-void			handle_all_heredocs(t_ast *node);
+int			handle_all_heredocs(t_ast *node);
 
 /*-------Builtin-------*/
 int				is_a_builtin(char *name);
