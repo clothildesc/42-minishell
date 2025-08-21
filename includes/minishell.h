@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 16:20:09 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 00:24:18 by clothildesc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,16 +207,14 @@ void			ft_lstadd_args(t_arg **args, t_arg *new);
 void			create_args_lst(t_arg **args, t_token *token, t_env *env);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
-/* redir file */
-int				open_infile(char *infile);
-int				open_outfile(char *outfile, t_token_type type);
-int				create_here_doc(char *limiter);
-int			handle_all_heredocs(t_ast *node);
 
 /*-------Builtin-------*/
 int				is_a_builtin(char *name);
-int				exec_builtin(char *name, char **args, t_shell *shell);
-int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
+bool			is_parent_builtin(char *name);
+int				dispatch_builtin(t_cmd *cmd, t_shell *shell);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell);
+//int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -245,7 +243,14 @@ int				builtin_echo(char **args);
 
 /*-------Execution-------*/
 char			**lst_env_to_array(t_env *env);
-int				exec_one_cmd(t_shell *shell);
+int				prepare_cmd(t_cmd *cmd, t_env *env);
+int				execute_command(t_shell *shell);
+/* redir & heredoc */
+int				open_infile(char *infile);
+int				open_outfile(char *outfile, t_token_type type);
+int				prepare_redirections(t_cmd *cmd);
+void			apply_redirections(t_cmd *cmd);
+int				handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

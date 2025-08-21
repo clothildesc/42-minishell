@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 17:10:27 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 00:19:48 by clothildesc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int	open_outfile(char *outfile, t_token_type type)
 	return (fd);
 }
 
-void	check_file_open_and_close(int fd)
+static void	check_file_open_and_close(int fd)
 {
 	if (fd != -1)
 		close(fd);
 }
 
-void	apply_redirections(t_cmd *cmd)
+int	prepare_redirections(t_cmd *cmd)
 {
 	t_redir	*current;
 
@@ -76,45 +76,34 @@ void	apply_redirections(t_cmd *cmd)
 		{
 			check_file_open_and_close(cmd->fd_in);
 			cmd->fd_in = open_infile(current->target);
+			if (cmd->fd_in == -1)
+				return (-1);
 		}
 		else if (current->type == TOKEN_REDIR_OUT \
 				|| current->type == TOKEN_APPEND_OUT)
 		{
 			check_file_open_and_close(cmd->fd_out);
 			cmd->fd_out = open_outfile(current->target, current->type);
-		}
-		if ((current->type == TOKEN_REDIR_IN && cmd->fd_in == -1) || \
-			((current->type == TOKEN_REDIR_OUT || current->type \
-				== TOKEN_APPEND_OUT) && cmd->fd_in == -1))
-		{
-			perror(current->target);
-			exit(EXIT_FAILURE);
+			if (cmd->fd_out == -1)
+				return (-1);
 		}
 		current = current->next;
 	}
-	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
-	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
+	return (0);
 }
 
-//fork seulement echo et env / le reste des builtins dans les parents
-
-bool	is_parent_builtin(t_cmd *cmd)
+void	apply_redirections(t_cmd *cmd)
 {
-	if (!ft_strcmp(cmd->name, "cd"))
-		return (true);
-	if (!ft_strcmp(cmd->name, "exit"))
-		return (true);
-	if (!ft_strcmp(cmd->name, "export"))
-		return (true);
-	if (!ft_strcmp(cmd->name, "unset"))
-		return (true);
-	return (false);
+	if (cmd->fd_in != STDIN_FILENO)
+	{
+			if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+					perror("dup2");
+			close(cmd->fd_in);
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+			if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+					perror("dup2");
+			close(cmd->fd_out);
+	}
 }
