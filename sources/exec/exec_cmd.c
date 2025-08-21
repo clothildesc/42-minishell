@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 12:04:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 17:08:39 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ static char	*get_cmd_abs_path(t_cmd *cmd, t_env *env)
 
 static int	execute_cmd(t_cmd *cmd, t_env *env)
 {
-	int	status;
+	int		status;
+	char	**env_array;
 
 	if (!cmd || !env)
 		return (EXIT_FAILURE);
@@ -126,7 +127,9 @@ static int	execute_cmd(t_cmd *cmd, t_env *env)
 			return (EXIT_CMD_NOT_FOUND);
 		}
 	}
+	env_array = lst_env_to_array(env);
 	execve(cmd->abs_path, cmd->args, lst_env_to_array(env));
+	free(env_array);
 	return (EXIT_SUCCESS);
 }
 
@@ -136,16 +139,14 @@ int	exec_one_cmd(t_shell *shell)
 
 	if (!shell->ast)
 		return (EXIT_FAILURE);
-	if (handle_all_heredocs(shell->ast) == 1);
+	if (handle_all_heredocs(shell->ast) == -1)
 		return (EXIT_FAILURE);
 	cmd = shell->ast->data.cmd.cmd;
-	apply_redirections(cmd);
 	if (!cmd->name)
 		return (EXIT_SUCCESS);
-	if (is_a_builtin(cmd->name))
-		return (exec_builtin(cmd->name, cmd->args, shell));
-	else
-		return (execute_cmd(cmd, shell->env));
+	if (is_parent_builtin(cmd->name))
+		return (exec_builtin_in_parent(cmd, shell));
+	return (fork_and_execute(cmd, shell));
 }
 
 // int	traverse_ast_and_exec_cmd(t_ast *node, t_shell *shell)

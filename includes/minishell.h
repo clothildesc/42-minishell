@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 12:05:11 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 16:20:09 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_cmd
 	int				fd_in;
 	int				fd_out;
 	int				fd_heredoc;
+	pid_t			pid;
 	int				exit_status;
 }	t_cmd;
 

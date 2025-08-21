@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 17:35:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 16:25:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,81 @@ int	is_a_builtin(char *name)
 		return (0);
 }
 
-int	exec_builtin(char *name, char **args, t_shell *shell)
+void	execute_child_builtin(t_cmd *cmd, t_shell *shell)
 {
-	if (!ft_strcmp(name, "env"))
-		return (builtin_env(shell->env));
-	else if (!ft_strcmp(name, "pwd"))
-		return (builtin_pwd());
-	else if (!ft_strcmp(name, "echo"))
-		return (builtin_echo(args));
-	else if (!ft_strcmp(name, "cd"))
-		return (builtin_cd(args, shell->env));
-	else if (!ft_strcmp(name, "unset"))
-		return (builtin_unset(&shell->env, args));
-	else if (!ft_strcmp(name, "export"))
-		return (builtin_export(shell->env, args));
-	else
-		return (EXIT_FAILURE);
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		clear_shell(shell);
+		exit_code(1);
+	}
+	if (pid == 0)
+	{
+		apply_redirections(cmd);
+		execute_builtin_in_child(cmd, shell->env);
+	}
+	cmd->pid = pid;
 }
+
+int	exec_builtin_in_child(t_cmd *cmd, t_shell *shell)
+{
+	if (!ft_strcmp(cmd->name, "env"))
+		return (builtin_env(shell->env));
+	else if (!ft_strcmp(cmd->name, "echo"))
+		return (builtin_echo(cmd->args));
+	else
+		return (EXIT_SUCCESS);
+}
+
+int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell)
+{
+	int	saved[2];
+	int	exit_code;
+
+	saved[0] = dup(STDIN_FILENO);
+	saved[1] = dup(STDOUT_FILENO);
+	apply_redirections(cmd);
+	if (!ft_strcmp(cmd->name, "pwd"))
+		exit_code = builtin_pwd();
+	else if (!ft_strcmp(cmd->name, "cd"))
+		exit_code = builtin_cd(cmd->args, shell->env);
+	else if (!ft_strcmp(cmd->name, "unset"))
+		exit_code = builtin_unset(&shell->env, cmd->args);
+	else if (!ft_strcmp(cmd->name, "export"))
+		exit_code = builtin_export(shell->env, cmd->args);
+	if (dup2(saved[0], cmd->fd_in) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(saved[1], cmd->fd_out) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	return (exit_code);
+}
+
+// int	exec_builtin(char *name, char **args, t_shell *shell)
+// {
+// 	if (!ft_strcmp(name, "env"))
+// 		return (builtin_env(shell->env));
+// 	else if (!ft_strcmp(name, "echo"))
+// 		return (builtin_echo(args));
+// 	else if (!ft_strcmp(name, "pwd"))
+// 		return (builtin_pwd());
+// 	else if (!ft_strcmp(name, "cd"))
+// 		return (builtin_cd(args, shell->env));
+// 	else if (!ft_strcmp(name, "unset"))
+// 		return (builtin_unset(&shell->env, args));
+// 	else if (!ft_strcmp(name, "export"))
+// 		return (builtin_export(shell->env, args));
+// 	else
+// 		return (EXIT_SUCCESS);
+// }
 
 // int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
 // {

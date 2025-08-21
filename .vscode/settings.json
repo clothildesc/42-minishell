@@ -4,6 +4,7 @@
 		"readline.h": "c",
 		"type_traits": "c",
 		"minishell.h": "c",
-		"fcntl.h": "c"
+		"fcntl.h": "c",
+		"typeinfo": "c"
 	}
 }

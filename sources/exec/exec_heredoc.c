@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 12:18:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 13:51:02 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,11 @@ int	handle_all_heredocs(t_ast *node)
 	t_redir	*current_redir;
 
 	if (!node)
-		return ;
+		return (0);
 	if (node->node_type == NODE_PIPE)
 	{
 		handle_all_heredocs(node->data.binary.left);
 		handle_all_heredocs(node->data.binary.right);
-		return ;
 	}
 	else if (node->node_type == NODE_CMD)
 	{
@@ -111,10 +110,10 @@ int	handle_all_heredocs(t_ast *node)
 					close(cmd->fd_heredoc);
 				cmd->fd_heredoc = create_here_doc(current_redir->target);
 				if (cmd->fd_heredoc == -1)
-					return (EXIT_FAILURE);
+					return (-1);
 			}
 			current_redir = current_redir->next;
 		}
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
