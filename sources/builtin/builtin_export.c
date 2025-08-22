@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/21 10:44:46 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:02:44 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 		if (!ft_strcmp(key, tmp->key))
 		{
 			update_env_value(input, &tmp);
+			free(key);
 			return (NULL);
 		}
 		tmp = tmp->next;
@@ -60,7 +61,7 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 	if (!tmp)
 		return (NULL);
 	ft_bzero(tmp, sizeof(t_env));
-	return (create_new_env_node(tmp, input));
+	return (create_new_env_node(tmp, input, key));
 }
 
 static int	key_name_is_valid(char *key)
@@ -109,6 +110,8 @@ int	builtin_export(t_env *env, char **args)
 
 	exit_code = EXIT_SUCCESS;
 	if (!args)
+		return (EXIT_SUCCESS);
+	if (args && !args[1])
 		return (print_env_export(env));
 	i = 1;
 	while (args[i])

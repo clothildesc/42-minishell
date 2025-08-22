@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 12:01:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:56:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ t_token_type	determine_token_type(t_lexer *lexer);
 char			*create_token_value(t_lexer *lexer);
 
 /*-------AST-------*/
-t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
+t_ast			*parse_pipe(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
@@ -230,7 +230,7 @@ char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);
 t_env			*get_node(t_env **head, char *key);
-t_env			*create_new_env_node(t_env *new, char *input);
+t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
 char			*builtin_expand(char *input, t_env *env);
@@ -253,7 +253,7 @@ int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				prepare_redirections(t_cmd *cmd);
 void			apply_redirections(t_cmd *cmd);
-int				handle_all_heredocs(t_ast *node);
+void			handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

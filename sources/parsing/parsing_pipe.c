@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 11:24:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:13:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_ast	*create_pipe_node(t_ast *left, t_ast *right)
 	return (new_pipe);
 }
 
-t_ast	*parse_pipeline(t_shell *shell, t_token **tokens)
+t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 {
 	t_ast	*left;
 	t_ast	*new_pipe;

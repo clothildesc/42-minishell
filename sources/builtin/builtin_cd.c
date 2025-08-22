@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:38:45 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 16:13:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 13:42:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	builtin_cd(char **args, t_env *env)
 	char	*path;
 	int		i;
 
-	if (!args || !args[0])
+	if (args && !args[1])
 		path = get_env_value(env, "HOME");
 	else
 	{
@@ -40,7 +40,7 @@ int	builtin_cd(char **args, t_env *env)
 			ft_putendl_fd(ERROR_CD_MANY_ARGS, 2);
 			return (EXIT_FAILURE);
 		}
-		path = args[0];
+		path = args[1];
 	}
 	if (chdir(path) == -1)
 	{

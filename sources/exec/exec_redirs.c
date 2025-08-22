@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:40:46 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:10:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	prepare_redirections(t_cmd *cmd)
 		{
 			check_file_open_and_close(cmd->fd_in);
 			cmd->fd_in = cmd->fd_heredoc;
+			if (cmd->fd_in == -1)
+				return (-1);
 		}
 		else if (current->type == TOKEN_REDIR_IN)
 		{

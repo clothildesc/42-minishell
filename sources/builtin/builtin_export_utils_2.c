@@ -6,22 +6,17 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/19 18:15:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:00:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*create_new_env_node(t_env *new, char *input)
+t_env	*create_new_env_node(t_env *new, char *input, char *key)
 {
-	if (!new || !input)
+	if (!new || !input || !key)
 		return (NULL);
-	new->key = get_input_key(input);
-	if (!new->key)
-	{
-		free(new);
-		return (NULL);
-	}
+	new->key = key;
 	new->value = get_input_value(input);
 	if (!new->value)
 	{
