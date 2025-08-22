@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:58:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 17:03:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	exec_builtin_simple(t_cmd *cmd, t_shell *shell)
 		close(saved_out);
 		return (EXIT_FAILURE);
 	}
-	apply_redirections(cmd);
+	simple_dup(cmd);
 	exit_code = execute_builtins(cmd, shell);
 	dup2(saved_in, STDIN_FILENO);
 	dup2(saved_out, STDOUT_FILENO);
@@ -55,7 +55,7 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell)
 		close(saved_out);
 		return (EXIT_FAILURE);
 	}
-	apply_redirections(cmd);
+	simple_dup(cmd);
 	exit_code = execute_parent_builtins(cmd, shell);
 	dup2(saved_in, STDIN_FILENO);
 	dup2(saved_out, STDOUT_FILENO);

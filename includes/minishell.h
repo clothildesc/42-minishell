@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:56:48 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 17:44:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
+void			free_and_exit(t_shell *shell, int exit_code);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -247,12 +248,14 @@ int				builtin_echo(char **args);
 char			**lst_env_to_array(t_env *env);
 int				cmd_not_found(t_cmd *cmd);
 int				prepare_cmd(t_cmd *cmd, t_env *env);
-int				execute_command(t_shell *shell);
+int				execute_single_cmd(t_shell *shell);
+// int				execute_ast(t_ast *node, t_shell *shell);
+int				get_exit_code(int status);
 /* redir & heredoc */
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				prepare_redirections(t_cmd *cmd);
-void			apply_redirections(t_cmd *cmd);
+void			simple_dup(t_cmd *cmd);
 void			handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   exec_single_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:52:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 17:15:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	cmd_not_found(t_cmd *cmd)
 	return (EXIT_CMD_NOT_FOUND);
 }
 
-static int	get_exit_code(int status)
+int	get_exit_code(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -44,7 +44,7 @@ static void	execute_child(t_cmd *cmd, char **env_array)
 	{
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
-		apply_redirections(cmd);
+		simple_dup(cmd);
 		execve(cmd->abs_path, cmd->args, env_array);
 		perror("execve");
 		exit(EXIT_CMD_NOT_FOUND);
@@ -74,7 +74,7 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell)
 	return (exit_code);
 }
 
-int	execute_command(t_shell *shell)
+int	execute_single_cmd(t_shell *shell)
 {
 	t_cmd	*cmd;
 

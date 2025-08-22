@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:33:17 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 16:12:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,12 @@ void	clear_shell(t_shell *shell)
 	if (shell->env)
 		clear_env_lst(&shell->env);
 	clear_lexer_tmp(&shell->lexer);
+}
+
+void	free_and_exit(t_shell *shell, int exit_code)
+{
+	if (!shell)
+		return ;
+	clear_shell(shell);
+	exit(exit_code);
 }
