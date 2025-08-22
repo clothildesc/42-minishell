@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 00:24:18 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/08/22 12:01:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/stat.h>
 # include "../libft/libft.h"
 
@@ -211,9 +212,10 @@ void			create_redir_lst(t_token *token, t_cmd *cmd);
 /*-------Builtin-------*/
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
-int				dispatch_builtin(t_cmd *cmd, t_shell *shell);
 int				exec_builtin_simple(t_cmd *cmd, t_shell *shell);
 int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell);
+int				execute_builtins(t_cmd *cmd, t_shell *shell);
+int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
 //int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
@@ -243,6 +245,7 @@ int				builtin_echo(char **args);
 
 /*-------Execution-------*/
 char			**lst_env_to_array(t_env *env);
+int				cmd_not_found(t_cmd *cmd);
 int				prepare_cmd(t_cmd *cmd, t_env *env);
 int				execute_command(t_shell *shell);
 /* redir & heredoc */

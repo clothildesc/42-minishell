@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 15:16:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:29:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static t_ast	*init_cmd_node(void)
 		return (NULL);
 	}
 	ft_bzero(new_cmd->data.cmd.cmd, sizeof(t_cmd));
-	new_cmd->data.cmd.cmd->fd_in = STDIN_FILENO;
-	new_cmd->data.cmd.cmd->fd_out = STDOUT_FILENO;
+	new_cmd->data.cmd.cmd->fd_in = -1;
+	new_cmd->data.cmd.cmd->fd_out = -1;
 	new_cmd->data.cmd.cmd->fd_heredoc = -1;
 	return (new_cmd);
 }

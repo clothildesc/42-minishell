@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:17:06 by clothildesc       #+#    #+#             */
-/*   Updated: 2025/08/22 00:24:37 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/08/22 12:01:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,15 @@ int	prepare_cmd(t_cmd *cmd, t_env *env)
 		status = validate_exec_path(cmd->name);
 		if (status != EXIT_SUCCESS)
 			return (status);
-		cmd->abs_path = cmd->name;
+		cmd->abs_path = ft_strdup(cmd->name);
+		if (!cmd->abs_path)
+			return (cmd_not_found(cmd));
 	}
 	else
 	{
 		cmd->abs_path = get_cmd_abs_path(cmd, env);
 		if (!cmd->abs_path)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(cmd->name, 2);
-			ft_putendl_fd(": command not found", 2);
-			return (EXIT_CMD_NOT_FOUND);
-		}
+			return (cmd_not_found(cmd));
 	}
 	return (EXIT_SUCCESS);
 }

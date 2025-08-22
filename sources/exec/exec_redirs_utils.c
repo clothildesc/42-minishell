@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_structs.c                                     :+:      :+:    :+:   */
+/*   exec_redirs_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/30 14:20:47 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:29:12 by cscache          ###   ########.fr       */
+/*   Created: 2025/08/22 11:40:22 by cscache           #+#    #+#             */
+/*   Updated: 2025/08/22 11:40:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	init_all_structs(t_shell *shell, char **envp)
+void	apply_redirections(t_cmd *cmd)
 {
-	if (!shell)
-		return ;
-	ft_bzero(shell, sizeof(t_shell));
-	shell->exit_status = EXIT_SUCCESS;
-	shell->env = get_env(envp);
+	if (cmd->fd_in != -1)
+	{
+		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+			perror("dup2");
+		close(cmd->fd_in);
+	}
+	if (cmd->fd_out != -1)
+	{
+		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+			perror("dup2");
+		close(cmd->fd_out);
+	}
 }

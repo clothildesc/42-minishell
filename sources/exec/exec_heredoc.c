@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/21 13:51:02 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:46:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // Retourner un fd en lecture sur ce fichier temporaire
 
 // ne pas oublier de unlink le heredoc ensuite : unlink("/tmp/.heredoc_tmp")
-// (optionnel) -> Si je fais un cat du heredoc et que j'ai des variables a expand
+// (optionnel) -> expand dans le heredoc
 //	idealement il faudrait que je les expand (ex : $USER)
 
 static void	read_and_write_heredoc(int fd, char *limiter)
@@ -86,6 +86,16 @@ static int	create_here_doc(char *limiter)
 	return (free(tmp_file_name), fd);
 }
 
+static int	process_heredoc(t_cmd *cmd, char *target)
+{
+	if (cmd->fd_heredoc != -1)
+		close(cmd->fd_heredoc);
+	cmd->fd_heredoc = create_here_doc(target);
+	if (cmd->fd_heredoc == -1)
+		return (-1);
+	return (0);
+}
+
 int	handle_all_heredocs(t_ast *node)
 {
 	t_cmd	*cmd;
@@ -105,13 +115,8 @@ int	handle_all_heredocs(t_ast *node)
 		while (current_redir)
 		{
 			if (current_redir->type == TOKEN_HERE_DOC)
-			{
-				if (cmd->fd_heredoc != -1)
-					close(cmd->fd_heredoc);
-				cmd->fd_heredoc = create_here_doc(current_redir->target);
-				if (cmd->fd_heredoc == -1)
+				if (process_heredoc(cmd, current_redir->target) == -1)
 					return (-1);
-			}
 			current_redir = current_redir->next;
 		}
 	}
