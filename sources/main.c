@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 17:41:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:32:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	execute_shell(char *input, t_shell *shell)
 	}
 	//display_lexer_results(shell->tokens);
 	shell->ast = parse_pipeline(shell, &shell->tokens);
-	// if (shell->ast->node_type == NODE_CMD)
-	// 	shell->exit_status = exec_one_cmd(shell);
-	shell->exit_status = traverse_ast_and_exec_builtin(shell->ast, shell);
+	if (shell->ast->node_type == NODE_CMD)
+		shell->exit_status = execute_command(shell);
+	//shell->exit_status = traverse_ast_and_exec_builtin(shell->ast, shell);
 	clear_tokens_lst(&shell->tokens);
 	clear_ast(&shell->ast);
 	return (shell->exit_status);

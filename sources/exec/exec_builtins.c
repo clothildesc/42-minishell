@@ -6,81 +6,60 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 17:41:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:58:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_a_builtin(char *name)
+int	exec_builtin_simple(t_cmd *cmd, t_shell *shell)
 {
-	if (!ft_strcmp(name, "env"))
-		return (1);
-	else if (!ft_strcmp(name, "pwd"))
-		return (1);
-	else if (!ft_strcmp(name, "cd"))
-		return (1);
-	else if (!ft_strcmp(name, "unset"))
-		return (1);
-	else if (!ft_strcmp(name, "export"))
-		return (1);
-	else if (!ft_strcmp(name, "echo"))
-		return (1);
-	else
-		return (0);
-}
+	int	exit_code;
+	int	saved_in;
+	int	saved_out;
 
-static int	exec_builtin(char *name, t_arg *args, t_shell *shell)
-{
-	if (!ft_strcmp(name, "env"))
-		return (builtin_env(shell->env));
-	else if (!ft_strcmp(name, "pwd"))
-		return (builtin_pwd());
-	else if (!ft_strcmp(name, "echo"))
-		return (builtin_echo(args));
-	else if (!ft_strcmp(name, "cd"))
-		return (builtin_cd(args, shell->env));
-	else if (!ft_strcmp(name, "unset"))
-		return (builtin_unset(&shell->env, args));
-	else if (!ft_strcmp(name, "export"))
-		return (builtin_export(shell->env, args));
-	else
+	exit_code = EXIT_SUCCESS;
+	saved_in = dup(STDIN_FILENO);
+	saved_out = dup(STDOUT_FILENO);
+	if (saved_in == -1 || saved_out == -1)
 		return (EXIT_FAILURE);
-}
-
-int	traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell)
-{
-	char	*name;
-	t_arg	*args;
-
-	if (!node)
+	if (prepare_redirections(cmd) == -1)
+	{
+		close(saved_in);
+		close(saved_out);
 		return (EXIT_FAILURE);
-	if (node->node_type == NODE_PIPE)
-	{
-		traverse_ast_and_exec_builtin(node->data.binary.left, shell);
-		traverse_ast_and_exec_builtin(node->data.binary.right, shell);
 	}
-	else if (node->node_type == NODE_CMD)
-	{
-		name = node->data.cmd.cmd->name;
-		args = node->data.cmd.cmd->args;
-		if (is_a_builtin(name))
-			return (exec_builtin(name, args, shell));
-	}
-	return (EXIT_FAILURE);
+	apply_redirections(cmd);
+	exit_code = execute_builtins(cmd, shell);
+	dup2(saved_in, STDIN_FILENO);
+	dup2(saved_out, STDOUT_FILENO);
+	close(saved_in);
+	close(saved_out);
+	return (exit_code);
 }
 
-// int	exec_one_cmd(t_shell *shell)
-// {
-// 	t_cmd	*cmd;
+int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell)
+{
+	int	exit_code;
+	int	saved_in;
+	int	saved_out;
 
-// 	if (!shell->ast)
-// 		return (EXIT_FAILURE);
-// 	cmd = shell->ast->data.cmd.cmd;
-// 	if (is_a_builtin(cmd->name))
-// 		return (exec_builtin(cmd->name, cmd->args, shell));
-// 	else
-// 	{
-		
-// 	}
-// }
+	exit_code = EXIT_SUCCESS;
+	saved_in = dup(STDIN_FILENO);
+	saved_out = dup(STDOUT_FILENO);
+	if (saved_in == -1 || saved_out == -1)
+		return (EXIT_FAILURE);
+	if (prepare_redirections(cmd) == -1)
+	{
+		close(saved_in);
+		close(saved_out);
+		return (EXIT_FAILURE);
+	}
+	apply_redirections(cmd);
+	exit_code = execute_parent_builtins(cmd, shell);
+	dup2(saved_in, STDIN_FILENO);
+	dup2(saved_out, STDOUT_FILENO);
+	close(saved_in);
+	close(saved_out);
+	return (exit_code);
+}

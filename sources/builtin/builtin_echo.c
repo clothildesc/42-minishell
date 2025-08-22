@@ -6,24 +6,24 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/18 14:32:19 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 16:14:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_n_option(t_arg *arg)
+static int	is_n_option(char *arg)
 {
 	int	i;
 
 	i = 2;
 	if (!arg)
 		return (0);
-	if (ft_strncmp(arg->arg, "-n", 2) == 0)
+	if (ft_strncmp(arg, "-n", 2) == 0)
 	{
-		while (arg->arg[i])
+		while (arg[i])
 		{
-			if (arg->arg[i] != 'n')
+			if (arg[i] != 'n')
 				return (0);
 			i++;
 		}
@@ -32,30 +32,29 @@ static int	is_n_option(t_arg *arg)
 	return (0);
 }
 
-int	builtin_echo(t_arg *args)
+int	builtin_echo(char **args)
 {
-	t_arg	*current;
 	bool	option;
 	bool	first;
+	int		i;
 
 	option = false;
 	first = true;
-	current = args;
-	while (is_n_option(current))
+	i = 1;
+	while (args && args[i] && is_n_option(args[i]))
 	{
-		if (is_n_option(current))
-			option = true;
-		current = current->next;
+		option = true;
+		i++;
 	}
-	while (current)
+	while (args && args[i])
 	{
 		if (!first)
 			ft_printf(" ");
-		ft_printf("%s", current->arg);
+		ft_printf("%s", args[i]);
 		first = false;
-		current = current->next;
+		i++;
 	}
-	if (!args || !option)
+	if (!option)
 		ft_printf("\n");
 	return (EXIT_SUCCESS);
 }

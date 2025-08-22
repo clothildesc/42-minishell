@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:55:41 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 12:01:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,20 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 
 /*=============== EXIT CODES =============== */
-# define EXIT_SUCCESS 		0
-# define EXIT_FAILURE 		1
-# define EXIT_SYNTAX_ERROR	2
-# define EXIT_CMD_NOT_FOUND	127
-# define EXIT_SIGNAL		128
-# define EXIT_CTRL_C 		130
-# define EXIT_CTRL_D 		131
+# define EXIT_SUCCESS 			0
+# define EXIT_FAILURE 			1
+# define EXIT_SYNTAX_ERROR		2
+# define EXIT_CMD_NOT_FOUND		127
+# define EXIT_PERMISSION_DENIED 126
+# define EXIT_SIGNAL			128
+# define EXIT_CTRL_C 			130
+# define EXIT_CTRL_D 			131
 
 /*=============== ERRORS =============== */
 
@@ -38,6 +42,7 @@
 # define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 # define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
+# define ERROR_MISSING_FILE "bash: No such file or directory"
 
 /*=============== LEXER =============== */
 
@@ -107,16 +112,20 @@ typedef struct s_args
 typedef struct s_redir
 {
 	t_token_type	type;
-	char			*file;
+	char			*target;
 	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd
 {
 	char			*name;
-	t_arg			*args;
+	char			**args;
 	t_redir			*redirs;
 	char			*abs_path;
+	int				fd_in;
+	int				fd_out;
+	int				fd_heredoc;
+	pid_t			pid;
 	int				exit_status;
 }	t_cmd;
 
@@ -175,10 +184,10 @@ void			clear_args_lst(t_arg **lst);
 void			clear_redirs_lst(t_redir **lst);
 void			clear_cmd(t_cmd *cmd);
 void			clear_ast(t_ast **ast);
+void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
-
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -195,37 +204,56 @@ char			*create_token_value(t_lexer *lexer);
 t_ast			*parse_pipeline(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
+void			ft_lstadd_args(t_arg **args, t_arg *new);
+void			create_args_lst(t_arg **args, t_token *token, t_env *env);
+void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
-void			create_args_lst(t_token *token, t_cmd *cmd, t_env *env);
-int				open_infile(char *infile);
-int				open_outfile(char *outfile, t_token_type type);
-int				create_here_doc(char *limiter);
 
 /*-------Builtin-------*/
-int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
+int				is_a_builtin(char *name);
+bool			is_parent_builtin(char *name);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell);
+int				execute_builtins(t_cmd *cmd, t_shell *shell);
+int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
+//int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
 int				builtin_env(t_env *env);
 /* unset */
-int				builtin_unset(t_env **env, t_arg *args);
+int				builtin_unset(t_env **env, char **args);
 /* export */
-int				builtin_export(t_env *env, t_arg *args);
+int				builtin_export(t_env *env, char **args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
 int				compare_key(char *env, char *inpt);
 t_env			*get_node(t_env **head, char *key);
+t_env			*create_new_env_node(t_env *new, char *input);
+int				print_env_export(t_env *env);
 /* expand */
 char			*builtin_expand(char *input, t_env *env);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
-int				builtin_cd(t_arg *args, t_env *env);
+int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				builtin_echo(t_arg *args);
+int				builtin_echo(char **args);
 /* exit */
-// int				builtin_exit(t_shell *shell, t_arg *args);
+// int				builtin_exit(t_shell *shell, char **args);
+
+/*-------Execution-------*/
+char			**lst_env_to_array(t_env *env);
+int				cmd_not_found(t_cmd *cmd);
+int				prepare_cmd(t_cmd *cmd, t_env *env);
+int				execute_command(t_shell *shell);
+/* redir & heredoc */
+int				open_infile(char *infile);
+int				open_outfile(char *outfile, t_token_type type);
+int				prepare_redirections(t_cmd *cmd);
+void			apply_redirections(t_cmd *cmd);
+int				handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

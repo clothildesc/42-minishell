@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/18 10:40:28 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/19 15:10:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	print_indent(int depth)
 void	print_cmd_node(t_cmd *cmd, int depth)
 {
 	int		i;
-	t_arg	*current_arg;
 
 	if (!cmd)
 		return ;
@@ -57,12 +56,10 @@ void	print_cmd_node(t_cmd *cmd, int depth)
 	{
 		print_indent(depth);
 		ft_printf("Args: ");
-		current_arg = cmd->args;
 		i = 0;
-		while (current_arg)
+		while (cmd->args[i])
 		{
-			ft_printf("[%d]= %s ", i, current_arg->arg);
-			current_arg = current_arg->next;
+			ft_printf("[%d]= %s ", i, cmd->args[i]);
 			i++;
 		}
 		ft_printf("\n");

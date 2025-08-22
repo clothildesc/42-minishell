@@ -6,31 +6,11 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/18 14:44:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/21 10:44:46 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-static t_env	*create_env_node(t_env *new, char *input)
-{
-	if (!new || !input)
-		return (NULL);
-	new->key = get_input_key(input);
-	if (!new->key)
-	{
-		free(new);
-		return (NULL);
-	}
-	new->value = get_input_value(input);
-	if (!new->value)
-	{
-		free(new->key);
-		free(new);
-		return (NULL);
-	}
-	return (new);
-}
 
 static void	update_env_value(char *input, t_env **node)
 {
@@ -80,7 +60,7 @@ static t_env	*find_or_create_env(t_env *env, char *input, char *key)
 	if (!tmp)
 		return (NULL);
 	ft_bzero(tmp, sizeof(t_env));
-	return (create_env_node(tmp, input));
+	return (create_new_env_node(tmp, input));
 }
 
 static int	key_name_is_valid(char *key)
@@ -106,33 +86,39 @@ static int	key_name_is_valid(char *key)
 	return (1);
 }
 
-int	builtin_export(t_env *env, t_arg *args)
+static void	handle_export_key(t_env *env, char *arg, char *key, \
+								int *exit_code)
+{
+	t_env	*new;
+
+	if (!key_name_is_valid(key))
+		*exit_code = EXIT_FAILURE;
+	else
+	{
+		new = find_or_create_env(env, arg, key);
+		if (new)
+			ft_lstadd_back_env(&env, new);
+	}
+}
+
+int	builtin_export(t_env *env, char **args)
 {
 	char	*key;
-	t_env	*new;
-	t_arg	*current;
+	int		i;
 	int		exit_code;
 
 	exit_code = EXIT_SUCCESS;
-	current = args;
-	while (current)
+	if (!args)
+		return (print_env_export(env));
+	i = 1;
+	while (args[i])
 	{
-		key = get_input_key(current->arg);
+		key = get_input_key(args[i]);
 		if (!key)
 			return (EXIT_SUCCESS);
-		if (!key_name_is_valid(key))
-		{
-			free(key);
-			exit_code = EXIT_FAILURE;
-		}
-		else
-		{
-			new = find_or_create_env(env, current->arg, key);
-			if (new)
-				ft_lstadd_back_env(&env, new);
-			free(key);
-		}
-		current = current->next;
+		handle_export_key(env, args[i], key, &exit_code);
+		free(key);
+		i++;
 	}
 	return (exit_code);
 }

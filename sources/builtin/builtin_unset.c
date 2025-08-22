@@ -6,43 +6,50 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:48:37 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/18 14:28:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/20 16:14:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	delete_node_env(t_env *to_delete)
+static void	delete_node_env(t_env **head, t_env *to_delete)
 {
 	if (!to_delete)
 		return ;
+	if (!to_delete->prev)
+		*head = to_delete->next;
+	else
+		to_delete->prev->next = to_delete->next;
 	if (to_delete->next != NULL)
 		to_delete->next->prev = to_delete->prev;
-	to_delete->prev->next = to_delete->next;
 	free(to_delete->key);
 	free(to_delete->value);
 	free(to_delete);
 }
 
-int	builtin_unset(t_env **env, t_arg *args)
+int	builtin_unset(t_env **env, char **args)
 {
 	t_env	*current;
+	int		i;
 
-	if (!env || !*env || !args)
+	if (!env || !*env)
 		return (EXIT_FAILURE);
-	while (args)
+	if (!args)
+		return (EXIT_SUCCESS);
+	i = 1;
+	while (args[i])
 	{
 		current = *env;
 		while (current)
 		{
-			if (!ft_strcmp(args->arg, current->key))
+			if (!ft_strcmp(args[i], current->key))
 			{
-				delete_node_env(current);
+				delete_node_env(env, current);
 				break ;
 			}
 			current = current->next;
 		}
-		args = args->next;
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }

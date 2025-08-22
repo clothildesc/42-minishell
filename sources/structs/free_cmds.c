@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:08:33 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:08:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:32:54 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	clear_args_lst(t_arg **lst)
 			free(tmp->arg);
 		free(tmp);
 	}
+	*lst = NULL;
 }
 
 void	clear_redirs_lst(t_redir **lst)
@@ -39,20 +40,45 @@ void	clear_redirs_lst(t_redir **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
-		if (tmp->file)
-			free(tmp->file);
+		if (tmp->target)
+			free(tmp->target);
 		free(tmp);
 	}
+}
+
+static void	close_files(t_cmd *cmd)
+{
+	if (cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (cmd->fd_out != -1)
+		close(cmd->fd_out);
+	if (cmd->fd_heredoc != -1)
+		close(cmd->fd_heredoc);
 }
 
 void	clear_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
-	if (cmd->name)
+	if (cmd->name && (!cmd->args || cmd->name != cmd->args[0]))
+	{
 		free(cmd->name);
+		cmd->name = NULL;
+	}
 	if (cmd->abs_path)
+	{
 		free(cmd->abs_path);
-	clear_args_lst(&cmd->args);
-	clear_redirs_lst(&cmd->redirs);
+		cmd->abs_path = NULL;
+	}
+	if (cmd->args)
+	{
+		free_tab_chars(cmd->args);
+		cmd->args = NULL;
+	}
+	if (cmd->redirs)
+	{
+		clear_redirs_lst(&cmd->redirs);
+		cmd->redirs = NULL;
+	}
+	close_files(cmd);
 }
