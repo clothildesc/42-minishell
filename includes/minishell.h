@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 17:44:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 14:34:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,11 +213,11 @@ void			create_redir_lst(t_token *token, t_cmd *cmd);
 /*-------Builtin-------*/
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
-int				exec_builtin_simple(t_cmd *cmd, t_shell *shell);
-int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile);
 int				execute_builtins(t_cmd *cmd, t_shell *shell);
 int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
-//int				traverse_ast_and_exec_builtin(t_ast *node, t_shell *shell);
+//int				traverse_ast_and_exsec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -248,14 +248,15 @@ int				builtin_echo(char **args);
 char			**lst_env_to_array(t_env *env);
 int				cmd_not_found(t_cmd *cmd);
 int				prepare_cmd(t_cmd *cmd, t_env *env);
-int				execute_single_cmd(t_shell *shell);
-// int				execute_ast(t_ast *node, t_shell *shell);
+int				execute_cmd(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile);
+void			execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile);
+void			execution(t_ast *ast, t_shell *shell);
 int				get_exit_code(int status);
 /* redir & heredoc */
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				prepare_redirections(t_cmd *cmd);
-void			simple_dup(t_cmd *cmd);
+void			simple_dup(t_cmd *cmd, int fd_infile, int fd_outfile);
 void			handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/
