@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 14:34:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:51:33 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ t_ast			*parse_pipe(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
-void			create_args_lst(t_arg **args, t_token *token, t_env *env);
+void			create_args_lst(t_arg **args, t_token *token,  t_env *env);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
@@ -240,7 +240,7 @@ int				builtin_pwd(void);
 /* cd */
 int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				builtin_echo(char **args);
+int				builtin_echo(char **args, t_shell *shell);
 /* exit */
 // int				builtin_exit(t_shell *shell, char **args);
 

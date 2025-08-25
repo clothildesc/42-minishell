@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/21 10:57:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:52:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ char	*builtin_expand(char *input, t_env *env)
 	char	*result;
 	int		dollar_index;
 
-	if (!input || !env)
+	if (!input || env)
 		return (NULL);
 	dollar_index = check_dollar(input);
 	if (dollar_index < 0)
 		return (NULL);
-	result = get_expanded_result(&env, &input[dollar_index + 1]);
+	else
+		result = get_expanded_result(&env, &input[dollar_index + 1]);
 	if (!result)
 		return (NULL);
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/20 16:14:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 17:47:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	is_n_option(char *arg)
 	return (0);
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, t_shell *shell)
 {
 	bool	option;
 	bool	first;
@@ -50,7 +50,10 @@ int	builtin_echo(char **args)
 	{
 		if (!first)
 			ft_printf(" ");
-		ft_printf("%s", args[i]);
+		if (ft_strcmp(" $?", args[i]))
+			ft_printf("%d", shell->exit_status);
+		else
+			ft_printf("%s", args[i]);
 		first = false;
 		i++;
 	}
