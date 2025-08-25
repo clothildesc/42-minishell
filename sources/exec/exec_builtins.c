@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 15:10:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:10:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, int fd_infile, int
 {
 	pid_t	pid;
 
-	printf("debut exec child builtin\n");
 	pid = fork();
 	if (pid == -1)
 	{
@@ -26,17 +25,12 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, int fd_infile, int
 	}
 	if (pid == 0)
 	{
-		printf("dans enfant builtin\n");
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
-		printf("avant simple dup\n");
 		simple_dup(cmd, fd_infile, fd_outfile);
-		printf("apres simple dup\n");
 		exit(execute_builtins(cmd, shell));
-		printf("apres execute builtin\n");
 	}
 	cmd->pid = pid;
-	printf("fin exec child builtin\n");
 }
 
 int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
@@ -44,15 +38,9 @@ int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfil
 	int		status;
 	int		exit_code;
 
-	printf("debut exec builtin simple\n");
-	printf("avant exec child builtin\n");
 	execute_child_builtin(cmd, shell, fd_infile, fd_outfile);
-	printf("apres exec child builtin\n");
-	printf("avant waitpid\n");
 	waitpid(cmd->pid, &status, 0);
-	printf("apres waitpid\n");
 	exit_code = get_exit_code(status);
-	printf("fin exec builtin simple\n");
 	return (exit_code);
 }
 

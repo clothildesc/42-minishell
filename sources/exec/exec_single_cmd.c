@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 15:15:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:10:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	execute_child(t_cmd *cmd, char **env_array, int fd_infile, int fd_ou
 {
 	pid_t	pid;
 
-	printf("debut execute child cmd normale\n");
 	pid = fork();
 	if (pid == -1)
 	{
@@ -45,16 +44,12 @@ static void	execute_child(t_cmd *cmd, char **env_array, int fd_infile, int fd_ou
 	{
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
-		printf("avant simple dup cmd normale\n");
 		simple_dup(cmd, fd_infile, fd_outfile);
-		printf("apres simple dup cmd normale + avant execve\n");
 		execve(cmd->abs_path, cmd->args, env_array);
-		printf("aprs execve\n");
 		perror("execve");
 		exit(EXIT_CMD_NOT_FOUND);
 	}
 	cmd->pid = pid;
-	printf("fin execute child cmd normale\n");
 }
 
 static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
@@ -63,7 +58,6 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_ou
 	char	**env_array;
 	int		exit_code;
 
-	printf("debut fork and execute\n");
 	env_array = lst_env_to_array(shell->env);
 	if (!env_array)
 	{
@@ -71,17 +65,12 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_ou
 		return (EXIT_FAILURE);
 	}
 	status = prepare_cmd(cmd, shell->env);
-	printf("apres prepare cmd\n");
 	if (status != EXIT_SUCCESS)
 		return (status);
-	printf("avant execute child\n");
 	execute_child(cmd, env_array, fd_infile, fd_outfile);
-	printf("apres execute child et avant waitpid cmd normale\n");
 	waitpid(cmd->pid, &status, 0);
-	printf("apres waitpid cmd normal\n");
 	exit_code = get_exit_code(status);
 	free_tab_chars(env_array);
-	printf("fin fork and execute\n");
 	return (exit_code);
 }
 

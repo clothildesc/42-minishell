@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 15:02:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:02:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
 			free_and_exit(shell, 1);
 		}
 		execute_ast(node->data.binary.left, shell, fd_infile, pipefd[1]);
+		close(pipefd[1]);
 		execute_ast(node->data.binary.right, shell, pipefd[0], fd_outfile);
 		if (pipefd[0] != -1)
 			close(pipefd[0]);
