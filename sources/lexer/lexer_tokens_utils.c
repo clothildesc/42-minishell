@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:06:50 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:33:09 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,22 @@ t_token_type	determine_token_type(t_lexer *lexer)
 		return (0);
 	first = *(char *)lexer->tmp_token->content;
 	if (first == '|')
-		return (TOKEN_PIPE);
+		return (PIPE);
 	if (first == '<')
 	{
 		if (lexer->tmp_token->next && \
 			*(char *)lexer->tmp_token->next->content == '<')
-			return (TOKEN_HERE_DOC);
-		return (TOKEN_REDIR_IN);
+			return (HERE_DOC);
+		return (REDIR_IN);
 	}
 	if (first == '>')
 	{
 		if (lexer->tmp_token->next \
 			&& *(char *)lexer->tmp_token->next->content == '>')
-			return (TOKEN_APPEND_OUT);
-		return (TOKEN_REDIR_OUT);
+			return (APPEND_OUT);
+		return (REDIR_OUT);
 	}
-	return (TOKEN_WORD);
+	return (WORD);
 }
 
 void	clear_tokens_lst(t_token **tokens)

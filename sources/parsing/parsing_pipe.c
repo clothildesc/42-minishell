@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 17:50:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:32:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 	left = parse_cmd(tokens, shell->env);
 	if (!left)
 		return (NULL);
-	while (*tokens && (*tokens)->type == TOKEN_PIPE)
+	while (*tokens && (*tokens)->type == PIPE)
 	{
 		*tokens = (*tokens)->next;
 		right = parse_cmd(tokens, shell->env);

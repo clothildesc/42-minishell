@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:56:26 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:34:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	handle_all_heredocs(t_ast *node)
 		current_redir = cmd->redirs;
 		while (current_redir)
 		{
-			if (current_redir->type == TOKEN_HERE_DOC)
+			if (current_redir->type == HERE_DOC)
 				process_heredoc(cmd, current_redir->target);
 			current_redir = current_redir->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 14:56:20 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:40:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 			close(pipefd[1]);
 	}
 	if (node->node_type == NODE_CMD)
-		g_exit_status = execute_cmd(node, shell, fd_i, fd_o);
+		shell->status = execute_cmd(node, shell, fd_i, fd_o);
 }
 
 void	execution(t_ast *ast, t_shell *shell)
@@ -48,9 +48,9 @@ void	execution(t_ast *ast, t_shell *shell)
 	{
 		cmd = shell->ast->data.cmd.cmd;
 		if (is_parent_builtin(cmd->name))
-			g_exit_status = exec_builtin_in_parent(cmd, shell, fd_i, fd_o);
+			shell->status = exec_builtin_in_parent(cmd, shell, fd_i, fd_o);
 		else
-			g_exit_status = execute_cmd(ast, shell, fd_i, fd_o);
+			shell->status = execute_cmd(ast, shell, fd_i, fd_o);
 	}
 	else
 		execute_ast(ast, shell, fd_i, fd_o);

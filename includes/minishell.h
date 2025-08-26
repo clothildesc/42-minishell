@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 15:13:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:41:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ typedef enum e_state
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_HERE_DOC,
-	TOKEN_APPEND_OUT,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
+	WORD,
+	PIPE,
+	HERE_DOC,
+	APPEND_OUT,
+	REDIR_IN,
+	REDIR_OUT,
 }	t_token_type;
 
 typedef struct s_token
@@ -179,7 +179,7 @@ extern int	g_exit_status;
 /*-------Syntax errors-------*/
 int				handle_special_char(t_token *head);
 int				get_syntax_error_status(t_token *lst_tokens);
-void			get_syntax_errors(t_token *lst_tokens);
+void			get_syntax_errors(t_shell *shell);
 
 /*-------Structs-------*/
 void			init_all_structs(t_shell *shell, char **envp);

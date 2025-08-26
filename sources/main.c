@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 15:59:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:41:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	execute_shell(char *input, t_shell *shell)
 	shell->tokens = ft_lexer(input, shell);
 	if (!shell->tokens)
 	{
-		g_exit_status = EXIT_SUCCESS;
+		shell->status = EXIT_SUCCESS;
 		return ;
 	}
-	get_syntax_errors(shell->tokens);
-	if (g_exit_status != EXIT_SUCCESS)
+	get_syntax_errors(shell);
+	if (shell->status != EXIT_SUCCESS)
 	{
 		clear_tokens_lst(&shell->tokens);
-		shell->prev_status = g_exit_status;
+		shell->prev_status = shell->status;
 		return ;
 	}
 	//display_lexer_results(shell->tokens);
@@ -36,7 +36,7 @@ void	execute_shell(char *input, t_shell *shell)
 	execution(shell->ast, shell);
 	clear_tokens_lst(&shell->tokens);
 	clear_ast(&shell->ast);
-	shell->prev_status = g_exit_status;
+	shell->prev_status = shell->status;
 	return ;
 }
 

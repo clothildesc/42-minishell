@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 15:00:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:31:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	check_error_pipe(t_token *current)
 		ft_putendl_fd("'|'", 2);
 		return (1);
 	}
-	else if (current->next->type == TOKEN_PIPE)
+	else if (current->next->type == PIPE)
 	{
 		ft_putstr_fd(SYNTAX_ERROR_TOKEN, 2);
 		ft_putendl_fd("'|'", 2);
 		return (1);
 	}
-	else if (current->prev->type != TOKEN_WORD)
+	else if (current->prev->type != WORD)
 	{
 		ft_putstr_fd(SYNTAX_ERROR_TOKEN, 2);
 		ft_putendl_fd("'|'", 2);
@@ -38,10 +38,10 @@ static int	check_error_pipe(t_token *current)
 
 static int	is_redir(t_token *current)
 {
-	return (current->type == TOKEN_REDIR_IN || \
-			current->type == TOKEN_APPEND_OUT || \
-			current->type == TOKEN_HERE_DOC || \
-			current->type == TOKEN_REDIR_OUT);
+	return (current->type == REDIR_IN || \
+			current->type == APPEND_OUT || \
+			current->type == HERE_DOC || \
+			current->type == REDIR_OUT);
 }
 
 static int	check_error_redirs(t_token *current)
@@ -52,7 +52,7 @@ static int	check_error_redirs(t_token *current)
 		ft_putendl_fd("'newline'", 2);
 		return (1);
 	}
-	else if (current->next->type == TOKEN_PIPE)
+	else if (current->next->type == PIPE)
 	{
 		ft_putstr_fd(SYNTAX_ERROR_TOKEN, 2);
 		ft_putendl_fd("'|'", 2);
@@ -64,7 +64,7 @@ static int	check_error_redirs(t_token *current)
 		ft_putendl_fd(current->next->value, 2);
 		return (1);
 	}
-	else if (current->next->type != TOKEN_WORD)
+	else if (current->next->type != WORD)
 	{
 		ft_putstr_fd(SYNTAX_ERROR_TOKEN, 2);
 		ft_putendl_fd("'newline'", 2);
@@ -93,16 +93,16 @@ int	get_syntax_error_status(t_token *lst_tokens)
 	current = lst_tokens;
 	while (current)
 	{
-		if (current->type == TOKEN_PIPE && check_error_pipe(current))
+		if (current->type == PIPE && check_error_pipe(current))
 			return (EXIT_SYNTAX_ERROR);
-		else if (current->type == TOKEN_HERE_DOC && check_error_redirs(current))
+		else if (current->type == HERE_DOC && check_error_redirs(current))
 			return (EXIT_SYNTAX_ERROR);
-		else if (current->type == TOKEN_APPEND_OUT && \
+		else if (current->type == APPEND_OUT && \
 			check_error_redirs(current))
 			return (EXIT_SYNTAX_ERROR);
-		else if (current->type == TOKEN_REDIR_IN && check_error_redirs(current))
+		else if (current->type == REDIR_IN && check_error_redirs(current))
 			return (EXIT_SYNTAX_ERROR);
-		else if (current->type == TOKEN_REDIR_OUT && \
+		else if (current->type == REDIR_OUT && \
 			check_error_redirs(current))
 			return (EXIT_SYNTAX_ERROR);
 		current = current->next;
