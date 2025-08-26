@@ -6,14 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 16:10:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 10:40:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
+static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
+									int fd_i, int fd_o)
 {
 	pid_t	pid;
 
@@ -27,24 +27,24 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, int fd_infile, int
 	{
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
-		simple_dup(cmd, fd_infile, fd_outfile);
+		manage_dup(cmd, fd_i, fd_o);
 		exit(execute_builtins(cmd, shell));
 	}
 	cmd->pid = pid;
 }
 
-int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
+int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	int		status;
 	int		exit_code;
 
-	execute_child_builtin(cmd, shell, fd_infile, fd_outfile);
+	execute_child_builtin(cmd, shell, fd_i, fd_o);
 	waitpid(cmd->pid, &status, 0);
 	exit_code = get_exit_code(status);
 	return (exit_code);
 }
 
-int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
+int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	int	exit_code;
 	int	saved_in;
@@ -61,7 +61,7 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_out
 		close(saved_out);
 		return (EXIT_FAILURE);
 	}
-	simple_dup(cmd, fd_infile, fd_outfile);
+	manage_dup(cmd, fd_i, fd_o);
 	exit_code = execute_parent_builtins(cmd, shell);
 	dup2(saved_in, STDIN_FILENO);
 	dup2(saved_out, STDOUT_FILENO);

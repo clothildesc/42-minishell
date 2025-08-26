@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 17:51:33 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 12:11:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@
 
 /*=============== ERRORS =============== */
 
-# define SYNTAX_ERROR_PIPE "bash: syntax error near unexpected token '|'"
-# define SYNTAX_ERROR_REDIR "bash: syntax error near unexpected token 'newline'"
+# define SYNTAX_ERROR_TOKEN "bash: syntax error near unexpected token "
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 # define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
 # define ERROR_MISSING_FILE "bash: No such file or directory"
@@ -206,18 +205,11 @@ t_ast			*parse_pipe(t_shell *shell, t_token **tokens);
 t_ast			*parse_cmd(t_token **tokens, t_env *env);
 t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
-void			create_args_lst(t_arg **args, t_token *token,  t_env *env);
+void			create_args_lst(t_arg **args, t_token *token, t_env *env);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
 /*-------Builtin-------*/
-int				is_a_builtin(char *name);
-bool			is_parent_builtin(char *name);
-int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile);
-int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile);
-int				execute_builtins(t_cmd *cmd, t_shell *shell);
-int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
-//int				traverse_ast_and_exsec_builtin(t_ast *node, t_shell *shell);
 /* env */
 t_env			*get_env(char **envp);
 void			ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -245,18 +237,28 @@ int				builtin_echo(char **args, t_shell *shell);
 // int				builtin_exit(t_shell *shell, char **args);
 
 /*-------Execution-------*/
+/* builtins */
+int				is_a_builtin(char *name);
+bool			is_parent_builtin(char *name);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, \
+				int fd_i, int fd_o);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, \
+				int fd_i, int fd_o);
+int				execute_builtins(t_cmd *cmd, t_shell *shell);
+int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
+/* others cmds */
 char			**lst_env_to_array(t_env *env);
 int				cmd_not_found(t_cmd *cmd);
 int				prepare_cmd(t_cmd *cmd, t_env *env);
-int				execute_cmd(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile);
-void			execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile);
+int				execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o);
+void			execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execution(t_ast *ast, t_shell *shell);
 int				get_exit_code(int status);
 /* redir & heredoc */
 int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				prepare_redirections(t_cmd *cmd);
-void			simple_dup(t_cmd *cmd, int fd_infile, int fd_outfile);
+void			manage_dup(t_cmd *cmd, int fd_i, int fd_o);
 void			handle_all_heredocs(t_ast *node);
 
 /*-------Display|TEST-------*/

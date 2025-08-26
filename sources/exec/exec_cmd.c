@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_single_cmd.c                                  :+:      :+:    :+:   */
+/*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 16:10:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 10:29:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	get_exit_code(int status)
 		return (EXIT_FAILURE);
 }
 
-static void	execute_child(t_cmd *cmd, char **env_array, int fd_infile, int fd_outfile)
+static void	execute_child(t_cmd *cmd, char **env_array, int fd_i, int fd_o)
 {
 	pid_t	pid;
 
@@ -44,7 +44,7 @@ static void	execute_child(t_cmd *cmd, char **env_array, int fd_infile, int fd_ou
 	{
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
-		simple_dup(cmd, fd_infile, fd_outfile);
+		manage_dup(cmd, fd_i, fd_o);
 		execve(cmd->abs_path, cmd->args, env_array);
 		perror("execve");
 		exit(EXIT_CMD_NOT_FOUND);
@@ -52,7 +52,7 @@ static void	execute_child(t_cmd *cmd, char **env_array, int fd_infile, int fd_ou
 	cmd->pid = pid;
 }
 
-static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_outfile)
+static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	int		status;
 	char	**env_array;
@@ -67,14 +67,14 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_infile, int fd_ou
 	status = prepare_cmd(cmd, shell->env);
 	if (status != EXIT_SUCCESS)
 		return (status);
-	execute_child(cmd, env_array, fd_infile, fd_outfile);
+	execute_child(cmd, env_array, fd_i, fd_o);
 	waitpid(cmd->pid, &status, 0);
 	exit_code = get_exit_code(status);
 	free_tab_chars(env_array);
 	return (exit_code);
 }
 
-int	execute_cmd(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
+int	execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
 	t_cmd	*cmd;
 
@@ -85,6 +85,6 @@ int	execute_cmd(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
 	if (!cmd->name)
 		return (EXIT_SUCCESS);
 	if (is_a_builtin(cmd->name))
-		return (exec_builtin_simple(cmd, shell, fd_infile, fd_outfile));
-	return (fork_and_execute(cmd, shell, fd_infile, fd_outfile));
+		return (exec_builtin_simple(cmd, shell, fd_i, fd_o));
+	return (fork_and_execute(cmd, shell, fd_i, fd_o));
 }

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmds.c                                        :+:      :+:    :+:   */
+/*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/25 16:02:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 10:44:03 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
+void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
 	int	pipefd[2];
 
@@ -24,9 +24,9 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
 			perror("pipe");
 			free_and_exit(shell, 1);
 		}
-		execute_ast(node->data.binary.left, shell, fd_infile, pipefd[1]);
+		execute_ast(node->data.binary.left, shell, fd_i, pipefd[1]);
 		close(pipefd[1]);
-		execute_ast(node->data.binary.right, shell, pipefd[0], fd_outfile);
+		execute_ast(node->data.binary.right, shell, pipefd[0], fd_o);
 		if (pipefd[0] != -1)
 			close(pipefd[0]);
 		if (pipefd[1] != -1)
@@ -34,27 +34,26 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_infile, int fd_outfile)
 	}
 	if (node->node_type == NODE_CMD)
 	{
-		shell->exit_status = execute_cmd(node, shell, fd_infile, fd_outfile);
+		shell->exit_status = execute_cmd(node, shell, fd_i, fd_o);
 	}
 }
 
 void	execution(t_ast *ast, t_shell *shell)
 {
-	int		fd_infile;
-	int		fd_outfile;
+	int		fd_i;
+	int		fd_o;
 	t_cmd	*cmd;
 
-	fd_infile = STDIN_FILENO;
-	fd_outfile = STDOUT_FILENO;
+	fd_i = STDIN_FILENO;
+	fd_o = STDOUT_FILENO;
 	if (shell->ast->node_type == NODE_CMD)
 	{
 		cmd = shell->ast->data.cmd.cmd;
 		if (is_parent_builtin(cmd->name))
-			shell->exit_status = exec_builtin_in_parent(cmd, shell, fd_infile, fd_outfile);
+			shell->exit_status = exec_builtin_in_parent(cmd, shell, fd_i, fd_o);
 		else
-			shell->exit_status = execute_cmd(ast, shell, fd_infile, fd_outfile);
+			shell->exit_status = execute_cmd(ast, shell, fd_i, fd_o);
 	}
 	else
-		execute_ast(ast, shell, fd_infile, fd_outfile);
+		execute_ast(ast, shell, fd_i, fd_o);
 }
-
