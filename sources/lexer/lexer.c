@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 15:40:09 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:55:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ static void	process_single_quote_state(t_lexer *lexer)
 	if (c == '\'')
 	{
 		lexer->state = STATE_NORMAL;
+		if (lexer->input[lexer->pos - 1] == '\'')
+		{
+			add_char(&lexer->tmp_token, '\0');
+			create_token(lexer, true);
+		}
 		if (lexer->input[lexer->pos + 1] != ' ')
 			create_token(lexer, true);
 	}
@@ -36,7 +41,12 @@ static void	process_double_quote_state(t_lexer *lexer)
 	if (c == '"')
 	{
 		lexer->state = STATE_NORMAL;
-		if (lexer->input[lexer->pos + 1] != ' ')
+		if (lexer->input[lexer->pos - 1] == '"')
+		{
+			add_char(&lexer->tmp_token, '\0');
+			create_token(lexer, true);
+		}
+		else if (lexer->input[lexer->pos + 1] != ' ')
 			create_token(lexer, true);
 	}
 	else

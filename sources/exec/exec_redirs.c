@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 15:10:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:24:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	open_infile(char *infile)
 {
 	int	fd;
 
-	if (access(infile, F_OK | R_OK) == -1)
+	if (access(infile, F_OK) == -1)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(infile, 2);
@@ -92,7 +92,8 @@ int	prepare_redirections(t_cmd *cmd)
 		}
 		else if (current->type == TOKEN_REDIR_OUT || \
 		current->type == TOKEN_APPEND_OUT)
-			handle_output_redir(cmd, current);
+			if (handle_output_redir(cmd, current) == -1)
+				return (-1);
 		current = current->next;
 	}
 	return (0);

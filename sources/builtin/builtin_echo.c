@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/26 10:39:55 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:16:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	builtin_echo(char **args, t_shell *shell)
 	{
 		if (!first)
 			ft_printf(" ");
-		if (ft_strcmp(" $?", args[i]))
-			ft_printf("%d", shell->exit_status);
+		if (!ft_strcmp(" $?", args[i]))
+			ft_printf("%d", shell->prev_status);
 		else
 			ft_printf("%s", args[i]);
 		first = false;

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 12:11:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:13:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 # define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
 # define ERROR_MISSING_FILE "bash: No such file or directory"
+# define ERROR_CMD_NOT_FOUND "bash: Command not found"
 
 /*=============== LEXER =============== */
 
@@ -166,7 +167,8 @@ typedef struct s_shell
 	t_token	*tokens;
 	t_ast	*ast;
 	t_env	*env;
-	int		exit_status;
+	int		prev_status;
+	int		status;
 }	t_shell;
 
 /*=============== GLOBAL VARIABLE =============== */
@@ -174,10 +176,12 @@ typedef struct s_shell
 extern int	g_exit_status;
 
 /*=============== FUNCTIONS =============== */
-
+/*-------Syntax errors-------*/
+int				handle_special_char(t_token *head);
 int				get_syntax_error_status(t_token *lst_tokens);
+void			get_syntax_errors(t_token *lst_tokens);
 
-/*-------STRUCT-------*/
+/*-------Structs-------*/
 void			init_all_structs(t_shell *shell, char **envp);
 void			clear_args_lst(t_arg **lst);
 void			clear_redirs_lst(t_redir **lst);

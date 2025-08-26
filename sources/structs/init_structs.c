@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 14:20:47 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:29:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:33:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ void	init_all_structs(t_shell *shell, char **envp)
 	if (!shell)
 		return ;
 	ft_bzero(shell, sizeof(t_shell));
-	shell->exit_status = EXIT_SUCCESS;
+	shell->status = EXIT_SUCCESS;
 	shell->env = get_env(envp);
 }

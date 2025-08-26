@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/25 14:59:27 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:49:16 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	builtin_export(t_env *env, char **args)
 
 	exit_code = EXIT_SUCCESS;
 	if (!args)
-		return (EXIT_SUCCESS);
+		return (exit_code);
 	if (args && !args[1])
 		return (print_env_export(env));
 	i = 1;

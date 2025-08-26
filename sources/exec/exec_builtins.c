@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 10:40:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 16:20:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
 	if (pid == 0)
 	{
 		if (prepare_redirections(cmd) == -1)
-			exit(EXIT_FAILURE);
+			free_and_exit(shell, EXIT_FAILURE);
 		manage_dup(cmd, fd_i, fd_o);
 		exit(execute_builtins(cmd, shell));
 	}
@@ -59,7 +59,7 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	{
 		close(saved_in);
 		close(saved_out);
-		return (EXIT_FAILURE);
+		free_and_exit(shell, EXIT_FAILURE);
 	}
 	manage_dup(cmd, fd_i, fd_o);
 	exit_code = execute_parent_builtins(cmd, shell);
