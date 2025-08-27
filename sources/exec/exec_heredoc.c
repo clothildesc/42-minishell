@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 10:48:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:52:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,18 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 	int		limiter_reached;
 
 	limiter_reached = 0;
-	while (1)
+	remove_echoctl();
+	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
+		if (g_signal_received == 130)
+		{
+			free(line);
+			return ;
+		}
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 \
 			&& line[ft_strlen(limiter)] == '\n')
 		{
@@ -45,8 +51,9 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
+	active_echoctl();
 	if (!limiter_reached)
-		ft_putendl_fd("bash: warning: here-doc delimited by eof", 2);
+		ft_putendl_fd("\nbash: warning: here-doc delimited by eof", 2);
 }
 
 static int	get_unique_id(void)
@@ -86,14 +93,62 @@ static int	create_here_doc(char *limiter)
 	return (free(tmp_file_name), fd);
 }
 
-static void	process_heredoc(t_cmd *cmd, char *target)
+static void	close_prev_fd_heredoc(t_ast *node)
 {
-	if (cmd->fd_heredoc != -1)
-		close(cmd->fd_heredoc);
-	cmd->fd_heredoc = create_here_doc(target);
+	t_cmd	*cmd;
+
+	if (!node)
+		return ;
+	if (node->node_type == NODE_PIPE)
+	{
+		close_prev_fd_heredoc(node->data.binary.left);
+		close_prev_fd_heredoc(node->data.binary.right);
+	}
+	else if (node->node_type == NODE_CMD)
+	{
+		cmd = node->data.cmd.cmd;
+		if (cmd->fd_heredoc != -1)
+			close(cmd->fd_heredoc);
+	}
 }
 
-void	handle_all_heredocs(t_ast *node)
+static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork heredoc");
+		return ;
+	}
+	if (pid == 0)
+	{
+		close_prev_fd_heredoc(root);
+		set_up_signals_child(true);
+		cmd->fd_heredoc = create_here_doc(limiter);
+		if (cmd->fd_heredoc != -1)
+			exit(EXIT_SUCCESS);
+		else
+			exit(EXIT_FAILURE);
+	}
+	cmd->pid_heredoc = pid;
+}
+
+static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
+{
+	int		status;
+	int		exit_code;
+
+	if (cmd->fd_heredoc != -1)
+		close(cmd->fd_heredoc);
+	execute_child_heredoc(root, cmd, target);
+	waitpid(cmd->pid_heredoc, &status, 0);
+	exit_code = get_exit_code(status);
+	return (exit_code);
+}
+
+void	handle_all_heredocs(t_ast *node, t_shell *shell)
 {
 	t_cmd	*cmd;
 	t_redir	*current_redir;
@@ -102,8 +157,8 @@ void	handle_all_heredocs(t_ast *node)
 		return ;
 	if (node->node_type == NODE_PIPE)
 	{
-		handle_all_heredocs(node->data.binary.left);
-		handle_all_heredocs(node->data.binary.right);
+		handle_all_heredocs(node->data.binary.left, shell);
+		handle_all_heredocs(node->data.binary.right, shell);
 	}
 	else if (node->node_type == NODE_CMD)
 	{
@@ -112,7 +167,7 @@ void	handle_all_heredocs(t_ast *node)
 		while (current_redir)
 		{
 			if (current_redir->type == HERE_DOC)
-				process_heredoc(cmd, current_redir->target);
+				shell->status = process_heredoc(shell->ast, cmd, current_redir->target);
 			current_redir = current_redir->next;
 		}
 	}

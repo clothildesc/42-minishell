@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:21:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:20:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,20 @@ int	cmd_not_found(t_cmd *cmd)
 
 int	get_exit_code(int status)
 {
+	int	sig;
+
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+		else if (sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		g_signal_received = 128 + sig;
+		return (g_signal_received);
+	}
 	else
 		return (EXIT_FAILURE);
 }
@@ -45,6 +55,7 @@ static void	execute_child(t_cmd *cmd, char **env_array, int fd_i, int fd_o)
 		if (prepare_redirections(cmd) == -1)
 			exit(EXIT_FAILURE);
 		manage_dup(cmd, fd_i, fd_o);
+		set_up_signals_child(false);
 		execve(cmd->abs_path, cmd->args, env_array);
 		perror("execve");
 		exit(EXIT_CMD_NOT_FOUND);
@@ -80,7 +91,7 @@ int	execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 
 	if (!node)
 		return (EXIT_FAILURE);
-	handle_all_heredocs(node);
+	handle_all_heredocs(node, shell);
 	cmd = node->data.cmd.cmd;
 	if (!cmd->name)
 		return (EXIT_SUCCESS);

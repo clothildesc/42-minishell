@@ -6,13 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 10:52:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:46:11 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <termios.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -127,6 +128,7 @@ typedef struct s_cmd
 	int				fd_out;
 	int				fd_heredoc;
 	pid_t			pid;
+	pid_t			pid_heredoc;
 	int				exit_status;
 }	t_cmd;
 
@@ -178,8 +180,11 @@ extern int	g_signal_received;
 
 /*=============== FUNCTIONS =============== */
 /*-------Signal-------*/
-void			set_up_signals(void);
-void			ft_signal_handler(int signum);
+void			set_up_signals_parent(void);
+void			set_up_signals_child(bool heredoc);
+void			ft_handler_sigint(int signum);
+void			remove_echoctl(void);
+void			active_echoctl(void);
 /*-------Syntax errors-------*/
 int				handle_special_char(t_token *head);
 int				get_syntax_error_status(t_token *lst_tokens);
@@ -267,7 +272,7 @@ int				open_infile(char *infile);
 int				open_outfile(char *outfile, t_token_type type);
 int				prepare_redirections(t_cmd *cmd);
 void			manage_dup(t_cmd *cmd, int fd_i, int fd_o);
-void			handle_all_heredocs(t_ast *node);
+void			handle_all_heredocs(t_ast *node, t_shell *shell);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

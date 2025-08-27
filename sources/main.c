@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 10:52:37 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:44:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,23 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_shell	shell;
+	int		backup;
 
 	(void)av;
 	if (ac == 1)
 	{
 		init_all_structs(&shell, envp);
-		set_up_signals();
 		rl_catch_signals = 0;
+		set_up_signals_parent();
 		while (true)
 		{
 			g_signal_received = 0;
-			int backup = dup(0);//check failur
-			signal(2, ft_signal_handler);
+			backup = dup(STDIN_FILENO);
+			signal(SIGINT, ft_handler_sigint);
 			line = readline("minishell> ");
-			signal(2, SIG_IGN);
+			signal(SIGINT, SIG_IGN);
 			if (g_signal_received)
-				dup2(backup, 0);
+				dup2(backup, STDIN_FILENO);
 			close(backup);
 			if (line == NULL && g_signal_received == 0)
 			{
