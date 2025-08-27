@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 01:30:33 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/27 10:52:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,12 +174,12 @@ typedef struct s_shell
 
 /*=============== GLOBAL VARIABLE =============== */
 
-extern int	g_signal_recieved;
+extern int	g_signal_received;
 
 /*=============== FUNCTIONS =============== */
 /*-------Signal-------*/
 void			set_up_signals(void);
-void			ft_handler(int signum);
+void			ft_signal_handler(int signum);
 /*-------Syntax errors-------*/
 int				handle_special_char(t_token *head);
 int				get_syntax_error_status(t_token *lst_tokens);

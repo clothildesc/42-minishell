@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:34:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 10:48:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		free(line);
 	}
 	if (!limiter_reached)
-		ft_putstr_fd("bash: warning: here-doc delimited by eof", 2);
+		ft_putendl_fd("bash: warning: here-doc delimited by eof", 2);
 }
 
 static int	get_unique_id(void)
