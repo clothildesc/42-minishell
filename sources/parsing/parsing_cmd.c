@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:32:43 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:21:00 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static int	is_redir(t_token_type type)
 }
 
 static void	process_word(t_arg **args, t_token **current, t_cmd *new_cmd, \
-						t_env *env)
+						t_shell *shell)
 {
 	if (!new_cmd->name)
-		parse_cmd_name(new_cmd, (*current)->value, env);
-	create_args_lst(args, *current, env);
+		parse_cmd_name(new_cmd, (*current)->value, shell);
+	create_args_lst(args, *current, shell);
 	*current = (*current)->next;
 }
 
@@ -56,7 +56,7 @@ static void	process_redir(t_token **current, t_cmd *new_cmd)
 	*current = (*current)->next->next;
 }
 
-t_ast	*parse_cmd(t_token **tokens, t_env *env)
+t_ast	*parse_cmd(t_token **tokens, t_shell *shell)
 {
 	t_token	*current;
 	t_ast	*new_cmd;
@@ -70,7 +70,7 @@ t_ast	*parse_cmd(t_token **tokens, t_env *env)
 	while (current && current->type != PIPE)
 	{
 		if (current->type == WORD)
-			process_word(&args, &current, new_cmd->data.cmd.cmd, env);
+			process_word(&args, &current, new_cmd->data.cmd.cmd, shell);
 		else if (is_redir(current->type))
 			process_redir(&current, new_cmd->data.cmd.cmd);
 		else

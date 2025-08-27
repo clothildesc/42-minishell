@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:41:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 01:30:33 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -173,9 +174,12 @@ typedef struct s_shell
 
 /*=============== GLOBAL VARIABLE =============== */
 
-extern int	g_exit_status;
+extern int	g_signal_recieved;
 
 /*=============== FUNCTIONS =============== */
+/*-------Signal-------*/
+void			set_up_signals(void);
+void			ft_handler(int signum);
 /*-------Syntax errors-------*/
 int				handle_special_char(t_token *head);
 int				get_syntax_error_status(t_token *lst_tokens);
@@ -206,10 +210,10 @@ char			*create_token_value(t_lexer *lexer);
 
 /*-------AST-------*/
 t_ast			*parse_pipe(t_shell *shell, t_token **tokens);
-t_ast			*parse_cmd(t_token **tokens, t_env *env);
-t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env);
+t_ast			*parse_cmd(t_token **tokens, t_shell *shell);
+t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
-void			create_args_lst(t_arg **args, t_token *token, t_env *env);
+void			create_args_lst(t_arg **args, t_token *token, t_shell *shell);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
@@ -230,13 +234,13 @@ t_env			*get_node(t_env **head, char *key);
 t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
-char			*builtin_expand(char *input, t_env *env);
+char			*builtin_expand(char *input, t_shell *shell);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
 int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				builtin_echo(char **args, t_shell *shell);
+int				builtin_echo(char **args);
 /* exit */
 // int				builtin_exit(t_shell *shell, char **args);
 

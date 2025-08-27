@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/26 15:58:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:11:44 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-t_cmd	*parse_cmd_name(t_cmd *new, char *cmd_name, t_env *env)
+t_cmd	*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell)
 {
 	char	*cmd_expanded;
 
-	cmd_expanded = builtin_expand(cmd_name, env);
+	cmd_expanded = builtin_expand(cmd_name, shell);
 	if (cmd_expanded)
 		new->name = cmd_expanded;
 	else
