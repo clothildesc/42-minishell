@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 16:52:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 11:08:54 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		ft_putendl_fd("\nbash: warning: here-doc delimited by eof", 2);
 }
 
-static int	get_unique_id(void)
+int	get_unique_id(void)
 {
 	static int	counter;
 
@@ -75,11 +75,13 @@ static int	create_here_doc(char *limiter)
 	id_str = ft_itoa(unique_id);
 	if (!id_str)
 		return (-1);
-	tmp_file_name = ft_strjoin("/tmp/.heredoc_", id_str);
+	tmp_file_name = ft_strjoin("/tmp/.heredoc_minishell_", id_str);
 	free(id_str);
 	if (!tmp_file_name)
 		return (-1);
+	printf("filename: %s\n", tmp_file_name);
 	fd = open(tmp_file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	printf("fd: %d\n", fd);
 	if (fd == -1)
 	{
 		perror("bash: open heredoc");
@@ -93,7 +95,7 @@ static int	create_here_doc(char *limiter)
 	return (free(tmp_file_name), fd);
 }
 
-static void	close_prev_fd_heredoc(t_ast *node)
+void	close_prev_fd_heredoc(t_ast *node)
 {
 	t_cmd	*cmd;
 
@@ -145,6 +147,7 @@ static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
 	execute_child_heredoc(root, cmd, target);
 	waitpid(cmd->pid_heredoc, &status, 0);
 	exit_code = get_exit_code(status);
+	printf("fd_heredoc: %d\n", cmd->fd_heredoc);
 	return (exit_code);
 }
 
@@ -167,7 +170,8 @@ void	handle_all_heredocs(t_ast *node, t_shell *shell)
 		while (current_redir)
 		{
 			if (current_redir->type == HERE_DOC)
-				shell->status = process_heredoc(shell->ast, cmd, current_redir->target);
+				shell->status = process_heredoc(shell->ast, cmd, \
+					current_redir->target);
 			current_redir = current_redir->next;
 		}
 	}
