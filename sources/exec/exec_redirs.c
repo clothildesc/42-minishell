@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:31:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 21:28:40 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	open_outfile(char *outfile, t_token_type type)
 
 static void	check_file_open_and_close(int fd)
 {
-	if (fd != -1)
+	if (fd > 2)
 		close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/28 14:40:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 21:31:02 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	process_line(t_shell *shell, char *line)
 	if (line == NULL && g_signal_received == 0)
 	{
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
-		clear_env_lst(&shell->env);
+		clear_shell(shell);
 		return (0);
 	}
 	if (line && *line)

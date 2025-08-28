@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 16:24:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 21:26:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	count_cmd_nodes(t_ast *node, t_shell *shell)
 
 void	init_pids(t_shell *shell)
 {
-	shell->pids = calloc(sizeof(pid_t), shell->nb_cmds);
+	shell->pids = calloc(shell->nb_cmds, sizeof(pid_t));
 	if (!shell->pids)
 	{
 		perror("bash: pids malloc");
@@ -81,14 +81,16 @@ void	execution(t_ast *ast, t_shell *shell)
 	int		fd_o;
 	t_cmd	*cmd;
 
+	if (!ast)
+		return ;
 	fd_i = STDIN_FILENO;
 	fd_o = STDOUT_FILENO;
 	handle_all_heredocs(ast, shell);
 	count_cmd_nodes(ast, shell);
 	init_pids(shell);
-	if (shell->ast->node_type == NODE_CMD)
+	if (ast->node_type == NODE_CMD)
 	{
-		cmd = shell->ast->data.cmd.cmd;
+		cmd = ast->data.cmd.cmd;
 		if (is_parent_builtin(cmd->name))
 			shell->status = exec_builtin_in_parent(cmd, shell, fd_i, fd_o);
 		else

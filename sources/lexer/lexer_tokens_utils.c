@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 10:58:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 18:43:54 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 21:31:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	clear_tokens_lst(t_token **tokens)
 	t_token	*next;
 	t_token	*current;
 
+	printf("coucou\n");
 	if (!tokens || !*tokens)
 		return ;
 	current = *tokens;

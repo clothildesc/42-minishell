@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 18:59:24 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 21:20:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,6 @@ void	clear_lexer_tmp(t_lexer *lexer)
 	}
 }
 
-void	free_tab_pids(t_shell *shell, pid_t *pids)
-{
-	int	len;
-	int	i;
-
-	len = shell->nb_cmds;
-	i = 0;
-	if (!pids)
-		return ;
-	while (i < len)
-	{
-		free(&pids[i]);
-		i++;
-	}
-	free(pids);
-	pids = NULL;
-}
-
 void	clear_shell(t_shell *shell)
 {
 	if (!shell)
@@ -88,7 +70,10 @@ void	clear_shell(t_shell *shell)
 	if (shell->ast)
 		clear_ast(&shell->ast);
 	if (shell->pids)
-		free_tab_pids(shell, shell->pids);
+	{
+		free(shell->pids);
+		shell->pids = NULL;
+	}
 	if (shell->env)
 		clear_env_lst(&shell->env);
 	clear_lexer_tmp(&shell->lexer);
