@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 16:45:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 18:07:01 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,30 @@ char	*get_file_name(void)
 	return (tmp_file_name);
 }
 
-static int	create_here_doc(char *limiter, char *tmp_file_name)
+static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd_heredoc)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork heredoc");
+		return ;
+	}
+	if (pid == 0)
+	{
+		close_prev_fd_heredoc(root);
+		set_up_signals_child(true);
+		read_and_write_heredoc(fd_heredoc, limiter);
+		if (g_signal_received)
+			exit(g_signal_received);
+		else
+			exit(EXIT_SUCCESS);
+	}
+	cmd->pid_heredoc = pid;
+}
+
+static int	create_here_doc(t_ast *root, t_cmd *cmd, char *limiter, char *tmp_file_name)
 {
 	int		fd;
 
@@ -94,7 +117,8 @@ static int	create_here_doc(char *limiter, char *tmp_file_name)
 		free(tmp_file_name);
 		return (-1);
 	}
-	read_and_write_heredoc(fd, limiter);
+	//read_and_write_heredoc(fd, limiter);
+	execute_child_heredoc(root, cmd, limiter, fd);
 	close(fd);
 	fd = open(tmp_file_name, O_RDONLY);
 	unlink(tmp_file_name);
@@ -120,29 +144,6 @@ void	close_prev_fd_heredoc(t_ast *node)
 	}
 }
 
-static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd_heredoc)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork heredoc");
-		return ;
-	}
-	if (pid == 0)
-	{
-		close_prev_fd_heredoc(root);
-		set_up_signals_child(true);
-		read_and_write_heredoc(fd_heredoc, limiter);
-		if (g_signal_received)
-			exit(g_signal_received);
-		else
-			exit(EXIT_SUCCESS);
-	}
-	cmd->pid_heredoc = pid;
-}
-
 static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
 {
 	int		status;
@@ -155,13 +156,15 @@ static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
 	tmp_file_name = get_file_name();
 	if (!tmp_file_name)
 		return (EXIT_FAILURE);
-	fd_tmp = create_here_doc(target, tmp_file_name);
+	fd_tmp = create_here_doc(root, cmd, target, tmp_file_name);
 	if (fd_tmp == -1)
 		return (EXIT_FAILURE);
-	execute_child_heredoc(root, cmd, target, cmd->fd_heredoc);
+	// execute_child_heredoc(root, cmd, target, cmd->fd_heredoc);
 	waitpid(cmd->pid_heredoc, &status, 0);
 	printf("pid_heredoc: %d\n", cmd->pid_heredoc);
 	exit_code = get_exit_code(status);
+	if (exit_code == SIGINT)
+		
 	close(fd_tmp);
 	cmd->fd_heredoc = open(tmp_file_name, O_RDONLY);
 	if (cmd->fd_heredoc == -1)

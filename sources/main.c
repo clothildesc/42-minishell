@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 15:13:05 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 19:01:35 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,15 @@ int	main(int ac, char **av, char **envp)
 				if (!restore_backup(&shell, backup, line))
 					return (EXIT_FAILURE);
 			}
-			close(backup);
+			if (backup != -1)
+				close(backup);
 			if (!process_line(&shell, line))
 				return (EXIT_FAILURE);
 			if (g_signal_received)
 				shell.prev_status = g_signal_received;
 			free(line);
 		}
-		clear_env_lst(&shell.env);
+		clear_shell(&shell);
 	}
 	return (shell.status);
 }
