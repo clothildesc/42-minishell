@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 10:30:54 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:09:02 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int				prepare_cmd(t_cmd *cmd, t_env *env);
 int				execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execution(t_ast *ast, t_shell *shell);
+int				get_index_pid(void);
 int				get_exit_code(int status);
 /* redir & heredoc */
 int				get_unique_id(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 10:55:18 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:13:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(int ac, char **av, char **envp)
 				return (EXIT_FAILURE);
 			signal(SIGINT, ft_handler_sigint);
 			line = readline("minishell> ");
+			signal(SIGINT, SIG_IGN);
 			if (g_signal_received)
 			{
 				if (!restore_backup(&shell, backup, line))

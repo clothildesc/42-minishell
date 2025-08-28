@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 11:08:54 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:45:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ int	get_unique_id(void)
 	return (counter);
 }
 
-static int	create_here_doc(char *limiter)
+char	*get_file_name(void)
 {
-	int		fd;
 	int		unique_id;
 	char	*tmp_file_name;
 	char	*id_str;
@@ -74,12 +73,19 @@ static int	create_here_doc(char *limiter)
 	unique_id = get_unique_id();
 	id_str = ft_itoa(unique_id);
 	if (!id_str)
-		return (-1);
+		return (NULL);
 	tmp_file_name = ft_strjoin("/tmp/.heredoc_minishell_", id_str);
 	free(id_str);
 	if (!tmp_file_name)
-		return (-1);
+		return (NULL);
 	printf("filename: %s\n", tmp_file_name);
+	return (tmp_file_name);
+}
+
+static int	create_here_doc(char *limiter, char *tmp_file_name)
+{
+	int		fd;
+
 	fd = open(tmp_file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	printf("fd: %d\n", fd);
 	if (fd == -1)
@@ -114,7 +120,7 @@ void	close_prev_fd_heredoc(t_ast *node)
 	}
 }
 
-static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter)
+static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd_heredoc)
 {
 	pid_t	pid;
 
@@ -128,11 +134,11 @@ static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter)
 	{
 		close_prev_fd_heredoc(root);
 		set_up_signals_child(true);
-		cmd->fd_heredoc = create_here_doc(limiter);
-		if (cmd->fd_heredoc != -1)
-			exit(EXIT_SUCCESS);
+		read_and_write_heredoc(fd_heredoc, limiter);
+		if (g_signal_received)
+			exit(g_signal_received);
 		else
-			exit(EXIT_FAILURE);
+			exit(EXIT_SUCCESS);
 	}
 	cmd->pid_heredoc = pid;
 }
@@ -141,13 +147,27 @@ static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
 {
 	int		status;
 	int		exit_code;
+	int		fd_tmp;
+	char	*tmp_file_name;
 
 	if (cmd->fd_heredoc != -1)
 		close(cmd->fd_heredoc);
-	execute_child_heredoc(root, cmd, target);
+	tmp_file_name = get_file_name();
+	if (!tmp_file_name)
+		return (EXIT_FAILURE);
+	fd_tmp = create_here_doc(target, tmp_file_name);
+	if (fd_tmp == -1)
+		return (EXIT_FAILURE);
+	execute_child_heredoc(root, cmd, target, cmd->fd_heredoc);
 	waitpid(cmd->pid_heredoc, &status, 0);
+	printf("pid_heredoc: %d\n", cmd->pid_heredoc);
 	exit_code = get_exit_code(status);
+	close(fd_tmp);
+	cmd->fd_heredoc = open(tmp_file_name, O_RDONLY);
+	if (cmd->fd_heredoc == -1)
+		return (EXIT_FAILURE);
 	printf("fd_heredoc: %d\n", cmd->fd_heredoc);
+	unlink(tmp_file_name);
 	return (exit_code);
 }
 

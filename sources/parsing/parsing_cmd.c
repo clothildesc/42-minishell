@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 00:21:00 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 14:11:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_ast	*parse_cmd(t_token **tokens, t_shell *shell)
 	t_arg	*args;
 
 	args = NULL;
+	shell->nb_cmds++;
 	current = *tokens;
 	new_cmd = init_cmd_node();
 	if (!new_cmd)

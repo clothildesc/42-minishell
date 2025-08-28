@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 16:40:10 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 16:24:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
-	int	pipefd[2];
+	int		pipefd[2];
 
 	if (node->node_type == NODE_PIPE)
 	{	
@@ -32,8 +32,47 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 		if (pipefd[1] != -1)
 			close(pipefd[1]);
 	}
-	if (node->node_type == NODE_CMD)
+	else if (node->node_type == NODE_CMD)
 		shell->status = execute_cmd(node, shell, fd_i, fd_o);
+}
+
+void	count_cmd_nodes(t_ast *node, t_shell *shell)
+{
+	if (!node)
+		return ;
+	if (node->node_type == NODE_PIPE)
+	{
+		count_cmd_nodes(node->data.binary.left, shell);
+		count_cmd_nodes(node->data.binary.right, shell);
+	}
+	else if (node->node_type == NODE_CMD)
+		shell->nb_cmds++;
+}
+
+void	init_pids(t_shell *shell)
+{
+	shell->pids = calloc(sizeof(pid_t), shell->nb_cmds);
+	if (!shell->pids)
+	{
+		perror("bash: pids malloc");
+		free_and_exit(shell, EXIT_FAILURE);
+	}
+}
+
+void	get_status_code(t_shell *shell)
+{
+	int		i;
+	int		status;
+	pid_t	current_pid;
+
+	i = 0;
+	while (i < shell->nb_cmds)
+	{
+		current_pid = waitpid(shell->pids[i], &status, 0);
+		if (current_pid == shell->pids[shell->nb_cmds - 1])
+			shell->status = get_exit_code(status);
+		i++;
+	}
 }
 
 void	execution(t_ast *ast, t_shell *shell)
@@ -44,6 +83,9 @@ void	execution(t_ast *ast, t_shell *shell)
 
 	fd_i = STDIN_FILENO;
 	fd_o = STDOUT_FILENO;
+	handle_all_heredocs(ast, shell);
+	count_cmd_nodes(ast, shell);
+	init_pids(shell);
 	if (shell->ast->node_type == NODE_CMD)
 	{
 		cmd = shell->ast->data.cmd.cmd;
@@ -54,4 +96,5 @@ void	execution(t_ast *ast, t_shell *shell)
 	}
 	else
 		execute_ast(ast, shell, fd_i, fd_o);
+	get_status_code(shell);
 }

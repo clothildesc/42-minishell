@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:01:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/28 10:09:29 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:56:55 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ typedef struct s_shell
 	t_token	*tokens;
 	t_ast	*ast;
 	t_env	*env;
+	int		nb_cmds;
+	pid_t	*pids;
 	int		prev_status;
 	int		status;
 }	t_shell;

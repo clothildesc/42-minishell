@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 10:39:48 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 16:07:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,26 @@
 static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
 									int fd_i, int fd_o)
 {
+	if (prepare_redirections(cmd) == -1)
+		free_and_exit(shell, EXIT_FAILURE);
+	manage_dup(cmd, fd_i, fd_o);
+	exit(execute_builtins(cmd, shell));
+}
+
+int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
+{
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		return ;
+		return (EXIT_FAILURE);
 	}
 	if (pid == 0)
-	{
-		if (prepare_redirections(cmd) == -1)
-			free_and_exit(shell, EXIT_FAILURE);
-		manage_dup(cmd, fd_i, fd_o);
-		exit(execute_builtins(cmd, shell));
-	}
-	cmd->pid = pid;
-}
-
-int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
-{
-	int		status;
-	int		exit_code;
-
-	execute_child_builtin(cmd, shell, fd_i, fd_o);
-	waitpid(cmd->pid, &status, 0);
-	exit_code = get_exit_code(status);
-	return (exit_code);
+		execute_child_builtin(cmd, shell, fd_i, fd_o);
+	shell->pids[get_index_pid()] = pid;
+	return (EXIT_SUCCESS);
 }
 
 int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
@@ -54,7 +47,13 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	saved_in = dup(STDIN_FILENO);
 	saved_out = dup(STDOUT_FILENO);
 	if (saved_in == -1 || saved_out == -1)
+	{
+		if (saved_in != -1)
+			close(saved_in);
+		if (saved_out != -1)
+			close (saved_out);
 		return (EXIT_FAILURE);
+	}
 	if (prepare_redirections(cmd) == -1)
 	{
 		close(saved_in);
