@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:23:51 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/01 11:11:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 18:47:19 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_count_words(char const *s, char c)
+static int	word_count(const char *s, char c)
 {
 	int	i;
 	int	count;
@@ -21,80 +21,85 @@ static int	ft_count_words(char const *s, char c)
 	count = 0;
 	while (s[i])
 	{
-		if (i == 0 || c == s[i - 1])
-		{
-			if (c != s[i])
-				count++;
-		}
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+			count++;
 		i++;
 	}
 	return (count);
 }
 
-static char	*ft_extract_word(char const *s, int start, int end)
+static char	*fill_word(const char *s, unsigned int start, int end)
 {
-	char	*tab;
+	int		len;
+	char	*sub;
 	int		i;
 
+	len = (end - start);
+	sub = malloc(sizeof(char) * (len + 1));
 	i = 0;
-	tab = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!tab)
+	if (!sub)
 		return (NULL);
-	while (start < end)
+	while (i < len)
 	{
-		tab[i] = s[start];
+		sub[i] = s[start + i];
 		i++;
-		start++;
 	}
-	tab[i] = '\0';
-	return (tab);
+	sub[i] = '\0';
+	return (sub);
 }
 
-static void	ft_free(char **result, int i)
+static void	free_split(char **result)
 {
-	while (i >= 0)
+	int	i;
+
+	i = 0;
+	if (!result)
+		return ;
+	while (result[i])
 	{
 		free(result[i]);
-		i--;
+		i++;
 	}
 	free(result);
 }
 
-static char	**ft_split_fill(char const *s, char **result, char c)
+static char	**fill_results(const char *s, char c, char **result)
 {
 	int	i;
-	int	j;
 	int	start;
+	int	word_index;
 
+	word_index = 0;
 	i = 0;
-	j = 0;
-	while (s[i] && j < ft_count_words(s, c))
+	while (s[i])
 	{
-		if (s[i] != c)
+		while (s[i] == c)
+			i++;
+		if (s[i])
 		{
 			start = i;
 			while (s[i] && s[i] != c)
 				i++;
-			result[j] = ft_extract_word(s, start, i);
-			if (!result[j])
-			{
-				ft_free(result, j);
-				return (NULL);
-			}
-			j++;
+			result[word_index] = fill_word(s, start, i);
+			if (!result[word_index])
+				return (free_split(result), NULL);
+			word_index++;
 		}
-		i++;
 	}
-	result[j] = NULL;
+	result[word_index] = NULL;
 	return (result);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(const char *s, char c)
 {
+	int		count;
 	char	**result;
 
-	result = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
+	if (!s)
+		return (NULL);
+	count = word_count(s, c);
+	result = malloc(sizeof(char *) * (count + 1));
 	if (!result)
 		return (NULL);
-	return (ft_split_fill(s, result, c));
+	return (fill_results(s, c, result));
 }

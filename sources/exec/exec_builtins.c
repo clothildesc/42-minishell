@@ -6,39 +6,38 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:58:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 16:07:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exec_builtin_simple(t_cmd *cmd, t_shell *shell)
+static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
+									int fd_i, int fd_o)
 {
-	int	exit_code;
-	int	saved_in;
-	int	saved_out;
-
-	exit_code = EXIT_SUCCESS;
-	saved_in = dup(STDIN_FILENO);
-	saved_out = dup(STDOUT_FILENO);
-	if (saved_in == -1 || saved_out == -1)
-		return (EXIT_FAILURE);
 	if (prepare_redirections(cmd) == -1)
-	{
-		close(saved_in);
-		close(saved_out);
-		return (EXIT_FAILURE);
-	}
-	apply_redirections(cmd);
-	exit_code = execute_builtins(cmd, shell);
-	dup2(saved_in, STDIN_FILENO);
-	dup2(saved_out, STDOUT_FILENO);
-	close(saved_in);
-	close(saved_out);
-	return (exit_code);
+		free_and_exit(shell, EXIT_FAILURE);
+	manage_dup(cmd, fd_i, fd_o);
+	exit(execute_builtins(cmd, shell));
 }
 
-int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell)
+int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (EXIT_FAILURE);
+	}
+	if (pid == 0)
+		execute_child_builtin(cmd, shell, fd_i, fd_o);
+	shell->pids[get_index_pid()] = pid;
+	return (EXIT_SUCCESS);
+}
+
+int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	int	exit_code;
 	int	saved_in;
@@ -48,17 +47,24 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell)
 	saved_in = dup(STDIN_FILENO);
 	saved_out = dup(STDOUT_FILENO);
 	if (saved_in == -1 || saved_out == -1)
+	{
+		if (saved_in != -1)
+			close(saved_in);
+		if (saved_out != -1)
+			close (saved_out);
 		return (EXIT_FAILURE);
+	}
 	if (prepare_redirections(cmd) == -1)
 	{
 		close(saved_in);
 		close(saved_out);
-		return (EXIT_FAILURE);
+		free_and_exit(shell, EXIT_FAILURE);
 	}
-	apply_redirections(cmd);
+	manage_dup(cmd, fd_i, fd_o);
 	exit_code = execute_parent_builtins(cmd, shell);
-	dup2(saved_in, STDIN_FILENO);
-	dup2(saved_out, STDOUT_FILENO);
+	if (dup2(saved_in, STDIN_FILENO) != STDIN_FILENO \
+	|| dup2(saved_out, STDOUT_FILENO) != STDOUT_FILENO)
+		exit (EXIT_FAILURE);
 	close(saved_in);
 	close(saved_out);
 	return (exit_code);

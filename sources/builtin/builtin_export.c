@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/22 14:02:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:49:16 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ static void	handle_export_key(t_env *env, char *arg, char *key, \
 	t_env	*new;
 
 	if (!key_name_is_valid(key))
+	{
 		*exit_code = EXIT_FAILURE;
+		free(key);
+	}
 	else
 	{
 		new = find_or_create_env(env, arg, key);
@@ -110,7 +113,7 @@ int	builtin_export(t_env *env, char **args)
 
 	exit_code = EXIT_SUCCESS;
 	if (!args)
-		return (EXIT_SUCCESS);
+		return (exit_code);
 	if (args && !args[1])
 		return (print_env_export(env));
 	i = 1;
@@ -120,7 +123,6 @@ int	builtin_export(t_env *env, char **args)
 		if (!key)
 			return (EXIT_SUCCESS);
 		handle_export_key(env, args[i], key, &exit_code);
-		free(key);
 		i++;
 	}
 	return (exit_code);

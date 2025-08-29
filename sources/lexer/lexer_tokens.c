@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/18 15:06:20 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 19:46:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	create_token(t_lexer *lexer, bool to_join)
 			free(token_value);
 			return ;
 		}
-		new_token = set_new_token(lexer, new_token, token_value);
+		set_new_token(lexer, new_token, token_value);
 		reset_tmp_token(lexer);
 	}
 }

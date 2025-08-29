@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:29:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 14:11:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ static t_ast	*init_cmd_node(void)
 
 static int	is_redir(t_token_type type)
 {
-	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT || \
-			type == TOKEN_HERE_DOC || type == TOKEN_APPEND_OUT);
+	return (type == REDIR_IN || type == REDIR_OUT || \
+			type == HERE_DOC || type == APPEND_OUT);
 }
 
 static void	process_word(t_arg **args, t_token **current, t_cmd *new_cmd, \
-						t_env *env)
+						t_shell *shell)
 {
 	if (!new_cmd->name)
-		parse_cmd_name(new_cmd, (*current)->value, env);
-	create_args_lst(args, *current, env);
+		parse_cmd_name(new_cmd, (*current)->value, shell);
+	create_args_lst(args, *current, shell);
 	*current = (*current)->next;
 }
 
@@ -56,21 +56,22 @@ static void	process_redir(t_token **current, t_cmd *new_cmd)
 	*current = (*current)->next->next;
 }
 
-t_ast	*parse_cmd(t_token **tokens, t_env *env)
+t_ast	*parse_cmd(t_token **tokens, t_shell *shell)
 {
 	t_token	*current;
 	t_ast	*new_cmd;
 	t_arg	*args;
 
 	args = NULL;
+	shell->nb_cmds++;
 	current = *tokens;
 	new_cmd = init_cmd_node();
 	if (!new_cmd)
 		return (NULL);
-	while (current && current->type != TOKEN_PIPE)
+	while (current && current->type != PIPE)
 	{
-		if (current->type == TOKEN_WORD)
-			process_word(&args, &current, new_cmd->data.cmd.cmd, env);
+		if (current->type == WORD)
+			process_word(&args, &current, new_cmd->data.cmd.cmd, shell);
 		else if (is_redir(current->type))
 			process_redir(&current, new_cmd->data.cmd.cmd);
 		else

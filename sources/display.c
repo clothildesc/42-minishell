@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 20:36:13 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/19 15:10:00 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:15:41 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 void	display_lexer_results(t_token *lst_tokens)
 {
-	t_token	*head;
+	t_token	*current;
 
 	if (!lst_tokens)
 		return ;
-	head = lst_tokens;
-	while (lst_tokens)
+	current = lst_tokens;
+	while (current)
 	{
 		ft_printf("VALUE: [%s]	TYPE: [%u]	TO_EXP: [%d]	TO_JOIN: [%d]\n", \
-		lst_tokens->value, lst_tokens->type, \
-		lst_tokens->to_exp, lst_tokens->to_join);
-		lst_tokens = lst_tokens->next;
+		current->value, current->type, \
+		current->to_exp, current->to_join);
+		current = current->next;
 	}
-	clear_tokens_lst(&head);
 }
 
 void	print_indent(int depth)

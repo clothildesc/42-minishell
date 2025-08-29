@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/20 13:52:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:19:55 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	create_args_lst(t_arg **args, t_token *token, t_env *env)
+void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 {
 	t_arg	*new_arg;
 	char	*exp;
@@ -25,7 +25,7 @@ void	create_args_lst(t_arg **args, t_token *token, t_env *env)
 	ft_bzero(new_arg, sizeof(t_arg));
 	exp = NULL;
 	if (token->to_exp == true)
-		exp = builtin_expand(token->value, env);
+		exp = builtin_expand(token->value, shell);
 	if (exp)
 		src = exp;
 	else

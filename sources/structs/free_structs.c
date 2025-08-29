@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:33:17 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 21:20:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,6 @@ void	clear_ast(t_ast **ast)
 	}
 	free(*ast);
 	*ast = NULL;
-}
-
-void	free_tab_chars(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	tab = NULL;
 }
 
 void	clear_env_lst(t_env **env)
@@ -85,7 +69,20 @@ void	clear_shell(t_shell *shell)
 		clear_tokens_lst(&shell->tokens);
 	if (shell->ast)
 		clear_ast(&shell->ast);
+	if (shell->pids)
+	{
+		free(shell->pids);
+		shell->pids = NULL;
+	}
 	if (shell->env)
 		clear_env_lst(&shell->env);
 	clear_lexer_tmp(&shell->lexer);
+}
+
+void	free_and_exit(t_shell *shell, int exit_code)
+{
+	if (!shell)
+		return ;
+	clear_shell(shell);
+	exit(exit_code);
 }

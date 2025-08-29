@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 10:05:13 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/10 17:59:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 14:43:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,11 @@ char	*get_next_line(int fd)
 	len = line_length(&list);
 	line = (char *)malloc(sizeof(char) * len + 1);
 	if (!line)
-		return (NULL);
-	extract_line(list, line);
-	if (!line)
 	{
-		free(line);
 		free_and_set__next_list(&list, NULL, NULL);
 		return (NULL);
 	}
+	extract_line(list, line);
 	clean_list(&list);
 	return (line);
 }

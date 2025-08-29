@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:13:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:24:53 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,16 @@ t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 	t_ast	*left;
 	t_ast	*new_pipe;
 	t_ast	*right;
+	t_token	*head;
 
-	left = parse_cmd(tokens, shell->env);
+	head = *tokens;
+	left = parse_cmd(tokens, shell);
 	if (!left)
 		return (NULL);
-	while (*tokens && (*tokens)->type == TOKEN_PIPE)
+	while (*tokens && (*tokens)->type == PIPE)
 	{
 		*tokens = (*tokens)->next;
-		right = parse_cmd(tokens, shell->env);
+		right = parse_cmd(tokens, shell);
 		if (!right)
 			return (clear_ast(&left), NULL);
 		new_pipe = create_pipe_node(left, right);
@@ -48,5 +50,6 @@ t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 			return (clear_ast(&left), clear_ast(&right), NULL);
 		left = new_pipe;
 	}
+	*tokens = head;
 	return (left);
 }

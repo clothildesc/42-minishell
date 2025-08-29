@@ -3,28 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 11:40:41 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:19:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	apply_redirections(t_cmd *cmd)
+static void	process_dup_infile(t_cmd *cmd, int fd_i)
 {
 	if (cmd->fd_in != -1)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-			perror("dup2");
+			perror("dup2 1");
 		close(cmd->fd_in);
+		if (fd_i != STDIN_FILENO)
+			close(fd_i);
 	}
+	else if (fd_i != STDIN_FILENO)
+	{
+		if (dup2(fd_i, STDIN_FILENO) == -1)
+			perror("dup2 2");
+		close(fd_i);
+	}
+}
+
+static void	process_dup_outfile(t_cmd *cmd, int fd_o)
+{
 	if (cmd->fd_out != -1)
 	{
 		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-			perror("dup2");
+			perror("dup2 3");
 		close(cmd->fd_out);
+		if (fd_o != STDOUT_FILENO)
+			close(fd_o);
 	}
+	else if (fd_o != STDOUT_FILENO)
+	{
+		if (dup2(fd_o, STDOUT_FILENO) == -1)
+			perror("dup2 4");
+		close(fd_o);
+	}
+}
+
+void	manage_dup(t_cmd *cmd, int fd_i, int fd_o)
+{
+	process_dup_infile(cmd, fd_i);
+	process_dup_outfile(cmd, fd_o);
 }

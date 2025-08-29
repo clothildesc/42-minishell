@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
+#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/08/14 12:17:14 by cscache          ###   ########.fr        #
+#    Updated: 2025/08/29 18:26:46 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g -O0 -ggdb
 LDFLAGS = -lreadline
 
 NAME = minishell
@@ -64,6 +64,6 @@ valgrind: $(NAME)
 
 valgrind-clean: $(NAME)
 	@echo "=== Valgrind without readline leaks ==="
-	-valgrind --leak-check=full --show-leak-kinds=definite,indirect,possible --suppressions=readline.supp ./$(NAME)
+	-valgrind --leak-check=full --show-leak-kinds=definite,indirect,possible  --track-fds=yes --suppressions=readline.supp ./$(NAME)
 
 .PHONY: all clean fclean re valgrind valgrind-clean valgrind-perfect

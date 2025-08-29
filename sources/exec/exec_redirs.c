@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 15:10:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:21:11 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	open_infile(char *infile)
 {
 	int	fd;
 
-	if (access(infile, F_OK | R_OK) == -1)
+	if (access(infile, F_OK) == -1)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(infile, 2);
@@ -41,7 +41,7 @@ int	open_outfile(char *outfile, t_token_type type)
 {
 	int	fd;
 
-	if (type == TOKEN_APPEND_OUT)
+	if (type == APPEND_OUT)
 		fd = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 	fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -56,7 +56,7 @@ int	open_outfile(char *outfile, t_token_type type)
 
 static void	check_file_open_and_close(int fd)
 {
-	if (fd != -1)
+	if (fd > 2)
 		close(fd);
 }
 
@@ -76,23 +76,25 @@ int	prepare_redirections(t_cmd *cmd)
 	current = cmd->redirs;
 	while (current)
 	{
-		if (current->type == TOKEN_HERE_DOC)
+		if (current->type == HERE_DOC)
 		{
 			check_file_open_and_close(cmd->fd_in);
 			cmd->fd_in = cmd->fd_heredoc;
+			if (cmd->fd_heredoc != -1)
+				close(cmd->fd_heredoc);
 			if (cmd->fd_in == -1)
 				return (-1);
 		}
-		else if (current->type == TOKEN_REDIR_IN)
+		else if (current->type == REDIR_IN)
 		{
 			check_file_open_and_close(cmd->fd_in);
 			cmd->fd_in = open_infile(current->target);
 			if (cmd->fd_in == -1)
 				return (-1);
 		}
-		else if (current->type == TOKEN_REDIR_OUT || \
-		current->type == TOKEN_APPEND_OUT)
-			handle_output_redir(cmd, current);
+		else if (current->type == REDIR_OUT || current->type == APPEND_OUT)
+			if (handle_output_redir(cmd, current) == -1)
+				return (-1);
 		current = current->next;
 	}
 	return (0);

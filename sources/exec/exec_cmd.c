@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:52:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/28 16:00:29 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,43 +20,51 @@ int	cmd_not_found(t_cmd *cmd)
 	return (EXIT_CMD_NOT_FOUND);
 }
 
-static int	get_exit_code(int status)
+int	get_exit_code(int status)
 {
+	int	sig;
+
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+		else if (sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		g_signal_received = 128 + sig;
+		return (g_signal_received);
+	}
 	else
 		return (EXIT_FAILURE);
 }
 
-static void	execute_child(t_cmd *cmd, char **env_array)
+static void	execute_child(t_cmd *cmd, char **env_array, int fd_i, int fd_o)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (prepare_redirections(cmd) == -1)
-			exit(EXIT_FAILURE);
-		apply_redirections(cmd);
-		execve(cmd->abs_path, cmd->args, env_array);
-		perror("execve");
-		exit(EXIT_CMD_NOT_FOUND);
-	}
-	cmd->pid = pid;
+	if (prepare_redirections(cmd) == -1)
+		exit(EXIT_FAILURE);
+	manage_dup(cmd, fd_i, fd_o);
+	set_up_signals_child(false);
+	execve(cmd->abs_path, cmd->args, env_array);
+	perror("execve");
+	free_tab_chars(env_array);
+	exit(EXIT_CMD_NOT_FOUND);
 }
 
-static int	fork_and_execute(t_cmd *cmd, t_shell *shell)
+int	get_index_pid(void)
 {
-	int		status;
+	static int	i;
+
+	i++;
+	return (i);
+}
+
+static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
+{
+	pid_t	pid;
 	char	**env_array;
-	int		exit_code;
+	int		status;
 
 	env_array = lst_env_to_array(shell->env);
 	if (!env_array)
@@ -67,28 +75,29 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell)
 	status = prepare_cmd(cmd, shell->env);
 	if (status != EXIT_SUCCESS)
 		return (status);
-	execute_child(cmd, env_array);
-	waitpid(cmd->pid, &status, 0);
-	exit_code = get_exit_code(status);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (EXIT_FAILURE);
+	}
+	if (pid == 0)
+		execute_child(cmd, env_array, fd_i, fd_o);
+	shell->pids[get_index_pid()] = pid;
 	free_tab_chars(env_array);
-	return (exit_code);
+	return (EXIT_SUCCESS);
 }
 
-int	execute_command(t_shell *shell)
+int	execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
 	t_cmd	*cmd;
 
-	if (!shell->ast)
+	if (!node)
 		return (EXIT_FAILURE);
-	handle_all_heredocs(shell->ast);
-	cmd = shell->ast->data.cmd.cmd;
+	cmd = node->data.cmd.cmd;
 	if (!cmd->name)
 		return (EXIT_SUCCESS);
 	if (is_a_builtin(cmd->name))
-	{
-		if (is_parent_builtin(cmd->name))
-			return (exec_builtin_in_parent(cmd, shell));
-		return (exec_builtin_simple(cmd, shell));
-	}
-	return (fork_and_execute(cmd, shell));
+		return (exec_builtin_simple(cmd, shell, fd_i, fd_o));
+	return (fork_and_execute(cmd, shell, fd_i, fd_o));
 }

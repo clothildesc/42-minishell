@@ -3,63 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 10:44:11 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 14:26:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 17:50:19 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_exit_status = 0;
+int	g_signal_received = 0;
 
-int	execute_shell(char *input, t_shell *shell)
+int	create_backup(t_shell *shell, int *backup)
 {
-	shell->tokens = NULL;
-	shell->ast = NULL;
-	shell->tokens = ft_lexer(input, shell);
-	shell->exit_status = get_syntax_error_status(shell->tokens);
-	if (shell->exit_status != EXIT_SUCCESS)
+	*backup = dup(STDIN_FILENO);
+	if (*backup == -1)
 	{
-		clear_tokens_lst(&shell->tokens);
-		return (shell->exit_status);
+		clear_shell(shell);
+		return (0);
 	}
-	//display_lexer_results(shell->tokens);
-	shell->ast = parse_pipe(shell, &shell->tokens);
-	if (shell->ast->node_type == NODE_CMD)
-		shell->exit_status = execute_command(shell);
-	//shell->exit_status = traverse_ast_and_exec_builtin(shell->ast, shell);
-	clear_tokens_lst(&shell->tokens);
-	clear_ast(&shell->ast);
-	return (shell->exit_status);
+	return (1);
+}
+
+int	restore_backup(t_shell *shell, int backup, char *line)
+{
+	if (line)
+		free(line);
+	if (dup2(backup, STDIN_FILENO) == -1)
+	{
+		clear_shell(shell);
+		if (backup != -1)
+			close(backup);
+		return (0);
+	}
+	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*line;
 	t_shell	shell;
+	char	*line;
+	int		backup;
 
 	(void)av;
+	backup = -1;
 	if (ac == 1)
 	{
-		init_all_structs(&shell, envp);
-		while (1)
+		init_shell(&shell, envp);
+		while (true)
 		{
+			g_signal_received = 0;
+			if (!create_backup(&shell, &backup))
+				return (EXIT_FAILURE);
+			signal(SIGINT, ft_handler_sigint);
 			line = readline("minishell> ");
-			if (line == NULL)
+			if (!line)
+				break ;
+			signal(SIGINT, SIG_IGN);
+			if (g_signal_received)
 			{
-				clear_env_lst(&shell.env);
+				if (!restore_backup(&shell, backup, line))
+					return (EXIT_FAILURE);
+			}
+			if (backup != -1)
+				close(backup);
+			if (!process_line(&shell, line))
+			{
+				free(line);
+				clear_shell(&shell);
 				return (EXIT_FAILURE);
 			}
-			if (*line)
-			{
-				add_history(line);
-				execute_shell(line, &shell);
-			}
+			if (g_signal_received)
+				shell.prev_status = g_signal_received;
 			free(line);
 		}
-		clear_env_lst(&shell.env);
+		clear_shell(&shell);
 	}
-	return (shell.exit_status);
+	return (shell.status);
 }
