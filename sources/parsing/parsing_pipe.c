@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:07:21 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/27 00:10:23 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:24:53 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 	t_ast	*left;
 	t_ast	*new_pipe;
 	t_ast	*right;
+	t_token	*head;
 
+	head = *tokens;
 	left = parse_cmd(tokens, shell);
 	if (!left)
 		return (NULL);
@@ -48,5 +50,6 @@ t_ast	*parse_pipe(t_shell *shell, t_token **tokens)
 			return (clear_ast(&left), clear_ast(&right), NULL);
 		left = new_pipe;
 	}
+	*tokens = head;
 	return (left);
 }

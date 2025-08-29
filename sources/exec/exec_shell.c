@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/28 21:31:02 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:18:20 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	execute_shell(char *input, t_shell *shell)
 		shell->status = EXIT_SUCCESS;
 		return ;
 	}
+	printf("======== APRES LEXER ============\n");
+	display_lexer_results(shell->tokens);
 	get_syntax_errors(shell);
 	if (shell->status != EXIT_SUCCESS)
 	{
@@ -30,9 +32,17 @@ void	execute_shell(char *input, t_shell *shell)
 		shell->prev_status = shell->status;
 		return ;
 	}
+	printf("======== APRES CHECK SYNTAX ============\n");
+	display_lexer_results(shell->tokens);
 	shell->ast = parse_pipe(shell, &shell->tokens);
+	printf("======== APRES AST ============\n");
+	display_lexer_results(shell->tokens);
 	execution(shell->ast, shell);
+	printf("======== APRES EXEC ============\n");
+	display_lexer_results(shell->tokens);
 	clear_tokens_lst(&shell->tokens);
+	printf("======== APRES CLEAR TOKENS ============\n");
+	display_lexer_results(shell->tokens);
 	clear_ast(&shell->ast);
 	shell->prev_status = shell->status;
 	return ;

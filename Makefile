@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
+#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/08/27 17:05:43 by cscache          ###   ########.fr        #
+#    Updated: 2025/08/29 18:26:46 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g -O0 -ggdb
 LDFLAGS = -lreadline
 
 NAME = minishell

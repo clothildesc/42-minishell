@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 10:56:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:19:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ static void	process_dup_outfile(t_cmd *cmd, int fd_o)
 	if (cmd->fd_out != -1)
 	{
 		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-		{
 			perror("dup2 3");
-		}
 		close(cmd->fd_out);
 		if (fd_o != STDOUT_FILENO)
 			close(fd_o);

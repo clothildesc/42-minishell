@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 21:28:40 by cscache          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:21:11 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	prepare_redirections(t_cmd *cmd)
 		{
 			check_file_open_and_close(cmd->fd_in);
 			cmd->fd_in = cmd->fd_heredoc;
+			if (cmd->fd_heredoc != -1)
+				close(cmd->fd_heredoc);
 			if (cmd->fd_in == -1)
 				return (-1);
 		}

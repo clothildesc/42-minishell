@@ -1,0 +1,130 @@
+==3448365== 2 bytes in 1 blocks are still reachable in loss record 1 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x405603: create_token_value (lexer_tokens_utils.c:88)
+==3448365==    by 0x40517E: create_token (lexer_tokens.c:69)
+==3448365==    by 0x4058D9: handle_operators (lexer_utils.c:25)
+==3448365==    by 0x405731: process_normal_state (lexer_utils.c:60)
+==3448365==    by 0x404991: process_current_char (lexer.c:76)
+==3448365==    by 0x404916: ft_lexer (lexer.c:96)
+==3448365==    by 0x4046A4: execute_shell (exec_shell.c:20)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3448365== 
+==3448365== 2 bytes in 1 blocks are still reachable in loss record 2 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x405603: create_token_value (lexer_tokens_utils.c:88)
+==3448365==    by 0x40517E: create_token (lexer_tokens.c:69)
+==3448365==    by 0x404951: ft_lexer (lexer.c:101)
+==3448365==    by 0x4046A4: execute_shell (exec_shell.c:20)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3448365== 
+==3448365== 3 bytes in 1 blocks are still reachable in loss record 3 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x40740B: ft_strdup (ft_strdup.c:21)
+==3448365==    by 0x405988: parse_cmd_name (parsing_cmd_utils.c:24)
+==3448365==    by 0x40631C: process_word (parsing_cmd.c:48)
+==3448365==    by 0x40617A: parse_cmd (parsing_cmd.c:74)
+==3448365==    by 0x405F27: parse_pipe (parsing_pipe.c:39)
+==3448365==    by 0x404752: execute_shell (exec_shell.c:37)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3448365== 
+==3448365== 5 bytes in 1 blocks are still reachable in loss record 5 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x40740B: ft_strdup (ft_strdup.c:21)
+==3448365==    by 0x405988: parse_cmd_name (parsing_cmd_utils.c:24)
+==3448365==    by 0x40631C: process_word (parsing_cmd.c:48)
+==3448365==    by 0x40617A: parse_cmd (parsing_cmd.c:74)
+==3448365==    by 0x405F9B: parse_pipe (parsing_pipe.c:45)
+==3448365==    by 0x404752: execute_shell (exec_shell.c:37)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3448365== 
+==3448365== 7 bytes in 2 blocks are still reachable in loss record 6 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x40740B: ft_strdup (ft_strdup.c:21)
+==3448365==    by 0x405E85: fill_args_array (parsing_cmd_utils_2.c:67)
+==3448365==    by 0x405DC7: lst_args_to_array (parsing_cmd_utils_2.c:90)
+==3448365==    by 0x4061D5: parse_cmd (parsing_cmd.c:81)
+==3448365==    by 0x405F9B: parse_pipe (parsing_pipe.c:45)
+==3448365==    by 0x404752: execute_shell (exec_shell.c:37)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3448365== 
+==3448365== 3 bytes in 1 blocks are still reachable in loss record 4 of 89
+==3448365==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3448365==    by 0x40740B: ft_strdup (ft_strdup.c:21)
+==3448365==    by 0x405E85: fill_args_array (parsing_cmd_utils_2.c:67)
+==3448365==    by 0x405DC7: lst_args_to_array (parsing_cmd_utils_2.c:90)
+==3448365==    by 0x4061D5: parse_cmd (parsing_cmd.c:81)
+==3448365==    by 0x405F27: parse_pipe (parsing_pipe.c:39)
+==3448365==    by 0x404752: execute_shell (exec_shell.c:37)
+==3448365==    by 0x404882: process_line (exec_shell.c:62)
+==3448365==    by 0x407084: main (main.c:70)
+==3451330== 
+==3451330== 24 bytes in 1 blocks are still reachable in loss record 26 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x406221: init_cmd_node (parsing_cmd.c:20)
+==3451330==    by 0x406114: parse_cmd (parsing_cmd.c:68)
+==3451330==    by 0x405F37: parse_pipe (parsing_pipe.c:39)
+==3451330==    by 0x404752: execute_shell (exec_shell.c:37)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 
+==3451330== 24 bytes in 1 blocks are still reachable in loss record 27 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x406221: init_cmd_node (parsing_cmd.c:20)
+==3451330==    by 0x406114: parse_cmd (parsing_cmd.c:68)
+==3451330==    by 0x405FAB: parse_pipe (parsing_pipe.c:45)
+==3451330==    by 0x404752: execute_shell (exec_shell.c:37)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 
+==3451330== 24 bytes in 1 blocks are still reachable in loss record 28 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x405DAA: lst_args_to_array (parsing_cmd_utils_2.c:84)
+==3451330==    by 0x4061E5: parse_cmd (parsing_cmd.c:81)
+==3451330==    by 0x405FAB: parse_pipe (parsing_pipe.c:45)
+==3451330==    by 0x404752: execute_shell (exec_shell.c:37)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 
+==3451330== 24 bytes in 1 blocks are still reachable in loss record 29 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x40607C: create_pipe_node (parsing_pipe.c:22)
+==3451330==    by 0x405FDD: parse_pipe (parsing_pipe.c:48)
+==3451330==    by 0x404752: execute_shell (exec_shell.c:37)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 16 bytes in 1 blocks are still reachable in loss record 21 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x405DAA: lst_args_to_array (parsing_cmd_utils_2.c:84)
+==3451330==    by 0x4061E5: parse_cmd (parsing_cmd.c:81)
+==3451330==    by 0x405F37: parse_pipe (parsing_pipe.c:39)
+==3451330==    by 0x404752: execute_shell (exec_shell.c:37)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 
+==3451330== 16 bytes in 1 blocks are still reachable in loss record 22 of 89
+==3451330==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x40415D: init_pids (exec_ast.c:54)
+==3451330==    by 0x404280: execution (exec_ast.c:90)
+==3451330==    by 0x40478C: execute_shell (exec_shell.c:40)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330==    by 0x407094: main (main.c:70)
+==3451330== 
+==3451330== 12 bytes in 1 blocks are still reachable in loss record 15 of 89
+==3451330==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3451330==    by 0x407506: ft_strjoin (ft_strjoin.c:42)
+==3451330==    by 0x402A8D: build_cmd_abs_path (exec_cmd_utils.c:66)
+==3451330==    by 0x402A00: get_cmd_abs_path (exec_cmd_utils.c:98)
+==3451330==    by 0x4027E9: prepare_cmd (exec_cmd_utils.c:120)
+==3451330==    by 0x4037BD: fork_and_execute (exec_cmd.c:75)
+==3451330==    by 0x403745: execute_cmd (exec_cmd.c:102)
+==3451330==    by 0x4040A0: execute_ast (exec_ast.c:36)
+==3451330==    by 0x404038: execute_ast (exec_ast.c:27)
+==3451330==    by 0x404307: execution (exec_ast.c:100)
+==3451330==    by 0x40478C: execute_shell (exec_shell.c:40)
+==3451330==    by 0x404882: process_line (exec_shell.c:62)
+==3451330== 

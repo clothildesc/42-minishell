@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 18:07:01 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/08/29 17:38:17 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,13 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 	int		limiter_reached;
 
 	limiter_reached = 0;
-	remove_echoctl();
+	remove_echoctl(); 
 	while (true)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		if (g_signal_received == 130)
-		{
-			free(line);
-			return ;
-		}
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 \
 			&& line[ft_strlen(limiter)] == '\n')
 		{
@@ -52,7 +47,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 		free(line);
 	}
 	active_echoctl();
-	if (!limiter_reached)
+	if (!limiter_reached && g_signal_received != 130)
 		ft_putendl_fd("\nbash: warning: here-doc delimited by eof", 2);
 }
 
@@ -78,7 +73,6 @@ char	*get_file_name(void)
 	free(id_str);
 	if (!tmp_file_name)
 		return (NULL);
-	printf("filename: %s\n", tmp_file_name);
 	return (tmp_file_name);
 }
 
@@ -94,18 +88,27 @@ static void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd
 	}
 	if (pid == 0)
 	{
+		write(1, "dans l'enfant\n", 15);
 		close_prev_fd_heredoc(root);
 		set_up_signals_child(true);
 		read_and_write_heredoc(fd_heredoc, limiter);
+		if (fd_heredoc != -1)
+		{
+			write(1, "close dans l'enfant de fd_tmp\n", 31);
+			close(fd_heredoc);
+		}
 		if (g_signal_received)
+		{
+			write(1, "g_signal_received\n", 19);
 			exit(g_signal_received);
+		}
 		else
 			exit(EXIT_SUCCESS);
 	}
 	cmd->pid_heredoc = pid;
 }
 
-static int	create_here_doc(t_ast *root, t_cmd *cmd, char *limiter, char *tmp_file_name)
+static int	open_and_create_here_doc(char *tmp_file_name)
 {
 	int		fd;
 
@@ -115,20 +118,16 @@ static int	create_here_doc(t_ast *root, t_cmd *cmd, char *limiter, char *tmp_fil
 	{
 		perror("bash: open heredoc");
 		free(tmp_file_name);
-		return (-1);
+		return (fd);
 	}
-	//read_and_write_heredoc(fd, limiter);
-	execute_child_heredoc(root, cmd, limiter, fd);
-	close(fd);
-	fd = open(tmp_file_name, O_RDONLY);
-	unlink(tmp_file_name);
-	return (free(tmp_file_name), fd);
+	return (fd);
 }
 
 void	close_prev_fd_heredoc(t_ast *node)
 {
 	t_cmd	*cmd;
 
+	printf("dans close prev heredocs\n");
 	if (!node)
 		return ;
 	if (node->node_type == NODE_PIPE)
@@ -140,7 +139,10 @@ void	close_prev_fd_heredoc(t_ast *node)
 	{
 		cmd = node->data.cmd.cmd;
 		if (cmd->fd_heredoc != -1)
+		{
+			printf("close fd_heredoc de cmd precedente\n");
 			close(cmd->fd_heredoc);
+		}
 	}
 }
 
@@ -152,25 +154,44 @@ static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
 	char	*tmp_file_name;
 
 	if (cmd->fd_heredoc != -1)
+	{
+		printf("close fd_heredoc existant\n");
 		close(cmd->fd_heredoc);
+	}
 	tmp_file_name = get_file_name();
 	if (!tmp_file_name)
 		return (EXIT_FAILURE);
-	fd_tmp = create_here_doc(root, cmd, target, tmp_file_name);
+	fd_tmp = open_and_create_here_doc(tmp_file_name);
+	printf("fd_tmp: %d\n", fd_tmp);
 	if (fd_tmp == -1)
-		return (EXIT_FAILURE);
-	// execute_child_heredoc(root, cmd, target, cmd->fd_heredoc);
+		return (free(tmp_file_name), unlink(tmp_file_name), EXIT_FAILURE);
+	execute_child_heredoc(root, cmd, target, fd_tmp);
 	waitpid(cmd->pid_heredoc, &status, 0);
-	printf("pid_heredoc: %d\n", cmd->pid_heredoc);
 	exit_code = get_exit_code(status);
-	if (exit_code == SIGINT)
-		
-	close(fd_tmp);
+	if (exit_code == 130)
+	{
+		printf("dans exit_code 130\n");
+		g_signal_received = 130;
+		close_prev_fd_heredoc(root);
+		if (fd_tmp != -1)
+		{
+			printf("close fd_tmp dans exit_code 130\n");
+			close(fd_tmp);
+		}
+		unlink(tmp_file_name);
+		free(tmp_file_name);
+		return (exit_code);
+	}
+	if (fd_tmp != -1)
+	{
+		printf("close fd_tmp dans le parent\n");
+		close(fd_tmp);
+	}
 	cmd->fd_heredoc = open(tmp_file_name, O_RDONLY);
 	if (cmd->fd_heredoc == -1)
-		return (EXIT_FAILURE);
-	printf("fd_heredoc: %d\n", cmd->fd_heredoc);
+		return (unlink(tmp_file_name), free(tmp_file_name), EXIT_FAILURE);
 	unlink(tmp_file_name);
+	free(tmp_file_name);
 	return (exit_code);
 }
 
@@ -184,6 +205,8 @@ void	handle_all_heredocs(t_ast *node, t_shell *shell)
 	if (node->node_type == NODE_PIPE)
 	{
 		handle_all_heredocs(node->data.binary.left, shell);
+		if (shell->status == 130)
+			return ;
 		handle_all_heredocs(node->data.binary.right, shell);
 	}
 	else if (node->node_type == NODE_CMD)
@@ -193,8 +216,12 @@ void	handle_all_heredocs(t_ast *node, t_shell *shell)
 		while (current_redir)
 		{
 			if (current_redir->type == HERE_DOC)
+			{
 				shell->status = process_heredoc(shell->ast, cmd, \
 					current_redir->target);
+				if (shell->status == 130)
+					return ;
+			}
 			current_redir = current_redir->next;
 		}
 	}

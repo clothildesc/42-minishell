@@ -1,27 +1,26 @@
 {
-	// Use IntelliSense to learn about possible attributes.
-	// Hover to view descriptions of existing attributes.
-	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Debug avec GDB",
+			"name": "Debug minishell",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/minishell",
 			"args": [],
-			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": false,
 			"MIMode": "gdb",
 			"miDebuggerPath": "/usr/bin/gdb",
+			"console": "integratedTerminal",
+			"externalConsole": false,
+			"internalConsoleOptions": "neverOpen",
+
+			"stopAtEntry": false,
 			"setupCommands": [
-			{
-				"description": "Activer pretty-printing pour gdb",
-				"text": "-enable-pretty-printing",
-				"ignoreFailures": true
-			}
+				{
+					"description": "Activer pretty-printing pour gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
 			]
 		}
 	]
