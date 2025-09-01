@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 16:00:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/01 16:42:16 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	cmd_not_found(t_cmd *cmd)
 	ft_putstr_fd("bash: ", 2);
 	ft_putstr_fd(cmd->name, 2);
 	ft_putendl_fd(": command not found", 2);
+	clear_cmd(cmd);
 	return (EXIT_CMD_NOT_FOUND);
 }
 
@@ -43,21 +44,12 @@ int	get_exit_code(int status)
 static void	execute_child(t_cmd *cmd, char **env_array, int fd_i, int fd_o)
 {
 	if (prepare_redirections(cmd) == -1)
-		exit(EXIT_FAILURE);
+		free_child_and_exit(cmd, env_array, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
 	set_up_signals_child(false);
 	execve(cmd->abs_path, cmd->args, env_array);
 	perror("execve");
-	free_tab_chars(env_array);
-	exit(EXIT_CMD_NOT_FOUND);
-}
-
-int	get_index_pid(void)
-{
-	static int	i;
-
-	i++;
-	return (i);
+	free_child_and_exit(cmd, env_array, EXIT_CMD_NOT_FOUND);
 }
 
 static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)

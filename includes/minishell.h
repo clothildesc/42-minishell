@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 16:09:02 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/01 18:05:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define EXIT_SIGNAL			128
 # define EXIT_CTRL_C 			130
 # define EXIT_CTRL_D 			131
+
+# define EOF_RECEIVED			3
 
 /*=============== ERRORS =============== */
 
@@ -73,6 +75,7 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
+void			free_child_and_exit(t_cmd *cmd, char **env_array, int exit_code);
 void			free_and_exit(t_shell *shell, int exit_code);
 
 /*-------Lexer-------*/
@@ -125,8 +128,8 @@ int				builtin_echo(char **args);
 /*-------Execution-------*/
 /* Shell */
 void			init_shell(t_shell *shell, char **envp);
-void			execute_shell(char *input, t_shell *shell);
-int				process_line(t_shell *shell, char *line);
+int				main_loop(t_shell *shell);
+
 /* builtins */
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
@@ -153,6 +156,13 @@ int				prepare_redirections(t_cmd *cmd);
 void			manage_dup(t_cmd *cmd, int fd_i, int fd_o);
 void			handle_all_heredocs(t_ast *node, t_shell *shell);
 void			close_prev_fd_heredoc(t_ast *node);
+void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
+				t_ast *root);
+int				open_and_create_here_doc(char *tmp_file_name);
+char			*get_file_name(void);
+void			execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, \
+				int fd_heredoc);
+void			ft_close_fd(int fd);
 
 /*-------Display|TEST-------*/
 void	display_lexer_results(t_token *lst_tokens);

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:43:01 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 21:20:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/01 13:21:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	clear_env_lst(t_env **env)
 		return ;
 	while (*env)
 	{	
-		tmp = *env;
-		*env = (*env)->next;
-		if (tmp->key)
-			free(tmp->key);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
+		tmp = (*env)->next;
+		if ((*env)->key)
+			free((*env)->key);
+		if ((*env)->value)
+			free((*env)->value);
+		free((*env));
+		*env = tmp;
 	}
 }
 
@@ -59,6 +59,7 @@ void	clear_lexer_tmp(t_lexer *lexer)
 		ft_lstclear(&lexer->tmp_token, free);
 		lexer->tmp_token = NULL;
 	}
+	lexer->tmp_token = NULL;
 }
 
 void	clear_shell(t_shell *shell)

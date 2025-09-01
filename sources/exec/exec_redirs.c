@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/29 15:21:11 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:01:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,23 @@ int	open_outfile(char *outfile, t_token_type type)
 	return (fd);
 }
 
-static void	check_file_open_and_close(int fd)
+void	ft_close_fd(int fd)
 {
-	if (fd > 2)
+	if (fd != -1)
 		close(fd);
 }
 
-static int	handle_output_redir(t_cmd *cmd, t_redir *current)
+static int	handle_input_redir(t_cmd *cmd, t_redir *current)
 {
-	check_file_open_and_close(cmd->fd_out);
-	cmd->fd_out = open_outfile(current->target, current->type);
-	if (cmd->fd_out == -1)
+	ft_close_fd(cmd->fd_in);
+	if (current->type == HERE_DOC)
+	{
+		cmd->fd_in = cmd->fd_heredoc;
+		ft_close_fd(cmd->fd_heredoc);
+	}
+	else
+		cmd->fd_in = open_infile(current->target);
+	if (cmd->fd_in == -1)
 		return (-1);
 	return (0);
 }
@@ -76,25 +82,18 @@ int	prepare_redirections(t_cmd *cmd)
 	current = cmd->redirs;
 	while (current)
 	{
-		if (current->type == HERE_DOC)
+		if (current->type == REDIR_IN || current->type == HERE_DOC)
 		{
-			check_file_open_and_close(cmd->fd_in);
-			cmd->fd_in = cmd->fd_heredoc;
-			if (cmd->fd_heredoc != -1)
-				close(cmd->fd_heredoc);
-			if (cmd->fd_in == -1)
-				return (-1);
-		}
-		else if (current->type == REDIR_IN)
-		{
-			check_file_open_and_close(cmd->fd_in);
-			cmd->fd_in = open_infile(current->target);
-			if (cmd->fd_in == -1)
+			if (handle_input_redir(cmd, current) == -1)
 				return (-1);
 		}
 		else if (current->type == REDIR_OUT || current->type == APPEND_OUT)
-			if (handle_output_redir(cmd, current) == -1)
+		{
+			ft_close_fd(cmd->fd_out);
+			cmd->fd_out = open_outfile(current->target, current->type);
+			if (cmd->fd_out == -1)
 				return (-1);
+		}
 		current = current->next;
 	}
 	return (0);
