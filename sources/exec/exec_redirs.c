@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 14:01:43 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 15:27:22 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,14 @@ int	open_outfile(char *outfile, t_token_type type)
 
 void	ft_close_fd(int fd)
 {
+	pid_t	pid;
+
 	if (fd != -1)
+	{
+		pid = getpid();
 		close(fd);
+		printf("PID [%d] ferme FD [%d]\n", pid, fd);
+	}
 }
 
 static int	handle_input_redir(t_cmd *cmd, t_redir *current)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
+#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/09/01 14:14:33 by cscache          ###   ########.fr        #
+#    Updated: 2025/09/02 15:05:30 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ valgrind: $(NAME)
 
 valgrind-clean: $(NAME)
 	@echo "=== Valgrind without readline leaks ==="
-	-valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=no --track-origins=yes --suppressions=readline.supp ./$(NAME)
+	-valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
 .PHONY: all clean fclean re valgrind valgrind-clean
 
