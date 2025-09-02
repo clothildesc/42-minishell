@@ -6,26 +6,27 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 15:33:12 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:43:46 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	dump_fds(const char *where)
-{
-	int	fd;
+// void	dump_fds(const char *where)
+// {
+// 	int	fd;
 
-	fd = 3;
-	while (fd < 256)
-	{
-		if (fcntl(fd, F_GETFD) != -1)
-			ft_printf("[%s] open fd=%d\n", where, fd);
-		fd++;
-	}
-	ft_printf("[%s] -> fin de dump\n", where);
-}
+// 	fd = 3;
+// 	while (fd < 256)
+// 	{
+// 		if (fcntl(fd, F_GETFD) != -1)
+// 			ft_printf("[%s] open fd=%d\n", where, fd);
+// 		fd++;
+// 	}
+// 	ft_printf("[%s] -> fin de dump\n", where);
+// }
+
 void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
 	int		pipefd[2];
@@ -37,18 +38,22 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 			perror("pipe");
 			free_and_exit(shell, EXIT_FAILURE);
 		}
-		//dump_fds("avant ast left");
+		shell->pipes[shell->nb_pipes][0] = pipefd[0];
+		shell->pipes[shell->nb_pipes][1] = pipefd[1];
+		shell->nb_pipes++;
 		execute_ast(node->data.binary.left, shell, fd_i, pipefd[1]);
-		//dump_fds("apres ast left");
 		ft_close_fd(pipefd[1]);
-		//dump_fds("avant ast right");
 		execute_ast(node->data.binary.right, shell, pipefd[0], fd_o);
-		//dump_fds("apres ast right");
 		ft_close_fd(pipefd[0]);
-		//dump_fds("fin ast");
 	}
 	else if (node->node_type == NODE_CMD)
+	{
 		shell->status = execute_cmd(node, shell, fd_i, fd_o);
+		if (fd_i != STDIN_FILENO)
+			ft_close_fd(fd_i);
+		if (fd_o != STDOUT_FILENO)
+			ft_close_fd(fd_o);
+	}
 }
 
 void	count_cmd_nodes(t_ast *node, t_shell *shell)
@@ -114,4 +119,7 @@ void	execution(t_ast *ast, t_shell *shell)
 	else
 		execute_ast(ast, shell, fd_i, fd_o);
 	get_status_code(shell);
+	close_all_pipes(shell);
+	close_all_command_fds(ast);
 }
+

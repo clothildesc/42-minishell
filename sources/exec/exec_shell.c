@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/02 13:31:34 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/02 16:20:01 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	execute_shell(char *input, t_shell *shell)
 	}
 	// printf("======== APRES CLEAR TOKENS ============\n");
 	// display_lexer_results(shell->tokens);
+	shell->pid_index = 0;
 	shell->prev_status = shell->status;
 	return ;
 }

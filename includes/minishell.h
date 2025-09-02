@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 14:40:03 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:36:51 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
 void			free_child_and_exit(t_cmd *cmd, char **env_array, int exit_code);
 void			free_and_exit(t_shell *shell, int exit_code);
+void			close_all_command_fds(t_ast *node);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -133,10 +134,8 @@ int				main_loop(t_shell *shell);
 /* builtins */
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
-int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, \
-				int fd_i, int fd_o);
-int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, \
-				int fd_i, int fd_o);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o);
 int				execute_builtins(t_cmd *cmd, t_shell *shell);
 int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
 /* others cmds */
@@ -146,7 +145,7 @@ int				prepare_cmd(t_cmd *cmd, t_env *env);
 int				execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execution(t_ast *ast, t_shell *shell);
-int				get_index_pid(void);
+void			close_all_pipes(t_shell *shell);
 int				get_exit_code(int status);
 /* redir & heredoc */
 int				get_unique_id(void);

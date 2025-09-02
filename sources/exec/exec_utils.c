@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 14:37:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 18:43:06 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,41 @@ char	**lst_env_to_array(t_env *env)
 		return (NULL);
 	}
 	return (env_array);
+}
+
+void	close_all_pipes(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (i != shell->nb_pipes)
+	{
+		ft_close_fd(shell->pipes[i][0]);
+		ft_close_fd(shell->pipes[i][1]);
+		i++;
+	}
+	shell->nb_pipes = 0;
+}
+
+void	close_all_command_fds(t_ast *node)
+{
+	t_cmd	*cmd;
+
+	cmd = node->data.cmd.cmd;
+	if (!node)
+		return ;
+	if (node->node_type == NODE_PIPE)
+	{
+		close_all_command_fds(node->data.binary.left);
+		close_all_command_fds(node->data.binary.right);
+	}
+	else if (node->node_type == NODE_CMD)
+	{
+		if (cmd)
+		{
+			ft_close_fd(cmd->fd_in);
+			ft_close_fd(cmd->fd_out);
+			ft_close_fd(cmd->fd_heredoc);
+		}
+	}
 }

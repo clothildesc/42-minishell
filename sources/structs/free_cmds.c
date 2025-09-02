@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:08:33 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 15:36:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 18:45:34 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ static void	close_files(t_cmd *cmd)
 	ft_close_fd(cmd->fd_in);
 	ft_close_fd(cmd->fd_out);
 	ft_close_fd(cmd->fd_heredoc);
+	cmd->fd_in = -1;
+	cmd->fd_out = -1;
+	cmd->fd_heredoc = -1;
 }
 
 void	clear_cmd(t_cmd *cmd)
