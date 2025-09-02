@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/01 17:04:56 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 13:31:34 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	process_line(t_shell *shell, char *line)
 {
 	if (line == NULL && g_signal_received == 0)
 	{
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		write(1, "exit\n", 6);
 		clear_shell(shell);
 		return (0);
 	}
@@ -86,22 +86,21 @@ static int	handle_signal_and_input(t_shell *shell, int *backup, char **line)
 		return (EXIT_FAILURE);
 	signal(SIGINT, ft_handler_sigint);
 	*line = readline("minishell> ");
-	if (!*line)
-		return (ft_close_fd(*backup), EOF_RECEIVED);
 	signal(SIGINT, SIG_IGN);
-	if (g_signal_received)
+	if (!*line)
 	{
-		if (line)
+		if (g_signal_received)
 		{
-			free(line);
-			line = NULL;
+			if (dup2(*backup, STDIN_FILENO) == -1)
+			{
+				clear_shell(shell);
+				ft_close_fd(*backup);
+				return (EXIT_FAILURE);
+			}
+			return (EXIT_SUCCESS);
 		}
-		if (dup2(*backup, STDIN_FILENO) == -1)
-		{
-			ft_close_fd(*backup);
-			clear_shell(shell);
-			return (EXIT_FAILURE);
-		}
+		ft_close_fd(*backup);
+		return (EXIT_SUCCESS);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -110,16 +109,12 @@ int	main_loop(t_shell *shell)
 {
 	char	*line;
 	int		backup;
-	int		status;
 
 	backup = -1;
 	while (true)
 	{
-		status = handle_signal_and_input(shell, &backup, &line);
-		if (status == EXIT_FAILURE)
+		if (handle_signal_and_input(shell, &backup, &line) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (status == EOF_RECEIVED)
-			break ;
 		if (backup != -1)
 			close(backup);
 		if (!process_line(shell, line))

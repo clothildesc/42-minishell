@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredocs_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:08:46 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 18:01:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 13:36:05 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	open_and_create_here_doc(char *tmp_file_name)
 	int		fd;
 
 	fd = open(tmp_file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	printf("fd: %d\n", fd);
 	if (fd == -1)
 	{
 		perror("bash: open heredoc");

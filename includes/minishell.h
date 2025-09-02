@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 18:05:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:40:03 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,9 @@ void			execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, \
 void			ft_close_fd(int fd);
 
 /*-------Display|TEST-------*/
+// ATTENTION A BIEN ENLEVER LES WILDCARDS DANS LE MAKEFILE !!!!!!!
 void	display_lexer_results(t_token *lst_tokens);
 void	display_ast_results(t_ast *node, int depth, char branch);
+void	dump_fds(const char *where);
 
 #endif

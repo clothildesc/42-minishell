@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 17:49:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:42:03 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
 {
 	int	status;
 
+	dump_fds("execute builtin");
 	if (prepare_redirections(cmd) == -1)
 		free_and_exit(shell, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
+	dump_fds("execute builtin - apres manage dup");
+	set_up_signals_child(false);
 	status = execute_builtins(cmd, shell);
 	clear_cmd(cmd);
 	exit(status);

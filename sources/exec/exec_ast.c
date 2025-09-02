@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 17:49:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:55:16 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
+void	dump_fds(const char *where)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 256)
+	{
+		if (fcntl(fd, F_GETFD) != -1)
+			ft_printf("[%s] open fd=%d\n", where, fd);
+		fd++;
+	}
+	ft_printf("[%s] -> fin de dump\n", where);
+}
 void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
 	int		pipefd[2];
@@ -24,10 +37,15 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 			perror("pipe");
 			free_and_exit(shell, EXIT_FAILURE);
 		}
+		//dump_fds("avant ast left");
 		execute_ast(node->data.binary.left, shell, fd_i, pipefd[1]);
+		//dump_fds("apres ast left");
 		ft_close_fd(pipefd[1]);
+		//dump_fds("avant ast right");
 		execute_ast(node->data.binary.right, shell, pipefd[0], fd_o);
+		//dump_fds("apres ast right");
 		ft_close_fd(pipefd[0]);
+		//dump_fds("fin ast");
 	}
 	else if (node->node_type == NODE_CMD)
 		shell->status = execute_cmd(node, shell, fd_i, fd_o);

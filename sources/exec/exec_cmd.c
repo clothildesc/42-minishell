@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 16:42:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:41:17 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ int	get_exit_code(int status)
 
 static void	execute_child(t_cmd *cmd, char **env_array, int fd_i, int fd_o)
 {
+	dump_fds("debut child");
 	if (prepare_redirections(cmd) == -1)
 		free_child_and_exit(cmd, env_array, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
+	dump_fds("execute child - apres manage dup");
 	set_up_signals_child(false);
 	execve(cmd->abs_path, cmd->args, env_array);
 	perror("execve");

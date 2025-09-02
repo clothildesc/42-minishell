@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 18:02:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:11:24 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 static int	open_heredoc_read_only(char *tmp_file_name, t_cmd *cmd)
 {
 	cmd->fd_heredoc = open(tmp_file_name, O_RDONLY);
-	if (cmd->fd_heredoc == -1)
-		return (unlink(tmp_file_name), free(tmp_file_name), EXIT_FAILURE);
 	unlink(tmp_file_name);
 	free(tmp_file_name);
+	if (cmd->fd_heredoc == -1)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
