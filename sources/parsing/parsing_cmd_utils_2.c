@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 09:57:35 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 16:25:57 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 		src = exp;
 	else
 		src = token->value;
-	if (exp)
-		free(exp);
 	new_arg->arg = ft_strdup(src);
 	if (!new_arg->arg)
 	{
@@ -49,6 +47,8 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 		clear_args_lst(args);
 		return ;
 	}
+	if (exp)
+		free(exp);
 	new_arg->to_join = token->to_join;
 	ft_lstadd_args(args, new_arg);
 }
