@@ -6,12 +6,23 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/27 00:19:55 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:57:35 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
+
+static t_arg	*init_new_arg(void)
+{
+	t_arg	*new_arg;
+
+	new_arg = malloc(sizeof(t_arg));
+	if (!new_arg)
+		return (NULL);
+	ft_bzero(new_arg, sizeof(t_arg));
+	return (new_arg);
+}
 
 void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 {
@@ -19,10 +30,9 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 	char	*exp;
 	char	*src;
 
-	new_arg = malloc(sizeof(t_arg));
+	new_arg = init_new_arg();
 	if (!new_arg)
 		return ;
-	ft_bzero(new_arg, sizeof(t_arg));
 	exp = NULL;
 	if (token->to_exp == true)
 		exp = builtin_expand(token->value, shell);
@@ -30,12 +40,13 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 		src = exp;
 	else
 		src = token->value;
-	new_arg->arg = ft_strdup(src);
 	if (exp)
 		free(exp);
+	new_arg->arg = ft_strdup(src);
 	if (!new_arg->arg)
 	{
 		free(new_arg);
+		clear_args_lst(args);
 		return ;
 	}
 	new_arg->to_join = token->to_join;

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 16:09:02 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/03 14:17:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define EXIT_SIGNAL			128
 # define EXIT_CTRL_C 			130
 # define EXIT_CTRL_D 			131
+
+# define EOF_RECEIVED			3
 
 /*=============== ERRORS =============== */
 
@@ -73,7 +75,11 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
+void			free_child_and_exit(t_cmd *cmd, char **env_array, \
+				int exit_code);
+void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
+void			close_all_command_fds(t_ast *node);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -120,13 +126,15 @@ int				builtin_cd(char **args, t_env *env);
 /* echo */
 int				builtin_echo(char **args);
 /* exit */
-// int				builtin_exit(t_shell *shell, char **args);
+int				builtin_exit(t_shell *shell, char **args, \
+				int saved_in, int saved_out);
 
 /*-------Execution-------*/
 /* Shell */
 void			init_shell(t_shell *shell, char **envp);
-void			execute_shell(char *input, t_shell *shell);
-int				process_line(t_shell *shell, char *line);
+void			reset_exec(t_shell *shell);
+int				main_loop(t_shell *shell);
+
 /* builtins */
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
@@ -135,7 +143,9 @@ int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, \
 int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, \
 				int fd_i, int fd_o);
 int				execute_builtins(t_cmd *cmd, t_shell *shell);
-int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
+void			close_backups(int saved_in, int saved_out);
+int				execute_parent_builtins(t_cmd *cmd, t_shell *shell, \
+				int saved_in, int saved_out);
 /* others cmds */
 char			**lst_env_to_array(t_env *env);
 int				cmd_not_found(t_cmd *cmd);
@@ -143,7 +153,7 @@ int				prepare_cmd(t_cmd *cmd, t_env *env);
 int				execute_cmd(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o);
 void			execution(t_ast *ast, t_shell *shell);
-int				get_index_pid(void);
+void			close_all_pipes(t_shell *shell);
 int				get_exit_code(int status);
 /* redir & heredoc */
 int				get_unique_id(void);
@@ -153,9 +163,12 @@ int				prepare_redirections(t_cmd *cmd);
 void			manage_dup(t_cmd *cmd, int fd_i, int fd_o);
 void			handle_all_heredocs(t_ast *node, t_shell *shell);
 void			close_prev_fd_heredoc(t_ast *node);
-
-/*-------Display|TEST-------*/
-void	display_lexer_results(t_token *lst_tokens);
-void	display_ast_results(t_ast *node, int depth, char branch);
+void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
+				t_ast *root);
+int				open_and_create_here_doc(char *tmp_file_name);
+char			*get_file_name(void);
+pid_t			execute_child_heredoc(t_shell *shell, char *tmp_file_name, \
+				char *limiter, int fd_heredoc);
+void			ft_close_fd(int *fd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:08:33 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 10:43:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/03 09:45:38 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,14 @@ void	clear_redirs_lst(t_redir **lst)
 			free(tmp->target);
 		free(tmp);
 	}
-}
-
-static void	close_files(t_cmd *cmd)
-{
-	if (cmd->fd_in != -1)
-		close(cmd->fd_in);
-	if (cmd->fd_out != -1)
-		close(cmd->fd_out);
-	if (cmd->fd_heredoc != -1)
-		close(cmd->fd_heredoc);
+	*lst = NULL;
 }
 
 void	clear_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
-	if (cmd->name && (!cmd->args || cmd->name != cmd->args[0]))
+	if (cmd->name)
 	{
 		free(cmd->name);
 		cmd->name = NULL;

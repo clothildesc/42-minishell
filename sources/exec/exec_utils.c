@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/20 14:37:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/03 09:48:18 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,18 @@ char	**lst_env_to_array(t_env *env)
 		return (NULL);
 	}
 	return (env_array);
+}
+
+void	reset_exec(t_shell *shell)
+{
+	clear_ast(&shell->ast);
+	clear_tokens_lst(&shell->tokens);
+	clear_lexer_tmp(&shell->lexer);
+	if (shell->pids)
+	{
+		free(shell->pids);
+		shell->pids = NULL;
+	}
+	shell->pid_index = 0;
+	shell->prev_status = shell->status;
 }

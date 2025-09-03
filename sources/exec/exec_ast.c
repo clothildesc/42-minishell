@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 21:26:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/03 11:50:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 			perror("pipe");
 			free_and_exit(shell, EXIT_FAILURE);
 		}
+		shell->pipes[shell->nb_pipes][0] = pipefd[0];
+		shell->pipes[shell->nb_pipes][1] = pipefd[1];
+		shell->nb_pipes++;
 		execute_ast(node->data.binary.left, shell, fd_i, pipefd[1]);
-		close(pipefd[1]);
+		ft_close_fd(&pipefd[1]);
 		execute_ast(node->data.binary.right, shell, pipefd[0], fd_o);
-		if (pipefd[0] != -1)
-			close(pipefd[0]);
-		if (pipefd[1] != -1)
-			close(pipefd[1]);
+		ft_close_fd(&pipefd[0]);
 	}
 	else if (node->node_type == NODE_CMD)
 		shell->status = execute_cmd(node, shell, fd_i, fd_o);
@@ -51,7 +51,7 @@ void	count_cmd_nodes(t_ast *node, t_shell *shell)
 
 void	init_pids(t_shell *shell)
 {
-	shell->pids = calloc(shell->nb_cmds, sizeof(pid_t));
+	shell->pids = ft_calloc(shell->nb_cmds, sizeof(pid_t));
 	if (!shell->pids)
 	{
 		perror("bash: pids malloc");
@@ -99,4 +99,6 @@ void	execution(t_ast *ast, t_shell *shell)
 	else
 		execute_ast(ast, shell, fd_i, fd_o);
 	get_status_code(shell);
+	close_all_pipes(shell);
+	close_all_command_fds(ast);
 }

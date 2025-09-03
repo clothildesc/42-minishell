@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 21:23:31 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/29 17:25:15 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/02 13:36:15 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,14 @@
 void	ft_handler_sigint(int signum)
 {
 	g_signal_received = 128 + signum;
-	write(STDOUT_FILENO, "^C", 2);
+	write(STDOUT_FILENO, "^C", 3);
 	if (!getenv("TERM"))
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 2);
 	close(STDIN_FILENO);
 }
 
 void	heredoc_sigint_handler(int signum)
 {
-	(void)signum;
 	g_signal_received = 128 + signum;
 	write(STDOUT_FILENO, "^C\n", 4);
 	close(STDIN_FILENO);
