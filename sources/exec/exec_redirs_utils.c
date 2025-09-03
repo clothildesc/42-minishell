@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 12:04:42 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 13:57:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 
 static void	process_dup_infile(t_cmd *cmd, int fd_i)
 {
-	if (fcntl(cmd->fd_in, F_GETFD) == -1)
-		perror("pb");
-	else
-		printf("fd %d est valide\n", cmd->fd_in);
 	if (cmd->fd_in != -1)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)

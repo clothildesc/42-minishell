@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:50:42 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:14:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	return (EXIT_SUCCESS);
 }
 
-static void	close_backups(int saved_in, int saved_out)
+void	close_backups(int saved_in, int saved_out)
 {
 	ft_close_fd(&saved_in);
 	ft_close_fd(&saved_out);
@@ -69,7 +69,7 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	}
 	manage_dup(cmd, fd_i, fd_o);
 	close_all_pipes(shell);
-	exit_code = execute_parent_builtins(cmd, shell);
+	exit_code = execute_parent_builtins(cmd, shell, saved_in, saved_out);
 	if (dup2(saved_in, STDIN_FILENO) != STDIN_FILENO \
 	|| dup2(saved_out, STDOUT_FILENO) != STDOUT_FILENO)
 		free_and_exit(shell, EXIT_FAILURE);

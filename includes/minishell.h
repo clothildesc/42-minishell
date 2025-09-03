@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:52:40 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:17:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
-void			free_child_and_exit(t_cmd *cmd, char **env_array, int exit_code);
+void			free_child_and_exit(t_cmd *cmd, char **env_array, \
+				int exit_code);
 void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
 void			close_all_command_fds(t_ast *node);
@@ -125,7 +126,8 @@ int				builtin_cd(char **args, t_env *env);
 /* echo */
 int				builtin_echo(char **args);
 /* exit */
-// int				builtin_exit(t_shell *shell, char **args);
+int				builtin_exit(t_shell *shell, char **args, \
+				int saved_in, int saved_out);
 
 /*-------Execution-------*/
 /* Shell */
@@ -141,7 +143,9 @@ int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, \
 int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, \
 				int fd_i, int fd_o);
 int				execute_builtins(t_cmd *cmd, t_shell *shell);
-int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
+void			close_backups(int saved_in, int saved_out);
+int				execute_parent_builtins(t_cmd *cmd, t_shell *shell, \
+				int saved_in, int saved_out);
 /* others cmds */
 char			**lst_env_to_array(t_env *env);
 int				cmd_not_found(t_cmd *cmd);
