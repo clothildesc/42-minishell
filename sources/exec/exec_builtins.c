@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 18:47:48 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:01:32 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
 	if (prepare_redirections(cmd) == -1)
 		free_and_exit(shell, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
-	//ft_close_fd(1 - index);
+	close_all_pipes(shell);
 	set_up_signals_child(false);
 	status = execute_builtins(cmd, shell);
 	free_and_exit(shell, status);

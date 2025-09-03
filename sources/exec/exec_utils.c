@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 18:43:06 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:00:34 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	close_all_pipes(t_shell *shell)
 		ft_close_fd(shell->pipes[i][1]);
 		i++;
 	}
-	shell->nb_pipes = 0;
 }
 
 void	close_all_command_fds(t_ast *node)
