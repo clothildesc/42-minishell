@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/27 00:29:55 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 12:11:21 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ static int	check_dollar(char *input)
 	return (-1);
 }
 
-/*
-VERIF SI MODIF POUR EXPAND EXIT STATUS PAS TOUT CASSE
-*/
 static char	*get_expanded_result(t_shell *shell, char *input)
 {
 	t_env	*current;

@@ -6,26 +6,12 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 18:43:46 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:50:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
-
-// void	dump_fds(const char *where)
-// {
-// 	int	fd;
-
-// 	fd = 3;
-// 	while (fd < 256)
-// 	{
-// 		if (fcntl(fd, F_GETFD) != -1)
-// 			ft_printf("[%s] open fd=%d\n", where, fd);
-// 		fd++;
-// 	}
-// 	ft_printf("[%s] -> fin de dump\n", where);
-// }
 
 void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 {
@@ -42,18 +28,12 @@ void	execute_ast(t_ast *node, t_shell *shell, int fd_i, int fd_o)
 		shell->pipes[shell->nb_pipes][1] = pipefd[1];
 		shell->nb_pipes++;
 		execute_ast(node->data.binary.left, shell, fd_i, pipefd[1]);
-		ft_close_fd(pipefd[1]);
+		ft_close_fd(&pipefd[1]);
 		execute_ast(node->data.binary.right, shell, pipefd[0], fd_o);
-		ft_close_fd(pipefd[0]);
+		ft_close_fd(&pipefd[0]);
 	}
 	else if (node->node_type == NODE_CMD)
-	{
 		shell->status = execute_cmd(node, shell, fd_i, fd_o);
-		if (fd_i != STDIN_FILENO)
-			ft_close_fd(fd_i);
-		if (fd_o != STDOUT_FILENO)
-			ft_close_fd(fd_o);
-	}
 }
 
 void	count_cmd_nodes(t_ast *node, t_shell *shell)
@@ -122,4 +102,3 @@ void	execution(t_ast *ast, t_shell *shell)
 	close_all_pipes(shell);
 	close_all_command_fds(ast);
 }
-

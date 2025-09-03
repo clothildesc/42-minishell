@@ -6,22 +6,12 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 14:11:24 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 12:00:49 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
-
-// HERE-DOC
-// Créer un fichier temporaire pour stocker le contenu du here_doc
-// Lire l'input utilisateur ligne par ligne jusqu'au délimiteur
-// Écrire dans le fichier temporaire
-// Retourner un fd en lecture sur ce fichier temporaire
-
-// ne pas oublier de unlink le heredoc ensuite : unlink("/tmp/.heredoc_tmp")
-// (optionnel) -> expand dans le heredoc
-//	idealement il faudrait que je les expand (ex : $USER)
 
 static int	open_heredoc_read_only(char *tmp_file_name, t_cmd *cmd)
 {
@@ -33,26 +23,28 @@ static int	open_heredoc_read_only(char *tmp_file_name, t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-static int	process_heredoc(t_ast *root, t_cmd *cmd, char *target)
+static int	process_heredoc(t_shell *shell, t_cmd *cmd, char *target)
 {
 	int		status;
 	int		exit_code;
 	int		fd_tmp;
 	char	*tmp_file_name;
 
-	ft_close_fd(cmd->fd_heredoc);
+	ft_close_fd(&cmd->fd_heredoc);
 	tmp_file_name = get_file_name();
 	if (!tmp_file_name)
 		return (EXIT_FAILURE);
 	fd_tmp = open_and_create_here_doc(tmp_file_name);
 	if (fd_tmp == -1)
 		return (free(tmp_file_name), unlink(tmp_file_name), EXIT_FAILURE);
-	execute_child_heredoc(root, cmd, target, fd_tmp);
+	cmd->pid_heredoc = execute_child_heredoc(shell, tmp_file_name, target, \
+		fd_tmp);
 	waitpid(cmd->pid_heredoc, &status, 0);
 	exit_code = get_exit_code(status);
 	if (exit_code == 130)
-		return (cleanup_heredoc_on_error(tmp_file_name, fd_tmp, root), 130);
-	ft_close_fd(fd_tmp);
+		return (cleanup_heredoc_on_error(tmp_file_name, fd_tmp, shell->ast), \
+		exit_code);
+	ft_close_fd(&fd_tmp);
 	return (open_heredoc_read_only(tmp_file_name, cmd));
 }
 
@@ -75,7 +67,7 @@ static void	handle_cmd_heredocs(t_ast *node, t_shell *shell)
 	{
 		if (current_redir->type == HERE_DOC)
 		{
-			shell->status = process_heredoc(shell->ast, cmd, \
+			shell->status = process_heredoc(shell, cmd, \
 				current_redir->target);
 			if (shell->status == 130)
 				return ;

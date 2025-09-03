@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/02 16:20:01 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:52:08 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static void	execute_shell(char *input, t_shell *shell)
 		shell->status = EXIT_SUCCESS;
 		return ;
 	}
-	// printf("======== APRES LEXER ============\n");
-	// display_lexer_results(shell->tokens);
 	get_syntax_errors(shell);
 	if (shell->status != EXIT_SUCCESS)
 	{
@@ -32,24 +30,9 @@ static void	execute_shell(char *input, t_shell *shell)
 		shell->prev_status = shell->status;
 		return ;
 	}
-	// printf("======== APRES CHECK SYNTAX ============\n");
-	// display_lexer_results(shell->tokens);
 	shell->ast = parse_pipe(shell, &shell->tokens);
-	// printf("======== APRES AST ============\n");
-	// display_lexer_results(shell->tokens);
 	execution(shell->ast, shell);
-	clear_ast(&shell->ast);
-	clear_tokens_lst(&shell->tokens);
-	clear_lexer_tmp(&shell->lexer);
-	if (shell->pids)
-	{
-		free(shell->pids);
-		shell->pids = NULL;
-	}
-	// printf("======== APRES CLEAR TOKENS ============\n");
-	// display_lexer_results(shell->tokens);
-	shell->pid_index = 0;
-	shell->prev_status = shell->status;
+	reset_exec(shell);
 	return ;
 }
 
@@ -95,12 +78,12 @@ static int	handle_signal_and_input(t_shell *shell, int *backup, char **line)
 			if (dup2(*backup, STDIN_FILENO) == -1)
 			{
 				clear_shell(shell);
-				ft_close_fd(*backup);
+				ft_close_fd(backup);
 				return (EXIT_FAILURE);
 			}
 			return (EXIT_SUCCESS);
 		}
-		ft_close_fd(*backup);
+		ft_close_fd(backup);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 09:01:32 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:50:42 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 
 static void	close_backups(int saved_in, int saved_out)
 {
-	ft_close_fd(saved_in);
-	ft_close_fd(saved_out);
+	ft_close_fd(&saved_in);
+	ft_close_fd(&saved_out);
 }
 
 int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
@@ -68,7 +68,7 @@ int	exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 		free_and_exit(shell, EXIT_FAILURE);
 	}
 	manage_dup(cmd, fd_i, fd_o);
-	//ft_close_fd(1 - index);
+	close_all_pipes(shell);
 	exit_code = execute_parent_builtins(cmd, shell);
 	if (dup2(saved_in, STDIN_FILENO) != STDIN_FILENO \
 	|| dup2(saved_out, STDOUT_FILENO) != STDOUT_FILENO)

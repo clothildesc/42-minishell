@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 15:27:22 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 12:06:44 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,22 @@ int	open_outfile(char *outfile, t_token_type type)
 	return (fd);
 }
 
-void	ft_close_fd(int fd)
+void	ft_close_fd(int *fd)
 {
-	pid_t	pid;
-
-	if (fd != -1)
+	if (*fd != -1)
 	{
-		pid = getpid();
-		close(fd);
-		printf("PID [%d] ferme FD [%d]\n", pid, fd);
+		close(*fd);
+		*fd = -1;
 	}
 }
 
 static int	handle_input_redir(t_cmd *cmd, t_redir *current)
 {
-	ft_close_fd(cmd->fd_in);
+	ft_close_fd(&cmd->fd_in);
 	if (current->type == HERE_DOC)
 	{
-		cmd->fd_in = cmd->fd_heredoc;
-		ft_close_fd(cmd->fd_heredoc);
+		cmd->fd_in = dup(cmd->fd_heredoc);
+		ft_close_fd(&cmd->fd_heredoc);
 	}
 	else
 		cmd->fd_in = open_infile(current->target);
@@ -95,7 +92,7 @@ int	prepare_redirections(t_cmd *cmd)
 		}
 		else if (current->type == REDIR_OUT || current->type == APPEND_OUT)
 		{
-			ft_close_fd(cmd->fd_out);
+			ft_close_fd(&cmd->fd_out);
 			cmd->fd_out = open_outfile(current->target, current->type);
 			if (cmd->fd_out == -1)
 				return (-1);

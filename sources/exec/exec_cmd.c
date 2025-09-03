@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 09:09:34 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:41:57 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,20 @@ int	get_exit_code(int status)
 		return (EXIT_FAILURE);
 }
 
-static void	execute_child(t_cmd *cmd, char** env_array, int fd_i, int fd_o)
+static void	execute_child(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
+	char	**env_array;
+
+	env_array = lst_env_to_array(shell->env);
+	if (!env_array)
+	{
+		perror("malloc env_array");
+		free_and_exit(shell, EXIT_FAILURE);
+	}
 	if (prepare_redirections(cmd) == -1)
 		free_child_and_exit(cmd, env_array, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
+	close_all_pipes(shell);
 	set_up_signals_child(false);
 	execve(cmd->abs_path, cmd->args, env_array);
 	perror("execve");
@@ -55,15 +64,8 @@ static void	execute_child(t_cmd *cmd, char** env_array, int fd_i, int fd_o)
 static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	pid_t	pid;
-	char	**env_array;
 	int		status;
 
-	env_array = lst_env_to_array(shell->env);
-	if (!env_array)
-	{
-		perror("malloc env_array");
-		return (EXIT_FAILURE);
-	}
 	status = prepare_cmd(cmd, shell->env);
 	if (status != EXIT_SUCCESS)
 		return (status);
@@ -74,9 +76,8 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 		return (EXIT_FAILURE);
 	}
 	if (pid == 0)
-		execute_child(cmd, env_array, fd_i, fd_o);
+		execute_child(cmd, shell, fd_i, fd_o);
 	shell->pids[shell->pid_index++] = pid;
-	free_tab_chars(env_array);
 	return (EXIT_SUCCESS);
 }
 

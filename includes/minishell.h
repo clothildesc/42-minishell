@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/02 18:36:51 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:52:40 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
 void			free_child_and_exit(t_cmd *cmd, char **env_array, int exit_code);
+void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
 void			close_all_command_fds(t_ast *node);
 
@@ -129,13 +130,16 @@ int				builtin_echo(char **args);
 /*-------Execution-------*/
 /* Shell */
 void			init_shell(t_shell *shell, char **envp);
+void			reset_exec(t_shell *shell);
 int				main_loop(t_shell *shell);
 
 /* builtins */
 int				is_a_builtin(char *name);
 bool			is_parent_builtin(char *name);
-int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o);
-int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o);
+int				exec_builtin_simple(t_cmd *cmd, t_shell *shell, \
+				int fd_i, int fd_o);
+int				exec_builtin_in_parent(t_cmd *cmd, t_shell *shell, \
+				int fd_i, int fd_o);
 int				execute_builtins(t_cmd *cmd, t_shell *shell);
 int				execute_parent_builtins(t_cmd *cmd, t_shell *shell);
 /* others cmds */
@@ -159,14 +163,8 @@ void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
 				t_ast *root);
 int				open_and_create_here_doc(char *tmp_file_name);
 char			*get_file_name(void);
-void			execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, \
-				int fd_heredoc);
-void			ft_close_fd(int fd);
-
-/*-------Display|TEST-------*/
-// ATTENTION A BIEN ENLEVER LES WILDCARDS DANS LE MAKEFILE !!!!!!!
-void	display_lexer_results(t_token *lst_tokens);
-void	display_ast_results(t_ast *node, int depth, char branch);
-void	dump_fds(const char *where);
+pid_t			execute_child_heredoc(t_shell *shell, char *tmp_file_name, \
+				char *limiter, int fd_heredoc);
+void			ft_close_fd(int *fd);
 
 #endif

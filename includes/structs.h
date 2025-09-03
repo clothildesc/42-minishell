@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:01:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/02 17:31:45 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:41:16 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ typedef struct s_shell
 	t_token	*tokens;
 	t_ast	*ast;
 	t_env	*env;
-	char	**env_array;
 	int		nb_cmds;
 	pid_t	*pids;
 	int		pid_index;

@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 09:00:34 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:48:18 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,38 +69,16 @@ char	**lst_env_to_array(t_env *env)
 	return (env_array);
 }
 
-void	close_all_pipes(t_shell *shell)
+void	reset_exec(t_shell *shell)
 {
-	int	i;
-
-	i = 0;
-	while (i != shell->nb_pipes)
+	clear_ast(&shell->ast);
+	clear_tokens_lst(&shell->tokens);
+	clear_lexer_tmp(&shell->lexer);
+	if (shell->pids)
 	{
-		ft_close_fd(shell->pipes[i][0]);
-		ft_close_fd(shell->pipes[i][1]);
-		i++;
+		free(shell->pids);
+		shell->pids = NULL;
 	}
-}
-
-void	close_all_command_fds(t_ast *node)
-{
-	t_cmd	*cmd;
-
-	cmd = node->data.cmd.cmd;
-	if (!node)
-		return ;
-	if (node->node_type == NODE_PIPE)
-	{
-		close_all_command_fds(node->data.binary.left);
-		close_all_command_fds(node->data.binary.right);
-	}
-	else if (node->node_type == NODE_CMD)
-	{
-		if (cmd)
-		{
-			ft_close_fd(cmd->fd_in);
-			ft_close_fd(cmd->fd_out);
-			ft_close_fd(cmd->fd_heredoc);
-		}
-	}
+	shell->pid_index = 0;
+	shell->prev_status = shell->status;
 }

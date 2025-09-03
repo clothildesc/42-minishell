@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_heredocs_utils_2.c                            :+:      :+:    :+:   */
+/*   exec_heredoc_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:58:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/01 18:00:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/03 11:50:52 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@ void	close_prev_fd_heredoc(t_ast *node)
 	else if (node->node_type == NODE_CMD)
 	{
 		cmd = node->data.cmd.cmd;
-		ft_close_fd(cmd->fd_heredoc);
+		ft_close_fd(&cmd->fd_heredoc);
 	}
 }
 
-void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd_heredoc)
+pid_t	execute_child_heredoc(t_shell *shell, char	*tmp_file_name, \
+	char *limiter, int fd_heredoc)
 {
 	pid_t	pid;
 
@@ -67,18 +68,19 @@ void	execute_child_heredoc(t_ast *root, t_cmd *cmd, char *limiter, int fd_heredo
 	if (pid == -1)
 	{
 		perror("fork heredoc");
-		return ;
+		return (-1);
 	}
 	if (pid == 0)
 	{
-		close_prev_fd_heredoc(root);
+		free(tmp_file_name);
+		close_prev_fd_heredoc(shell->ast);
 		set_up_signals_child(true);
 		read_and_write_heredoc(fd_heredoc, limiter);
-		ft_close_fd(fd_heredoc);
+		ft_close_fd(&fd_heredoc);
 		if (g_signal_received)
-			exit(g_signal_received);
+			free_and_exit(shell, g_signal_received);
 		else
-			exit(EXIT_SUCCESS);
+			free_and_exit(shell, EXIT_SUCCESS);
 	}
-	cmd->pid_heredoc = pid;
+	return (pid);
 }
