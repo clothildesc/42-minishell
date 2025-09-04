@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 09:44:34 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 11:52:27 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:27:25 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,10 @@ void	close_all_command_fds(t_ast *node)
 	}
 	else if (node->node_type == NODE_CMD)
 		close_files(cmd);
+}
+
+void	close_all_fds_and_pipes(t_shell *shell)
+{
+	close_all_pipes(shell);
+	close_all_command_fds(shell->ast);
 }

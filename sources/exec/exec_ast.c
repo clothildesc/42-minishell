@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:50:31 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:28:18 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	get_status_code(t_shell *shell)
 	pid_t	current_pid;
 
 	i = 0;
-	while (i < shell->nb_cmds)
+	while (i < shell->pid_index)
 	{
 		current_pid = waitpid(shell->pids[i], &status, 0);
-		if (current_pid == shell->pids[shell->nb_cmds - 1])
+		if (current_pid == shell->pids[shell->pid_index - 1])
 			shell->status = get_exit_code(status);
 		i++;
 	}
@@ -86,6 +86,8 @@ void	execution(t_ast *ast, t_shell *shell)
 	fd_i = STDIN_FILENO;
 	fd_o = STDOUT_FILENO;
 	handle_all_heredocs(ast, shell);
+	if (shell->status == 130)
+		return ;
 	count_cmd_nodes(ast, shell);
 	init_pids(shell);
 	if (ast->node_type == NODE_CMD)
@@ -99,6 +101,5 @@ void	execution(t_ast *ast, t_shell *shell)
 	else
 		execute_ast(ast, shell, fd_i, fd_o);
 	get_status_code(shell);
-	close_all_pipes(shell);
-	close_all_command_fds(ast);
+	close_all_fds_and_pipes(shell);
 }

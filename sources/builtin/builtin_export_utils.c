@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/14 13:40:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 09:26:04 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_env	*get_node(t_env **head, char *key)
 	current = *head;
 	while (current)
 	{
-		if (ft_strcmp(key, current->key))
+		if (!ft_strcmp(key, current->key))
 			return (current);
 		current = current->next;
 	}
