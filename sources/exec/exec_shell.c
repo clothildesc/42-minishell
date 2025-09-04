@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 11:52:08 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:05:59 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ int	main_loop(t_shell *shell)
 	{
 		if (handle_signal_and_input(shell, &backup, &line) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (backup != -1)
-			close(backup);
+		ft_close_fd(backup);
 		if (!process_line(shell, line))
 		{
 			free(line);

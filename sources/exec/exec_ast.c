@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:50:31 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:08:42 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	get_status_code(t_shell *shell)
 	pid_t	current_pid;
 
 	i = 0;
-	while (i < shell->nb_cmds)
+	while (i < shell->pid_index)
 	{
 		current_pid = waitpid(shell->pids[i], &status, 0);
-		if (current_pid == shell->pids[shell->nb_cmds - 1])
+		if (current_pid == shell->pids[shell->pid_index - 1])
 			shell->status = get_exit_code(status);
 		i++;
 	}

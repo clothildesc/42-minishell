@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 14:17:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 11:57:05 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,16 @@ int	builtin_echo(char **args)
 	{
 		if (!first)
 			ft_printf(" ");
-		else
+		if (args[i][0] == '$' && args[i][1] && ft_isdigit(args[i][1]) && args[i][2])
+		{
+			ft_printf("%s", &args[i][2]);
+			first = false;
+		}
+		else if (args[i][0] != '$')
+		{
 			ft_printf("%s", args[i]);
-		first = false;
+			first = false;
+		}
 		i++;
 	}
 	if (!option)

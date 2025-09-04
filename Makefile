@@ -6,7 +6,7 @@
 #    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/09/03 10:39:13 by barmarti         ###   ########.fr        #
+#    Updated: 2025/09/04 09:15:20 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,7 @@ HEADER = includes/minishell.h
 SRCS = $(SRCS_DIR)/main.c
 
 BLTN_DIR = builtin
-BUILTIN = $(SRCS_DIR)/$(BLTN_DIR)/builtin_cd.c\
-			$(SRCS_DIR)/$(BLTN_DIR)/builtin_echo.c\
+BUILTIN = $(SRCS_DIR)/$(BLTN_DIR)/builtin_echo.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_env.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_exit.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_expand.c\
@@ -36,6 +35,7 @@ BUILTIN = $(SRCS_DIR)/$(BLTN_DIR)/builtin_cd.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_export_utils_2.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_export.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_pwd.c\
+			$(SRCS_DIR)/$(BLTN_DIR)/builtin_cd.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_unset.c
 
 EXC_DIR = exec
