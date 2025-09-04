@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 12:06:44 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 14:43:05 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ static int	handle_input_redir(t_cmd *cmd, t_redir *current)
 {
 	ft_close_fd(&cmd->fd_in);
 	if (current->type == HERE_DOC)
-	{
 		cmd->fd_in = dup(cmd->fd_heredoc);
-		ft_close_fd(&cmd->fd_heredoc);
-	}
 	else
 		cmd->fd_in = open_infile(current->target);
 	if (cmd->fd_in == -1)
@@ -88,7 +85,7 @@ int	prepare_redirections(t_cmd *cmd)
 		if (current->type == REDIR_IN || current->type == HERE_DOC)
 		{
 			if (handle_input_redir(cmd, current) == -1)
-				return (-1);
+				return (ft_close_fd(&cmd->fd_heredoc), -1);
 		}
 		else if (current->type == REDIR_OUT || current->type == APPEND_OUT)
 		{
@@ -99,5 +96,6 @@ int	prepare_redirections(t_cmd *cmd)
 		}
 		current = current->next;
 	}
+	ft_close_fd(&cmd->fd_heredoc);
 	return (0);
 }

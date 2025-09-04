@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:08:46 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:50:58 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:28:56 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ int	open_and_create_here_doc(char *tmp_file_name)
 	return (fd);
 }
 
-void	cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, t_ast *root)
+void	cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
+		t_shell *shell)
 {
 	g_signal_received = 130;
-	close_prev_fd_heredoc(root);
+	close_prev_fd_heredoc(shell->ast);
 	ft_close_fd(&fd_tmp);
 	unlink(tmp_file_name);
 	free(tmp_file_name);
+	clear_shell(shell);
 }

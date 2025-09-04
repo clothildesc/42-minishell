@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 14:17:35 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:27:46 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void			free_child_and_exit(t_cmd *cmd, char **env_array, \
 void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
 void			close_all_command_fds(t_ast *node);
+void			close_all_fds_and_pipes(t_shell *shell);
 
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
@@ -164,7 +165,7 @@ void			manage_dup(t_cmd *cmd, int fd_i, int fd_o);
 void			handle_all_heredocs(t_ast *node, t_shell *shell);
 void			close_prev_fd_heredoc(t_ast *node);
 void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
-				t_ast *root);
+				t_shell *shell);
 int				open_and_create_here_doc(char *tmp_file_name);
 char			*get_file_name(void);
 pid_t			execute_child_heredoc(t_shell *shell, char *tmp_file_name, \

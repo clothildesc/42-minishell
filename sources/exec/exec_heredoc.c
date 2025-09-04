@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 12:00:49 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:22:55 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	process_heredoc(t_shell *shell, t_cmd *cmd, char *target)
 	waitpid(cmd->pid_heredoc, &status, 0);
 	exit_code = get_exit_code(status);
 	if (exit_code == 130)
-		return (cleanup_heredoc_on_error(tmp_file_name, fd_tmp, shell->ast), \
+		return (cleanup_heredoc_on_error(tmp_file_name, fd_tmp, shell), \
 		exit_code);
 	ft_close_fd(&fd_tmp);
 	return (open_heredoc_read_only(tmp_file_name, cmd));
