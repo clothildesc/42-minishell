@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 15:01:06 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:47:14 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,7 @@ int	main_loop(t_shell *shell)
 			return (EXIT_FAILURE);
 		}
 		if (g_signal_received)
-		{
 			shell->prev_status = g_signal_received;
-			clear_shell(shell);
-		}
 		free(line);
 	}
 	return (EXIT_SUCCESS);
