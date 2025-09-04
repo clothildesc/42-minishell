@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 14:17:35 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:36:30 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int				builtin_exit(t_shell *shell, char **args, \
 void			init_shell(t_shell *shell, char **envp);
 void			reset_exec(t_shell *shell);
 int				main_loop(t_shell *shell);
+int				test_function(t_shell *shell, char *argv);
 
 /* builtins */
 int				is_a_builtin(char *name);

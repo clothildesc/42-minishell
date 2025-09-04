@@ -1,0 +1,296 @@
+					### ENV ###
+
+	-- Test[4] --
+
+INPUT=env $HOME
+
+	-- RETURN VALUE --
+1c1,67
+< env: ‘/home/barmarti’: Permission denied
+---
+> USER=barmarti
+> XDG_SESSION_TYPE=x11
+> GIT_ASKPASS=/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+> SHLVL=3
+> LD_LIBRARY_PATH=/usr/lib/debug
+> LESS=-R
+> HOME=/home/barmarti
+> CHROME_DESKTOP=code.desktop
+> OLDPWD=/home/barmarti/code/42-minishell/test/script
+> TERM_PROGRAM_VERSION=1.102.3
+> DESKTOP_SESSION=ubuntu
+> LSCOLORS=Gxfxcxdxbxegedabagacad
+> ZSH=/home/barmarti/.oh-my-zsh
+> GTK_MODULES=gail:atk-bridge
+> XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+> PAGER=less
+> VSCODE_GIT_ASKPASS_MAIN=/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+> VSCODE_GIT_ASKPASS_NODE=/usr/share/code/code
+> SYSTEMD_EXEC_PID=77095
+> DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/112333/bus
+> COLORTERM=truecolor
+> LIBVIRT_DEFAULT_URI=qemu:///system
+> GTK_IM_MODULE=ibus
+> LOGNAME=barmarti
+> _=/usr/bin/valgrind
+> USER_ZDOTDIR=/home/barmarti
+> XDG_SESSION_CLASS=user
+> TERM=xterm-256color
+> GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+> PATH=/home/barmarti/.local/funcheck/host:/home/barmarti/.local/bin:/home/barmarti/bin:/home/barmarti/.local/funcheck/host:/home/barmarti/.local/bin:/home/barmarti/bin:/home/barmarti/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+> SESSION_MANAGER=local/f6r5s12.clusters.42paris.fr:@/tmp/.ICE-unix/77070,unix/f6r5s12.clusters.42paris.fr:/tmp/.ICE-unix/77070
+> XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+> XDG_MENU_PREFIX=gnome-
+> GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/83648e81_1990_4e3b_985e_903e0fe3ec6e
+> XDG_RUNTIME_DIR=/run/user/112333
+> GDK_BACKEND=x11
+> GLIBCPP_FORCE_NEW=1
+> DISPLAY=:0
+> VSCODE_INJECTION=1
+> LANG=en_US.UTF-8
+> XDG_CURRENT_DESKTOP=Unity
+> XMODIFIERS=@im=ibus
+> XDG_SESSION_DESKTOP=ubuntu
+> XAUTHORITY=/home/barmarti/.Xauthority
+> LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+> VSCODE_GIT_IPC_HANDLE=/run/user/112333/vscode-git-cfc1e533b4.sock
+> GNOME_TERMINAL_SERVICE=:1.78
+> TERM_PROGRAM=vscode
+> SSH_AGENT_LAUNCHER=gnome-keyring
+> SSH_AUTH_SOCK=/run/user/112333/keyring/ssh
+> XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/barmarti
+> ORIGINAL_XDG_CURRENT_DESKTOP=ubuntu:GNOME
+> SHELL=/bin/zsh
+> KRB5CCNAME=FILE:/tmp/krb5cc_112333_zWjpe9
+> QT_ACCESSIBILITY=1
+> GDMSESSION=ubuntu
+> DOCKER_HOST=unix:///run/user/112333/docker.sock
+> GPG_AGENT_INFO=/run/user/112333/gnupg/S.gpg-agent:0:1
+> VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+> QT_IM_MODULE=ibus
+> PWD=/home/barmarti/code/42-minishell
+> XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+> ZDOTDIR=/home/barmarti
+> XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/barmarti/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+> VTE_VERSION=6800
+> GLIBCXX_FORCE_NEW=1
+> LD_PRELOAD=/usr/libexec/valgrind/vgpreload_core-amd64-linux.so:/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+---->[KO]
+
+	-- EXIT STATUS --
+MINISHELL=0
+BASH=126
+---->[KO]
+
+	-- VALGRIND --
+==365447== Memcheck, a memory error detector
+==365447== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==365447== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==365447== Command: ./minishell env\ $HOME
+==365447== Parent PID: 361917
+==365447== 
+==365447== Invalid read of size 1
+==365447==    at 0x407457: ft_strlen (ft_strlen.c:20)
+==365447==    by 0x4078AB: ft_strdup (ft_strdup.c:21)
+==365447==    by 0x40658D: create_args_lst (parsing_cmd_utils_2.c:45)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Address 0x4b2c920 is 0 bytes inside a block of size 15 free'd
+==365447==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x406584: create_args_lst (parsing_cmd_utils_2.c:44)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Block was alloc'd at
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x4078BB: ft_strdup (ft_strdup.c:21)
+==365447==    by 0x401A62: get_expanded_result (builtin_expand.c:41)
+==365447==    by 0x401921: builtin_expand (builtin_expand.c:58)
+==365447==    by 0x406549: create_args_lst (parsing_cmd_utils_2.c:38)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== Invalid read of size 1
+==365447==    at 0x4078E5: ft_strdup (ft_strdup.c:24)
+==365447==    by 0x40658D: create_args_lst (parsing_cmd_utils_2.c:45)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Address 0x4b2c920 is 0 bytes inside a block of size 15 free'd
+==365447==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x406584: create_args_lst (parsing_cmd_utils_2.c:44)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Block was alloc'd at
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x4078BB: ft_strdup (ft_strdup.c:21)
+==365447==    by 0x401A62: get_expanded_result (builtin_expand.c:41)
+==365447==    by 0x401921: builtin_expand (builtin_expand.c:58)
+==365447==    by 0x406549: create_args_lst (parsing_cmd_utils_2.c:38)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== Invalid read of size 1
+==365447==    at 0x4078F7: ft_strdup (ft_strdup.c:26)
+==365447==    by 0x40658D: create_args_lst (parsing_cmd_utils_2.c:45)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Address 0x4b2c920 is 0 bytes inside a block of size 15 free'd
+==365447==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x406584: create_args_lst (parsing_cmd_utils_2.c:44)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447==  Block was alloc'd at
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x4078BB: ft_strdup (ft_strdup.c:21)
+==365447==    by 0x401A62: get_expanded_result (builtin_expand.c:41)
+==365447==    by 0x401921: builtin_expand (builtin_expand.c:58)
+==365447==    by 0x406549: create_args_lst (parsing_cmd_utils_2.c:38)
+==365447==    by 0x406110: process_word (parsing_cmd.c:49)
+==365447==    by 0x405F5A: parse_cmd (parsing_cmd.c:74)
+==365447==    by 0x405D07: parse_pipe (parsing_pipe.c:39)
+==365447==    by 0x4049D2: execute_shell (exec_shell.c:33)
+==365447==    by 0x4046E7: process_line (exec_shell.c:50)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365448== 
+==365448== HEAP SUMMARY:
+==365448==     in use at exit: 4,072 bytes in 5 blocks
+==365448==   total heap usage: 238 allocs, 233 frees, 10,846 bytes allocated
+==365448== 
+==365448== 10 bytes in 1 blocks are still reachable in loss record 1 of 5
+==365448==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365448==    by 0x4078BB: ft_strdup (ft_strdup.c:21)
+==365448==    by 0x40449F: test_function (exec_shell.c:124)
+==365448==    by 0x401324: main (main.c:27)
+==365448== 
+==365448== 10 bytes in 1 blocks are still reachable in loss record 2 of 5
+==365448==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365448==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x4046DA: process_line (exec_shell.c:49)
+==365448==    by 0x4044FF: test_function (exec_shell.c:131)
+==365448==    by 0x401324: main (main.c:27)
+==365448== 
+==365448== 12 bytes in 1 blocks are still reachable in loss record 3 of 5
+==365448==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365448==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x4046DA: process_line (exec_shell.c:49)
+==365448==    by 0x4044FF: test_function (exec_shell.c:131)
+==365448==    by 0x401324: main (main.c:27)
+==365448== 
+==365448== 24 bytes in 1 blocks are still reachable in loss record 4 of 5
+==365448==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365448==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x4046DA: process_line (exec_shell.c:49)
+==365448==    by 0x4044FF: test_function (exec_shell.c:131)
+==365448==    by 0x401324: main (main.c:27)
+==365448== 
+==365448== 4,016 bytes in 1 blocks are still reachable in loss record 5 of 5
+==365448==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365448==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365448==    by 0x4046DA: process_line (exec_shell.c:49)
+==365448==    by 0x4044FF: test_function (exec_shell.c:131)
+==365448==    by 0x401324: main (main.c:27)
+==365448== 
+==365448== LEAK SUMMARY:
+==365448==    definitely lost: 0 bytes in 0 blocks
+==365448==    indirectly lost: 0 bytes in 0 blocks
+==365448==      possibly lost: 0 bytes in 0 blocks
+==365448==    still reachable: 4,072 bytes in 5 blocks
+==365448==         suppressed: 0 bytes in 0 blocks
+==365448== 
+==365448== For lists of detected and suppressed errors, rerun with: -s
+==365448== ERROR SUMMARY: 44 errors from 3 contexts (suppressed: 0 from 0)
+==365447== 
+==365447== HEAP SUMMARY:
+==365447==     in use at exit: 4,062 bytes in 4 blocks
+==365447==   total heap usage: 238 allocs, 234 frees, 10,846 bytes allocated
+==365447== 
+==365447== 10 bytes in 1 blocks are still reachable in loss record 1 of 4
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x4046DA: process_line (exec_shell.c:49)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== 12 bytes in 1 blocks are still reachable in loss record 2 of 4
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x4046DA: process_line (exec_shell.c:49)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== 24 bytes in 1 blocks are still reachable in loss record 3 of 4
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x4046DA: process_line (exec_shell.c:49)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
+==365447==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==365447==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==365447==    by 0x4046DA: process_line (exec_shell.c:49)
+==365447==    by 0x4044FF: test_function (exec_shell.c:131)
+==365447==    by 0x401324: main (main.c:27)
+==365447== 
+==365447== LEAK SUMMARY:
+==365447==    definitely lost: 0 bytes in 0 blocks
+==365447==    indirectly lost: 0 bytes in 0 blocks
+==365447==      possibly lost: 0 bytes in 0 blocks
+==365447==    still reachable: 4,062 bytes in 4 blocks
+==365447==         suppressed: 0 bytes in 0 blocks
+==365447== 
+==365447== For lists of detected and suppressed errors, rerun with: -s
+==365447== ERROR SUMMARY: 44 errors from 3 contexts (suppressed: 0 from 0)

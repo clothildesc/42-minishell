@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 11:52:08 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:37:57 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,32 @@ static int	handle_backup_error(t_shell *shell, int *backup)
 	return (EXIT_SUCCESS);
 }
 
+static int	handle_signal_and_input_test(t_shell *shell, int *backup, char **line)
+{
+	g_signal_received = 0;
+	*backup = dup(STDIN_FILENO);
+	if (handle_backup_error(shell, backup))
+		return (EXIT_FAILURE);
+	signal(SIGINT, ft_handler_sigint);
+	signal(SIGINT, SIG_IGN);
+	if (!*line)
+	{
+		if (g_signal_received)
+		{
+			if (dup2(*backup, STDIN_FILENO) == -1)
+			{
+				clear_shell(shell);
+				ft_close_fd(backup);
+				return (EXIT_FAILURE);
+			}
+			return (EXIT_SUCCESS);
+		}
+		ft_close_fd(backup);
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_SUCCESS);
+}
+
 static int	handle_signal_and_input(t_shell *shell, int *backup, char **line)
 {
 	g_signal_received = 0;
@@ -88,6 +114,32 @@ static int	handle_signal_and_input(t_shell *shell, int *backup, char **line)
 	}
 	return (EXIT_SUCCESS);
 }
+
+int	test_function(t_shell *shell, char *argv)
+{
+	char	*line;
+	int		backup;
+
+	backup = -1;
+	line = ft_strdup(argv);
+	if (!line)
+		return (EXIT_FAILURE);
+	if (handle_signal_and_input_test(shell, &backup, &line) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (backup != -1)
+		close(backup);
+	if (!process_line(shell, line))
+	{
+		free(line);
+		clear_shell(shell);
+		return (EXIT_FAILURE);
+	}
+	if (g_signal_received)
+		shell->prev_status = g_signal_received;
+	free(line);
+	return (EXIT_SUCCESS);
+}
+
 
 int	main_loop(t_shell *shell)
 {

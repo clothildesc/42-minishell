@@ -1,0 +1,425 @@
+					### PIPELINE ###
+
+	-- Test[9] --
+
+INPUT=ls | wc | ls | wrong_cmd | ls
+
+	-- RETURN VALUE --
+1c1,10
+< wrong_cmd: command not found
+---
+> bash: wrong_cmd: command not found
+> includes
+> libft
+> Makefile
+> minishell
+> obj
+> outfile
+> readline.supp
+> sources
+> test
+---->[KO]
+
+	-- EXIT STATUS --
+MINISHELL=0
+BASH=0
+---->[OK]
+
+	-- VALGRIND --
+==363904== Memcheck, a memory error detector
+==363904== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==363904== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==363904== Command: /usr/bin/ls
+==363904== Parent PID: 363879
+==363904== 
+==363904== 
+==363904== HEAP SUMMARY:
+===363879== 
+==363879== HEAP SUMMARY:
+==363879==     in use at exit: 4,082 bytes in 4 blocks
+==363879==   total heap usage: 511 allocs, 507 frees, 16,881 bytes allocated
+==363879== 
+==363879== 12 bytes in 1 blocks are still reachable in loss record 1 of 4
+==363879==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363879==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x4046DA: process_line (exec_shell.c:49)
+==363879==    by 0x4044FF: test_function (exec_shell.c:131)
+==363879==    by 0x401324: main (main.c:27)
+==363879== 
+==363879== 24 bytes in 1 blocks are still reachable in loss record 2 of 4
+==363879==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363879==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x4046DA: process_line (exec_shell.c:49)
+==363879==    by 0x4044FF: test_function (exec_shell.c:131)
+==363879==    by 0x401324: main (main.c:27)
+==363879== 
+==363879== 30 bytes in 1 blocks are still reachable in loss record 3 of 4
+==363879==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363879==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x4046DA: process_line (exec_shell.c:49)
+==363879==    by 0x4044FF: test_function (exec_shell.c:131)
+==363879==    by 0x401324: main (main.c:27)
+==363879== 
+==363879== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
+==363879==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363879==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==363879==    by 0x4046DA: process_line (exec_shell.c:49)
+==363879==    by 0x4044FF: test_function (exec_shell.c:131)
+==363879==    by 0x401324: main (main.c:27)
+==363879== 
+==363879== LEAK SUMMARY:
+==363879==    definitely lost: 0 bytes in 0 blocks
+==363879==    indirectly lost: 0 bytes in 0 blocks
+==363879==      possibly lost: 0 bytes in 0 blocks
+==363879==    still reachable: 4,082 bytes in 4 blocks
+==363879==         suppressed: 0 bytes in 0 blocks
+==363879== 
+==363879== For lists of detected and suppressed errors, rerun with: -s
+==363879== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+d: 0 from 0)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 32 bytes in 1 blocks are still reachable in loss record 5 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B433C: new_exp.constprop.0 (plural.c:253)
+==363902==    by 0x48B509B: new_exp_0 (plural.c:273)
+==363902==    by 0x48B509B: __gettextparse (plural.c:1339)
+==363902==    by 0x48B544C: __gettext_extract_plural (plural-exp.c:138)
+==363902==    by 0x48B15F0: _nl_load_domain (loadmsgcat.c:1272)
+==363902==    by 0x48B10E4: _nl_find_domain (finddomain.c:166)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 32 bytes in 1 blocks are still reachable in loss record 6 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B3C3F: new_exp.constprop.1 (plural.c:253)
+==363902==    by 0x48B4D63: new_exp_2 (plural.c:293)
+==363902==    by 0x48B4D63: __gettextparse (plural.c:1321)
+==363902==    by 0x48B544C: __gettext_extract_plural (plural-exp.c:138)
+==363902==    by 0x48B15F0: _nl_load_domain (loadmsgcat.c:1272)
+==363902==    by 0x48B10E4: _nl_find_domain (finddomain.c:166)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 32 bytes in 1 blocks are still reachable in loss record 7 of 35
+==363902==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x4947C1F: __wcsmbs_load_conv (wcsmbsload.c:167)
+==363902==    by 0x493B16E: get_gconv_fcts (wcsmbsload.h:73)
+==363902==    by 0x493B16E: mbrtowc (mbrtowc.c:69)
+==363902==    by 0x10E879: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 34 bytes in 1 blocks are still reachable in loss record 8 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48AF5DE: set_binding_values.part.0 (bindtextdom.c:203)
+==363902==    by 0x48AF89B: set_binding_values (bindtextdom.c:322)
+==363902==    by 0x48AF89B: bindtextdomain (bindtextdom.c:320)
+==363902==    by 0x10A935: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 46 bytes in 1 blocks are still reachable in loss record 9 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 48 bytes in 1 blocks are still reachable in loss record 10 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x10B114: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 55 bytes in 1 blocks are still reachable in loss record 11 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 56 bytes in 1 blocks are still reachable in loss record 12 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 56 bytes in 1 blocks are still reachable in loss record 13 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 60 bytes in 1 blocks are still reachable in loss record 14 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 69 bytes in 1 blocks are still reachable in loss record 15 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 120 bytes in 1 blocks are still reachable in loss record 16 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48AD2FF: _nl_load_locale_from_archive (loadarchive.c:460)
+==363902==    by 0x48AC0DF: _nl_find_locale (findlocale.c:152)
+==363902==    by 0x48AB856: setlocale (setlocale.c:337)
+==363902==    by 0x48AB856: setlocale (setlocale.c:217)
+==363902==    by 0x10A926: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 144 bytes in 12 blocks are still reachable in loss record 17 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x491D58E: strdup (strdup.c:42)
+==363902==    by 0x48ABC84: setlocale (setlocale.c:366)
+==363902==    by 0x48ABC84: setlocale (setlocale.c:217)
+==363902==    by 0x10A926: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 152 bytes in 1 blocks are still reachable in loss record 18 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x10B13B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 152 bytes in 3 blocks are still reachable in loss record 19 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 166 bytes in 3 blocks are still reachable in loss record 20 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 168 bytes in 1 blocks are still reachable in loss record 21 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 168 bytes in 1 blocks are still reachable in loss record 22 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 179 bytes in 3 blocks are still reachable in loss record 23 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 193 bytes in 3 blocks are still reachable in loss record 24 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2E4C: _nl_make_l10nflist (l10nflist.c:166)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 200 bytes in 1 blocks are still reachable in loss record 25 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B1256: _nl_load_domain (loadmsgcat.c:881)
+==363902==    by 0x48B10E4: _nl_find_domain (finddomain.c:166)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 208 bytes in 1 blocks are still reachable in loss record 26 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48AA9D6: __gconv_lookup_cache (gconv_cache.c:365)
+==363902==    by 0x48A0B6E: __gconv_find_transform (gconv_db.c:732)
+==363902==    by 0x4947D4A: __wcsmbs_getfct (wcsmbsload.c:91)
+==363902==    by 0x4947D4A: __wcsmbs_load_conv (wcsmbsload.c:185)
+==363902==    by 0x493B16E: get_gconv_fcts (wcsmbsload.h:73)
+==363902==    by 0x493B16E: mbrtowc (mbrtowc.c:69)
+==363902==    by 0x10E879: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 208 bytes in 1 blocks are still reachable in loss record 27 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48AAAC0: __gconv_lookup_cache (gconv_cache.c:365)
+==363902==    by 0x48A0B6E: __gconv_find_transform (gconv_db.c:732)
+==363902==    by 0x4947D8B: __wcsmbs_getfct (wcsmbsload.c:91)
+==363902==    by 0x4947D8B: __wcsmbs_load_conv (wcsmbsload.c:188)
+==363902==    by 0x493B16E: get_gconv_fcts (wcsmbsload.h:73)
+==363902==    by 0x493B16E: mbrtowc (mbrtowc.c:69)
+==363902==    by 0x10E879: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 216 bytes in 3 blocks are still reachable in loss record 28 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 216 bytes in 3 blocks are still reachable in loss record 29 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 312 bytes in 3 blocks are still reachable in loss record 30 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 312 bytes in 3 blocks are still reachable in loss record 31 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2FDC: _nl_make_l10nflist (l10nflist.c:242)
+==363902==    by 0x48B318F: _nl_make_l10nflist (l10nflist.c:295)
+==363902==    by 0x48B3211: _nl_make_l10nflist (l10nflist.c:285)
+==363902==    by 0x48B1056: _nl_find_domain (finddomain.c:147)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 1,600 bytes in 1 blocks are still reachable in loss record 32 of 35
+==363902==    at 0x48487A9: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B2A3E: extend_alias_table (localealias.c:401)
+==363902==    by 0x48B2A3E: read_alias_file (localealias.c:313)
+==363902==    by 0x48B2BB2: _nl_expand_alias (localealias.c:198)
+==363902==    by 0x48B0FA7: _nl_find_domain (finddomain.c:123)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 2,048 bytes in 1 blocks are still reachable in loss record 33 of 35
+==363902==    at 0x484DCD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48B293D: read_alias_file (localealias.c:333)
+==363902==    by 0x48B2BB2: _nl_expand_alias (localealias.c:198)
+==363902==    by 0x48B0FA7: _nl_find_domain (finddomain.c:123)
+==363902==    by 0x48B0844: __dcigettext (dcigettext.c:702)
+==363902==    by 0x10EA50: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 3,728 bytes in 12 blocks are still reachable in loss record 34 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48AC96E: _nl_intern_locale_data (loadlocale.c:97)
+==363902==    by 0x48AD370: _nl_load_locale_from_archive (loadarchive.c:477)
+==363902==    by 0x48AC0DF: _nl_find_locale (findlocale.c:152)
+==363902==    by 0x48AB856: setlocale (setlocale.c:337)
+==363902==    by 0x48AB856: setlocale (setlocale.c:217)
+==363902==    by 0x10A926: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== 4,096 bytes in 1 blocks are still reachable in loss record 35 of 35
+==363902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==363902==    by 0x48F3BA3: _IO_file_doallocate (filedoalloc.c:101)
+==363902==    by 0x4902CDF: _IO_doallocbuf (genops.c:347)
+==363902==    by 0x4901F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+==363902==    by 0x49006D4: _IO_new_file_xsputn (fileops.c:1243)
+==363902==    by 0x49006D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==363902==    by 0x48F57A2: _IO_padn (iopadn.c:64)
+==363902==    by 0x48EBE11: pad_func (vfprintf-internal.c:196)
+==363902==    by 0x48EBE11: __vfprintf_internal (vfprintf-internal.c:1517)
+==363902==    by 0x49A9C4A: __printf_chk (printf_chk.c:33)
+==363902==    by 0x10E2D0: ??? (in /usr/bin/wc)
+==363902==    by 0x10EAB0: ??? (in /usr/bin/wc)
+==363902==    by 0x10B09B: ??? (in /usr/bin/wc)
+==363902==    by 0x489ED8F: (below main) (libc_start_call_main.h:58)
+==363902== 
+==363902== LEAK SUMMARY:
+==363902==    definitely lost: 0 bytes in 0 blocks
+==363902==    indirectly lost: 0 bytes in 0 blocks
+==363902==      possibly lost: 0 bytes in 0 blocks
+==363902==    still reachable: 15,172 bytes in 73 blocks
+==363902==         suppressed: 0 bytes in 0 blocks
+==363902== 
+==363902== For lists of detected and suppressed errors, rerun with: -s
+==363902== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
