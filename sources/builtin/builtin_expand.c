@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 12:11:21 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:41:27 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	*get_expanded_result(t_shell *shell, char *input)
 
 char	*builtin_expand(char *input, t_shell *shell)
 {
+	char	*exp;
 	char	*result;
 	int		dollar_index;
 
@@ -55,8 +56,12 @@ char	*builtin_expand(char *input, t_shell *shell)
 	if (dollar_index < 0)
 		return (NULL);
 	else
-		result = get_expanded_result(shell, &input[dollar_index + 1]);
-	if (!result)
-		return (NULL);
+	{
+		exp = get_expanded_result(shell, &input[dollar_index + 1]);
+		result = ft_strnjoin(input, exp, dollar_index);
+		free(exp);
+		if (!result)
+			return (NULL);
+	}
 	return (result);
 }

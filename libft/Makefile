@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
+#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/28 16:36:11 by cscache           #+#    #+#              #
-#    Updated: 2025/08/21 11:34:48 by cscache          ###   ########.fr        #
+#    Updated: 2025/09/04 12:28:41 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c\
 		ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_memchr.c ft_memcmp.c\
 		ft_printf.c ft_printf_utils.c get_next_line.c get_next_line_utils.c\
 		ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_realloc.c\
-		ft_lstlast.c ft_lstdelone.c ft_lstiter.c \
+		ft_lstlast.c ft_lstdelone.c ft_lstiter.c ft_strnjoin.c\
 		ft_lstadd_back.c ft_lstclear.c ft_lstmap.c ft_strcapitalize.c\
 		ft_isspace.c ft_isupper.c ft_toupper.c ft_tolower.c ft_strcmp.c
 

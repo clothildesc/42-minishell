@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:38:45 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/22 13:42:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 10:57:45 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	update_vars_pwd(t_env **head, char *key)
+{
+	t_env	*to_update;
+	t_env	*new;
+	char	*cwd;
+
+	to_update = get_node(head, key);
+	free(to_update->value);
+	if (!ft_strcmp(key, "OLDPWD"))
+	{
+		new = get_node(head, "PWD");
+		to_update->value = ft_strdup(new->value);
+	}
+	else
+	{
+		cwd = getcwd(NULL, 0);
+		if (cwd)
+		{
+			to_update->value = ft_strdup(cwd);
+			free(cwd);
+		}
+	}
+	if (!to_update->value)
+		to_update->value = NULL;
+}
 
 char	*get_env_value(t_env *env, char *key)
 {
@@ -28,6 +54,7 @@ int	builtin_cd(char **args, t_env *env)
 	char	*path;
 	int		i;
 
+	update_vars_pwd(&env, "OLDPWD");
 	if (args && !args[1])
 		path = get_env_value(env, "HOME");
 	else
@@ -47,5 +74,6 @@ int	builtin_cd(char **args, t_env *env)
 		perror("cd");
 		return (EXIT_FAILURE);
 	}
+	update_vars_pwd(&env, "PWD");
 	return (EXIT_SUCCESS);
 }

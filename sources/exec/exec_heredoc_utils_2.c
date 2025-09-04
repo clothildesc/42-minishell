@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:58:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 11:50:52 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:29:12 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ pid_t	execute_child_heredoc(t_shell *shell, char	*tmp_file_name, \
 	}
 	if (pid == 0)
 	{
+		set_up_signals_child(true);
+		unlink(tmp_file_name);
 		free(tmp_file_name);
 		close_prev_fd_heredoc(shell->ast);
-		set_up_signals_child(true);
 		read_and_write_heredoc(fd_heredoc, limiter);
 		ft_close_fd(&fd_heredoc);
 		if (g_signal_received)

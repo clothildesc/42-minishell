@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 14:17:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:20:47 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,35 @@ static bool	process_n_options(char **args, int *i)
 	return (option);
 }
 
+static void	write_echo(char *arg)
+{
+	static bool	first = true;
+
+	if (!first)
+		ft_printf(" ");
+	if (arg[0] == '$' && arg[1] && ft_isdigit(arg[1]) \
+		&& arg[2])
+	{
+		ft_printf("%s", &arg[2]);
+		first = false;
+	}
+	else if (arg[0] != '$')
+	{
+		ft_printf("%s", arg);
+		first = false;
+	}
+}
+
 int	builtin_echo(char **args)
 {
 	bool	option;
-	bool	first;
 	int		i;
 
-	first = true;
 	i = 1;
 	option = process_n_options(args, &i);
 	while (args && args[i])
 	{
-		if (!first)
-			ft_printf(" ");
-		else
-			ft_printf("%s", args[i]);
-		first = false;
+		write_echo(args[i]);
 		i++;
 	}
 	if (!option)
