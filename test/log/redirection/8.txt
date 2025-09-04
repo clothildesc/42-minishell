@@ -17,57 +17,57 @@ BASH=2
 ---->[OK]
 
 	-- VALGRIND --
-==362555== Memcheck, a memory error detector
-==362555== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==362555== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==362555== Command: ./minishell \<\<\>
-==362555== Parent PID: 361917
-==362555== 
-==362555== 
-==362555== HEAP SUMMARY:
-==362555==     in use at exit: 4,056 bytes in 4 blocks
-==362555==   total heap usage: 216 allocs, 212 frees, 10,527 bytes allocated
-==362555== 
-==362555== 4 bytes in 1 blocks are still reachable in loss record 1 of 4
-==362555==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==362555==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x4046DA: process_line (exec_shell.c:49)
-==362555==    by 0x4044FF: test_function (exec_shell.c:131)
-==362555==    by 0x401324: main (main.c:27)
-==362555== 
-==362555== 12 bytes in 1 blocks are still reachable in loss record 2 of 4
-==362555==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==362555==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x4046DA: process_line (exec_shell.c:49)
-==362555==    by 0x4044FF: test_function (exec_shell.c:131)
-==362555==    by 0x401324: main (main.c:27)
-==362555== 
-==362555== 24 bytes in 1 blocks are still reachable in loss record 3 of 4
-==362555==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==362555==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x4046DA: process_line (exec_shell.c:49)
-==362555==    by 0x4044FF: test_function (exec_shell.c:131)
-==362555==    by 0x401324: main (main.c:27)
-==362555== 
-==362555== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
-==362555==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==362555==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==362555==    by 0x4046DA: process_line (exec_shell.c:49)
-==362555==    by 0x4044FF: test_function (exec_shell.c:131)
-==362555==    by 0x401324: main (main.c:27)
-==362555== 
-==362555== LEAK SUMMARY:
-==362555==    definitely lost: 0 bytes in 0 blocks
-==362555==    indirectly lost: 0 bytes in 0 blocks
-==362555==      possibly lost: 0 bytes in 0 blocks
-==362555==    still reachable: 4,056 bytes in 4 blocks
-==362555==         suppressed: 0 bytes in 0 blocks
-==362555== 
-==362555== For lists of detected and suppressed errors, rerun with: -s
-==362555== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==386893== Memcheck, a memory error detector
+==386893== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==386893== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==386893== Command: ./minishell \<\<\>
+==386893== Parent PID: 386229
+==386893== 
+==386893== 
+==386893== HEAP SUMMARY:
+==386893==     in use at exit: 4,056 bytes in 4 blocks
+==386893==   total heap usage: 177 allocs, 173 frees, 9,528 bytes allocated
+==386893== 
+==386893== 4 bytes in 1 blocks are still reachable in loss record 1 of 4
+==386893==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==386893==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x4048EA: process_line (exec_shell.c:49)
+==386893==    by 0x40470F: test_function (exec_shell.c:131)
+==386893==    by 0x401324: main (main.c:27)
+==386893== 
+==386893== 12 bytes in 1 blocks are still reachable in loss record 2 of 4
+==386893==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==386893==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x4048EA: process_line (exec_shell.c:49)
+==386893==    by 0x40470F: test_function (exec_shell.c:131)
+==386893==    by 0x401324: main (main.c:27)
+==386893== 
+==386893== 24 bytes in 1 blocks are still reachable in loss record 3 of 4
+==386893==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==386893==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x4048EA: process_line (exec_shell.c:49)
+==386893==    by 0x40470F: test_function (exec_shell.c:131)
+==386893==    by 0x401324: main (main.c:27)
+==386893== 
+==386893== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
+==386893==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==386893==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==386893==    by 0x4048EA: process_line (exec_shell.c:49)
+==386893==    by 0x40470F: test_function (exec_shell.c:131)
+==386893==    by 0x401324: main (main.c:27)
+==386893== 
+==386893== LEAK SUMMARY:
+==386893==    definitely lost: 0 bytes in 0 blocks
+==386893==    indirectly lost: 0 bytes in 0 blocks
+==386893==      possibly lost: 0 bytes in 0 blocks
+==386893==    still reachable: 4,056 bytes in 4 blocks
+==386893==         suppressed: 0 bytes in 0 blocks
+==386893== 
+==386893== For lists of detected and suppressed errors, rerun with: -s
+==386893== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

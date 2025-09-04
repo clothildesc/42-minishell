@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:45:55 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:09:47 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@
 # define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
 # define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
 # define ERROR_MISSING_FILE "bash: No such file or directory"
-# define ERROR_CMD_NOT_FOUND "bash: Command not found"
 
 /*=============== GLOBAL VARIABLE =============== */
 

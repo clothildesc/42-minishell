@@ -14,111 +14,111 @@ BASH=0
 ---->[OK]
 
 	-- VALGRIND --
-==365031== Memcheck, a memory error detector
-==365031== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==365031== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==365031== Command: ./minishell echo\ --n
-==365031== Parent PID: 361917
-==365031== 
-==365038== 
-==365038== HEAP SUMMARY:
-==365038==     in use at exit: 4,070 bytes in 5 blocks
-==365038==   total heap usage: 235 allocs, 230 frees, 10,792 bytes allocated
-==365038== 
-==365038== 9 bytes in 1 blocks are still reachable in loss record 1 of 5
-==365038==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365038==    by 0x4078BB: ft_strdup (ft_strdup.c:21)
-==365038==    by 0x40449F: test_function (exec_shell.c:124)
-==365038==    by 0x401324: main (main.c:27)
-==365038== 
-==365038== 9 bytes in 1 blocks are still reachable in loss record 2 of 5
-==365038==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365038==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x4046DA: process_line (exec_shell.c:49)
-==365038==    by 0x4044FF: test_function (exec_shell.c:131)
-==365038==    by 0x401324: main (main.c:27)
-==365038== 
-==365038== 12 bytes in 1 blocks are still reachable in loss record 3 of 5
-==365038==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365038==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x4046DA: process_line (exec_shell.c:49)
-==365038==    by 0x4044FF: test_function (exec_shell.c:131)
-==365038==    by 0x401324: main (main.c:27)
-==365038== 
-==365038== 24 bytes in 1 blocks are still reachable in loss record 4 of 5
-==365038==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365038==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x4046DA: process_line (exec_shell.c:49)
-==365038==    by 0x4044FF: test_function (exec_shell.c:131)
-==365038==    by 0x401324: main (main.c:27)
-==365038== 
-==365038== 4,016 bytes in 1 blocks are still reachable in loss record 5 of 5
-==365038==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365038==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365038==    by 0x4046DA: process_line (exec_shell.c:49)
-==365038==    by 0x4044FF: test_function (exec_shell.c:131)
-==365038==    by 0x401324: main (main.c:27)
-==365038== 
-==365038== LEAK SUMMARY:
-==365038==    definitely lost: 0 bytes in 0 blocks
-==365038==    indirectly lost: 0 bytes in 0 blocks
-==365038==      possibly lost: 0 bytes in 0 blocks
-==365038==    still reachable: 4,070 bytes in 5 blocks
-==365038==         suppressed: 0 bytes in 0 blocks
-==365038== 
-==365038== For lists of detected and suppressed errors, rerun with: -s
-==365038== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==365031== 
-==365031== HEAP SUMMARY:
-==365031==     in use at exit: 4,061 bytes in 4 blocks
-==365031==   total heap usage: 235 allocs, 231 frees, 10,792 bytes allocated
-==365031== 
-==365031== 9 bytes in 1 blocks are still reachable in loss record 1 of 4
-==365031==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365031==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x4046DA: process_line (exec_shell.c:49)
-==365031==    by 0x4044FF: test_function (exec_shell.c:131)
-==365031==    by 0x401324: main (main.c:27)
-==365031== 
-==365031== 12 bytes in 1 blocks are still reachable in loss record 2 of 4
-==365031==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365031==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x4046DA: process_line (exec_shell.c:49)
-==365031==    by 0x4044FF: test_function (exec_shell.c:131)
-==365031==    by 0x401324: main (main.c:27)
-==365031== 
-==365031== 24 bytes in 1 blocks are still reachable in loss record 3 of 4
-==365031==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365031==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x4046DA: process_line (exec_shell.c:49)
-==365031==    by 0x4044FF: test_function (exec_shell.c:131)
-==365031==    by 0x401324: main (main.c:27)
-==365031== 
-==365031== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
-==365031==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==365031==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==365031==    by 0x4046DA: process_line (exec_shell.c:49)
-==365031==    by 0x4044FF: test_function (exec_shell.c:131)
-==365031==    by 0x401324: main (main.c:27)
-==365031== 
-==365031== LEAK SUMMARY:
-==365031==    definitely lost: 0 bytes in 0 blocks
-==365031==    indirectly lost: 0 bytes in 0 blocks
-==365031==      possibly lost: 0 bytes in 0 blocks
-==365031==    still reachable: 4,061 bytes in 4 blocks
-==365031==         suppressed: 0 bytes in 0 blocks
-==365031== 
-==365031== For lists of detected and suppressed errors, rerun with: -s
-==365031== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==388982== Memcheck, a memory error detector
+==388982== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==388982== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==388982== Command: ./minishell echo\ --n
+==388982== Parent PID: 386229
+==388982== 
+==388985== 
+==388985== HEAP SUMMARY:
+==388985==     in use at exit: 4,070 bytes in 5 blocks
+==388985==   total heap usage: 196 allocs, 191 frees, 9,793 bytes allocated
+==388985== 
+==388985== 9 bytes in 1 blocks are still reachable in loss record 1 of 5
+==388985==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388985==    by 0x407AFB: ft_strdup (ft_strdup.c:21)
+==388985==    by 0x4046AF: test_function (exec_shell.c:124)
+==388985==    by 0x401324: main (main.c:27)
+==388985== 
+==388985== 9 bytes in 1 blocks are still reachable in loss record 2 of 5
+==388985==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388985==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x4048EA: process_line (exec_shell.c:49)
+==388985==    by 0x40470F: test_function (exec_shell.c:131)
+==388985==    by 0x401324: main (main.c:27)
+==388985== 
+==388985== 12 bytes in 1 blocks are still reachable in loss record 3 of 5
+==388985==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388985==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x4048EA: process_line (exec_shell.c:49)
+==388985==    by 0x40470F: test_function (exec_shell.c:131)
+==388985==    by 0x401324: main (main.c:27)
+==388985== 
+==388985== 24 bytes in 1 blocks are still reachable in loss record 4 of 5
+==388985==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388985==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x4048EA: process_line (exec_shell.c:49)
+==388985==    by 0x40470F: test_function (exec_shell.c:131)
+==388985==    by 0x401324: main (main.c:27)
+==388985== 
+==388985== 4,016 bytes in 1 blocks are still reachable in loss record 5 of 5
+==388985==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388985==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388985==    by 0x4048EA: process_line (exec_shell.c:49)
+==388985==    by 0x40470F: test_function (exec_shell.c:131)
+==388985==    by 0x401324: main (main.c:27)
+==388985== 
+==388985== LEAK SUMMARY:
+==388985==    definitely lost: 0 bytes in 0 blocks
+==388985==    indirectly lost: 0 bytes in 0 blocks
+==388985==      possibly lost: 0 bytes in 0 blocks
+==388985==    still reachable: 4,070 bytes in 5 blocks
+==388985==         suppressed: 0 bytes in 0 blocks
+==388985== 
+==388985== For lists of detected and suppressed errors, rerun with: -s
+==388985== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==388982== 
+==388982== HEAP SUMMARY:
+==388982==     in use at exit: 4,061 bytes in 4 blocks
+==388982==   total heap usage: 196 allocs, 192 frees, 9,793 bytes allocated
+==388982== 
+==388982== 9 bytes in 1 blocks are still reachable in loss record 1 of 4
+==388982==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388982==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A5B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x4048EA: process_line (exec_shell.c:49)
+==388982==    by 0x40470F: test_function (exec_shell.c:131)
+==388982==    by 0x401324: main (main.c:27)
+==388982== 
+==388982== 12 bytes in 1 blocks are still reachable in loss record 2 of 4
+==388982==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388982==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A7F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x4048EA: process_line (exec_shell.c:49)
+==388982==    by 0x40470F: test_function (exec_shell.c:131)
+==388982==    by 0x401324: main (main.c:27)
+==388982== 
+==388982== 24 bytes in 1 blocks are still reachable in loss record 3 of 4
+==388982==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388982==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A5B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A7F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x4048EA: process_line (exec_shell.c:49)
+==388982==    by 0x40470F: test_function (exec_shell.c:131)
+==388982==    by 0x401324: main (main.c:27)
+==388982== 
+==388982== 4,016 bytes in 1 blocks are still reachable in loss record 4 of 4
+==388982==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==388982==    by 0x48AEBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x48A7FD6: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==388982==    by 0x4048EA: process_line (exec_shell.c:49)
+==388982==    by 0x40470F: test_function (exec_shell.c:131)
+==388982==    by 0x401324: main (main.c:27)
+==388982== 
+==388982== LEAK SUMMARY:
+==388982==    definitely lost: 0 bytes in 0 blocks
+==388982==    indirectly lost: 0 bytes in 0 blocks
+==388982==      possibly lost: 0 bytes in 0 blocks
+==388982==    still reachable: 4,061 bytes in 4 blocks
+==388982==         suppressed: 0 bytes in 0 blocks
+==388982== 
+==388982== For lists of detected and suppressed errors, rerun with: -s
+==388982== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

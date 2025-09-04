@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 11:02:40 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:34:48 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	execute_child(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	char	**env_array;
 
+	set_up_signals_child(false);
 	env_array = lst_env_to_array(shell->env);
 	if (!env_array)
 	{
@@ -55,7 +56,6 @@ static void	execute_child(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 		free_child_and_exit(cmd, env_array, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
 	close_all_pipes(shell);
-	set_up_signals_child(false);
 	execve(cmd->abs_path, cmd->args, env_array);
 	perror("execve");
 	free_child_and_exit(cmd, env_array, EXIT_CMD_NOT_FOUND);
