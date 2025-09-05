@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/05 15:31:43 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 17:19:29 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,51 +24,30 @@ static t_arg	*init_new_arg(void)
 	return (new_arg);
 }
 
+// Fonctionne pour la pluspart des cas mais cependant un probleme perciste : echo "$USER test test test"\
+// bash -> barmarti test test test
+// minishell -> \n
+// reparser la token->value ?
+// revoir la logique du expand ?
+// je pense que la premiere est plus facile a implementer mais moins propre. A voir.
+
 void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 {
 	t_arg	*new_arg;
-	char	*exp;
-	char	*src;
-	char	*tmp;
 
 	new_arg = init_new_arg();
 	if (!new_arg)
 		return ;
-	exp = NULL;
 	if (token->to_exp == true)
-		exp = builtin_expand(token->value, shell);
-	if (exp)
-		src = exp;
+		get_exp_value(token, shell, new_arg);
 	else
+		get_token_value(token, new_arg);
+	if (!new_arg->arg)
 	{
-		src = token->value;
-		if (token->state == STATE_SINGLE_QUOTE && src[0] && src[0] == '$')
-		{
-			tmp = ft_strjoin("'", src);
-			printf("tmp = %s\n", tmp);
-			if (!tmp)
-			{
-				clear_args_lst(args);
-				return ;
-			}
-			new_arg->arg = ft_strjoin(tmp, "'");
-			printf("n_a 1 = %s\n", new_arg->arg);
-			free(tmp);
-		}
-		else
-		{
-			new_arg->arg = ft_strdup(src);
-			printf("n_a 2 = %s\n", new_arg->arg);
-		}
-		if (!new_arg->arg)
-		{
-			free(new_arg);
-			clear_args_lst(args);
-			return ;
-		}
+		free(new_arg);
+		clear_args_lst(args);
+		return ;
 	}
-	if (exp)
-		free(exp);
 	new_arg->to_join = token->to_join;
 	ft_lstadd_args(args, new_arg);
 }

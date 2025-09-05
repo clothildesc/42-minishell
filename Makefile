@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
+#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/09/05 13:16:36 by cscache          ###   ########.fr        #
+#    Updated: 2025/09/05 17:16:11 by barmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ PRSG_DIR = parsing
 PARSING = $(SRCS_DIR)/$(PRSG_DIR)/parsing_pipe.c\
 			$(SRCS_DIR)/$(PRSG_DIR)/parsing_cmd.c\
 			$(SRCS_DIR)/$(PRSG_DIR)/parsing_cmd_utils.c\
-			$(SRCS_DIR)/$(PRSG_DIR)/parsing_cmd_utils_2.c
+			$(SRCS_DIR)/$(PRSG_DIR)/parsing_cmd_utils_2.c\
+			$(SRCS_DIR)/$(PRSG_DIR)/parsing_cmd_utils_3.c
 
 SGN_DIR = signals
 SIGNALS = $(SRCS_DIR)/$(SGN_DIR)/signals_setup.c\

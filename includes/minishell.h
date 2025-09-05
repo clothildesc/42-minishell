@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 15:02:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 17:19:47 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
 void			create_args_lst(t_arg **args, t_token *token, t_shell *shell);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
+void			get_token_value(t_token *token, t_arg *new_arg);
+void			get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
 /*-------Builtin-------*/

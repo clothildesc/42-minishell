@@ -1,0 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_cmd_utils_3.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 17:05:25 by barmarti          #+#    #+#             */
+/*   Updated: 2025/09/05 17:19:24 by barmarti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
+
+void	get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg)
+{
+	char	*src;
+
+	src = builtin_expand(token->value, shell);
+	if (src)
+	{
+		new_arg->arg = ft_strdup(src);
+		free(src);
+		return ;
+	}
+	else
+		new_arg->arg = ft_strdup(token->value);
+}
+
+void	get_token_value(t_token *token, t_arg *new_arg)
+{
+	char	*src;
+	char	*tmp;
+
+	src = token->value;
+	if (token->state == STATE_SINGLE_QUOTE && src[0] && src[0] == '$')
+	{
+		tmp = ft_strjoin("'", src);
+		if (!tmp)
+		{
+			return ;
+		}
+		new_arg->arg = ft_strjoin(tmp, "'");
+		free(tmp);
+	}
+	else
+		new_arg->arg = ft_strdup(src);
+}
