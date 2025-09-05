@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:58:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 10:14:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 11:16:39 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	close_prev_fd_heredoc(t_ast *node)
 	}
 }
 
-pid_t	execute_child_heredoc(t_shell *shell, char	*tmp_file_name, \
+pid_t	execute_child_heredoc(t_shell *shell, char *tmp_file_name, \
 	char *limiter, int fd_heredoc)
 {
 	pid_t	pid;
@@ -78,6 +78,7 @@ pid_t	execute_child_heredoc(t_shell *shell, char	*tmp_file_name, \
 		close_prev_fd_heredoc(shell->ast);
 		read_and_write_heredoc(fd_heredoc, limiter);
 		ft_close_fd(&fd_heredoc);
+		close_all_command_fds(shell->ast);
 		if (g_signal_received)
 			free_and_exit(shell, g_signal_received);
 		else

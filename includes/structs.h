@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:01:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 09:41:16 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 14:43:21 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	char			*value;
+	t_state			state;
 	t_token_type	type;
 	bool			to_exp;
 	bool			to_join;

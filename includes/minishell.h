@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 10:15:30 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 15:02:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_token			*ft_lexer(char *input, t_shell *shell);
 void			process_normal_state(t_lexer *lexer);
 
 /*-------Token-------*/
-void			create_token(t_lexer *lexer, bool to_join);
+void			create_token(t_lexer *lexer, bool to_join, bool single_quote);
 void			add_char(t_list **tmp_token, char c);
 void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);

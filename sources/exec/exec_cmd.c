@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 10:14:24 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:07:07 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	execute_child(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 {
 	char	**env_array;
 
+	set_up_signals_child(false);
 	env_array = lst_env_to_array(shell->env);
 	if (!env_array)
 	{
@@ -68,7 +69,7 @@ static void	execute_child(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	if (prepare_redirections(cmd) == -1)
 		free_child_and_exit(shell, env_array, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
-	set_up_signals_child(false);
+	close_all_fds_and_pipes(shell);
 	execve(cmd->abs_path, cmd->args, env_array);
 	perror("execve");
 	free_child_and_exit(shell, env_array, EXIT_CMD_NOT_FOUND);

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 16:20:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 14:14:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 11:00:17 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@ static void	execute_child_builtin(t_cmd *cmd, t_shell *shell, \
 {
 	int	status;
 
+	set_up_signals_child(false);
 	if (prepare_redirections(cmd) == -1)
 		free_and_exit(shell, EXIT_FAILURE);
 	manage_dup(cmd, fd_i, fd_o);
-	close_all_pipes(shell);
-	set_up_signals_child(false);
+	close_all_fds_and_pipes(shell);
 	status = execute_builtins(cmd, shell);
+	close_all_fds_and_pipes(shell);
 	free_and_exit(shell, status);
 }
 

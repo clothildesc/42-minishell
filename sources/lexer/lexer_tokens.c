@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/28 19:46:19 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 15:08:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,22 @@ static void	set_to_join(t_lexer *lexer)
 }
 
 static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, \
-	char *token_value)
+	char *token_value, bool single_quote)
 {
 	ft_bzero(new_token, sizeof(t_token));
 	new_token->value = token_value;
 	new_token->to_exp = lexer->to_exp;
+	if (single_quote)
+		new_token->state = STATE_SINGLE_QUOTE;
+	else
+		new_token->state = lexer->state;
 	new_token->to_join = lexer->to_join;
 	new_token->type = determine_token_type(lexer);
 	add_to_lst_tokens(&lexer->tokens, new_token);
 	return (new_token);
 }
 
-void	create_token(t_lexer *lexer, bool to_join)
+void	create_token(t_lexer *lexer, bool to_join, bool single_quote)
 {
 	char	*token_value;
 	t_token	*new_token;
@@ -79,7 +83,7 @@ void	create_token(t_lexer *lexer, bool to_join)
 			free(token_value);
 			return ;
 		}
-		set_new_token(lexer, new_token, token_value);
+		set_new_token(lexer, new_token, token_value, single_quote);
 		reset_tmp_token(lexer);
 	}
 }

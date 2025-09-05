@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 11:25:54 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:31:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 	t_arg	*new_arg;
 	char	*exp;
 	char	*src;
+	char	*tmp;
 
 	new_arg = init_new_arg();
 	if (!new_arg)
@@ -39,13 +40,32 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 	if (exp)
 		src = exp;
 	else
-		src = token->value;
-	new_arg->arg = ft_strdup(src);
-	if (!new_arg->arg)
 	{
-		free(new_arg);
-		clear_args_lst(args);
-		return ;
+		src = token->value;
+		if (token->state == STATE_SINGLE_QUOTE && src[0] && src[0] == '$')
+		{
+			tmp = ft_strjoin("'", src);
+			printf("tmp = %s\n", tmp);
+			if (!tmp)
+			{
+				clear_args_lst(args);
+				return ;
+			}
+			new_arg->arg = ft_strjoin(tmp, "'");
+			printf("n_a 1 = %s\n", new_arg->arg);
+			free(tmp);
+		}
+		else
+		{
+			new_arg->arg = ft_strdup(src);
+			printf("n_a 2 = %s\n", new_arg->arg);
+		}
+		if (!new_arg->arg)
+		{
+			free(new_arg);
+			clear_args_lst(args);
+			return ;
+		}
 	}
 	if (exp)
 		free(exp);
