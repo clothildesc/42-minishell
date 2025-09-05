@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:43:49 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:28:18 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:14:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	init_pids(t_shell *shell)
 	shell->pids = ft_calloc(shell->nb_cmds, sizeof(pid_t));
 	if (!shell->pids)
 	{
-		perror("bash: pids malloc");
+		perror("minishell: pids malloc");
 		free_and_exit(shell, EXIT_FAILURE);
 	}
 }

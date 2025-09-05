@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:58:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:29:12 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:14:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 	}
 	active_echoctl();
 	if (!limiter_reached && g_signal_received != 130)
-		ft_putendl_fd("\nbash: warning: here-doc delimited by eof", 2);
+		ft_putendl_fd("\nminishell: warning: here-doc delimited by eof", 2);
 }
 
 void	close_prev_fd_heredoc(t_ast *node)

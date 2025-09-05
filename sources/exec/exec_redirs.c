@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 14:43:05 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:14:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	open_infile(char *infile)
 
 	if (access(infile, F_OK) == -1)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(infile, 2);
 		ft_putendl_fd(": No such file or directory", 2);
 		return (-1);
@@ -29,7 +29,7 @@ int	open_infile(char *infile)
 		fd = open(infile, O_RDONLY);
 		if (fd == -1)
 		{
-			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(infile, 2);
 			ft_putendl_fd(": Permission denied", 2);
 		}
@@ -47,7 +47,7 @@ int	open_outfile(char *outfile, t_token_type type)
 	fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(outfile, 2);
 		ft_putendl_fd(": Permission denied", 2);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:27:46 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:15:30 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@
 
 /*=============== ERRORS =============== */
 
-# define SYNTAX_ERROR_TOKEN "bash: syntax error near unexpected token "
-# define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
-# define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
-# define ERROR_MISSING_FILE "bash: No such file or directory"
-# define ERROR_CMD_NOT_FOUND "bash: Command not found"
+# define SYNTAX_ERROR_TOKEN "minishell: syntax error near unexpected token "
+# define SYNTAX_ERROR_KEY_ENV "minishell: export: not a valid identifier"
+# define ERROR_CD_MANY_ARGS "minishell: cd: too many arguments"
+# define ERROR_MISSING_FILE "minishell: No such file or directory"
 
 /*=============== GLOBAL VARIABLE =============== */
 
@@ -75,7 +74,7 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
-void			free_child_and_exit(t_cmd *cmd, char **env_array, \
+void			free_child_and_exit(t_shell *shell, char **env_array, \
 				int exit_code);
 void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
@@ -119,6 +118,7 @@ t_env			*get_node(t_env **head, char *key);
 t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
+int				check_dollar(char *input);
 char			*builtin_expand(char *input, t_shell *shell);
 /* pwd */
 int				builtin_pwd(void);

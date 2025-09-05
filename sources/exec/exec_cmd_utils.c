@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:17:06 by clothildesc       #+#    #+#             */
-/*   Updated: 2025/09/04 19:02:29 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/05 10:14:14 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,20 @@ static int	validate_exec_path(char *path)
 
 	if (stat(path, &s) == -1)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		perror(path);
 		return (EXIT_CMD_NOT_FOUND);
 	}
 	if (S_ISDIR(s.st_mode))
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putendl_fd(": Is a directory", 2);
 		return (EXIT_PERMISSION_DENIED);
 	}
 	if (access(path, X_OK) != 0)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		perror(path);
 		return (EXIT_PERMISSION_DENIED);
 	}

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 12:41:27 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 09:15:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	check_dollar(char *input)
+int	check_dollar(char *input)
 {
 	int	i;
 
