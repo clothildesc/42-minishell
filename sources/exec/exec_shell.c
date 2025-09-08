@@ -6,12 +6,26 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 18:47:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 11:50:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
+
+void display_tokens(t_shell *shell)
+{
+	t_token	*current;
+	int	i = 1;
+
+	current = shell->tokens;
+	while (current)
+	{
+		ft_printf("[%d] = %s\n", i, current->value);
+		i++;
+		current = current->next;
+	}
+}
 
 static void	execute_shell(char *input, t_shell *shell)
 {
@@ -24,6 +38,7 @@ static void	execute_shell(char *input, t_shell *shell)
 		return ;
 	}
 	get_syntax_errors(shell);
+	display_tokens(shell);
 	if (shell->status != EXIT_SUCCESS)
 	{
 		clear_tokens_lst(&shell->tokens);

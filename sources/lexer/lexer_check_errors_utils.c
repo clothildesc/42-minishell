@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:32:59 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 18:51:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 10:53:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ int	handle_special_char(t_token *head)
 		return (EXIT_FAILURE);
 	if (!head->next && !ft_strcmp(head->value, ":"))
 		return (EXIT_SUCCESS);
+	if (!head->next && !ft_strcmp(head->value, "."))
+	{
+		ft_putendl_fd("minishell: .: filename argument required", 2);
+		return (EXIT_SYNTAX_ERROR);
+	}
 	return (-1);
 }
 
