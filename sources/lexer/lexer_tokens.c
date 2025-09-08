@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 15:08:34 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:49:21 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,20 @@ static void	reset_tmp_token(t_lexer *lexer)
 	lexer->tmp_token = NULL;
 	lexer->state = STATE_NORMAL;
 	lexer->to_exp = true;
-	lexer->to_join = 0;
+	lexer->to_join = false;
 }
 
 static void	set_to_join(t_lexer *lexer)
 {
-	if (lexer->input[lexer->pos] && lexer->input[lexer->pos] != ' ' )
-		lexer->to_join = 1;
+	int	pos;
+
+	pos = lexer->pos;
+	while (lexer->input[pos] && (lexer->input[pos] == '"' || lexer->input[pos] == '\''))
+		pos++;
+	if (lexer->input[pos] && lexer->input[pos] != ' ' )
+		lexer->to_join = true;
+	else
+		lexer->to_join = false;
 }
 
 static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, \

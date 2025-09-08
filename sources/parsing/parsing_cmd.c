@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/08 11:55:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:34:24 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ static int	is_redir(t_token_type type)
 static void	process_word(t_arg **args, t_token **current, t_cmd *new_cmd, \
 						t_shell *shell)
 {
-	if (!(*current)->value || (*current)->value[0] == '\0')
-	{
-		*current = (*current)->next;
-		return ;
-	}
 	if (!new_cmd->name)
 		parse_cmd_name(new_cmd, (*current)->value, shell);
 	create_args_lst(args, *current, shell);
@@ -85,5 +80,12 @@ t_ast	*parse_cmd(t_token **tokens, t_shell *shell)
 	if (args)
 		lst_args_to_array(new_cmd->data.cmd.cmd, &args);
 	*tokens = current;
+	char **arg = new_cmd->data.cmd.cmd->args;
+	int i = 0;
+	while (arg[i])
+	{
+		printf("arg[%d] = %s\n", i, arg[i]);
+		i++;
+	}
 	return (new_cmd);
 }

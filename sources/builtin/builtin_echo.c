@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/08 10:41:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 13:17:53 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	builtin_echo(char **args)
 	{
 		if (!first)
 			ft_printf(" ");
-		if (print_echo_arg(args[i]))
+		if (args[i][0] == '\0' || print_echo_arg(args[i]))
 			first = false;
 		i++;
 	}
