@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/05 17:19:29 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/08 10:44:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ static t_arg	*init_new_arg(void)
 	ft_bzero(new_arg, sizeof(t_arg));
 	return (new_arg);
 }
-
-// Fonctionne pour la pluspart des cas mais cependant un probleme perciste : echo "$USER test test test"\
-// bash -> barmarti test test test
-// minishell -> \n
-// reparser la token->value ?
-// revoir la logique du expand ?
-// je pense que la premiere est plus facile a implementer mais moins propre. A voir.
 
 void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 {
