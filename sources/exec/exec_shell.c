@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 15:11:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 16:52:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	main_loop(t_shell *shell)
 		{
 			free(line);
 			clear_shell(shell);
-			return (EXIT_FAILURE);
+			return (EXIT_SUCCESS);
 		}
 		if (g_signal_received)
 			shell->prev_status = g_signal_received;
