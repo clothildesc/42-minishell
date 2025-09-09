@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   builtin_expand_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 16:39:20 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/09 10:22:54 by cscache          ###   ########.fr       */
+/*   Created: 2025/09/09 10:22:19 by cscache           #+#    #+#             */
+/*   Updated: 2025/09/09 10:23:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-int	builtin_pwd(void)
+int	get_char_index(char *input, char c)
 {
-	char	*cwd;
+	int	i;
 
-	cwd = getcwd(NULL, 0);
-	if (cwd)
+	i = 0;
+	while (input[i])
 	{
-		ft_printf("%s\n", cwd);
-		free(cwd);
+		if (input[i] == c)
+			return (i);
+		i++;
 	}
-	else
-	{
-		perror("minishell: pwd");
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
+	return (-1);
 }

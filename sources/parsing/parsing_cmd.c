@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 20:03:10 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/08 16:34:24 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:25:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,5 @@ t_ast	*parse_cmd(t_token **tokens, t_shell *shell)
 	if (args)
 		lst_args_to_array(new_cmd->data.cmd.cmd, &args);
 	*tokens = current;
-	char **arg = new_cmd->data.cmd.cmd->args;
-	int i = 0;
-	while (arg[i])
-	{
-		printf("arg[%d] = %s\n", i, arg[i]);
-		i++;
-	}
 	return (new_cmd);
 }

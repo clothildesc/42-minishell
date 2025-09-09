@@ -2,6 +2,7 @@
 	"files.associations": {
 		"cstdlib": "c",
 		"minishell.h": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"libft.h": "c"
 	}
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+         #
+#    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/09/05 17:16:11 by barmarti         ###   ########.fr        #
+#    Updated: 2025/09/09 10:23:42 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ BUILTIN = $(SRCS_DIR)/$(BLTN_DIR)/builtin_echo.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_env.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_exit.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_expand.c\
+			$(SRCS_DIR)/$(BLTN_DIR)/builtin_expand_utils.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_export_utils.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_export_utils_2.c\
 			$(SRCS_DIR)/$(BLTN_DIR)/builtin_export.c\

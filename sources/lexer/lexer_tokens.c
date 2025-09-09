@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/08 16:49:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 11:44:41 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static void	set_to_join(t_lexer *lexer)
 	int	pos;
 
 	pos = lexer->pos;
-	while (lexer->input[pos] && (lexer->input[pos] == '"' || lexer->input[pos] == '\''))
+	while (lexer->input[pos] && (lexer->input[pos] == '"' || \
+		lexer->input[pos] == '\''))
 		pos++;
 	if (lexer->input[pos] && lexer->input[pos] != ' ' )
 		lexer->to_join = true;

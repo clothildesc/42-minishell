@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 13:07:07 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:21:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	cmd_not_found(t_cmd *cmd)
 	char	*cmd_cut;
 
 	ft_putstr_fd("minishell: ", 2);
-	dollar_index = check_dollar(cmd->name);
+	dollar_index = get_char_index(cmd->name, '$');
 	if (dollar_index > 0)
 	{
 		cmd_cut = ft_substr(cmd->name, 0, dollar_index);

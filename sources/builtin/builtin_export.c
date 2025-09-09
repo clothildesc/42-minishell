@@ -6,11 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/26 14:49:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:22:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
 static void	update_env_value(char *input, t_env **node)
 {

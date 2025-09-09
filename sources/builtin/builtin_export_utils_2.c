@@ -6,11 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/25 14:59:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:22:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
 t_env	*create_new_env_node(t_env *new, char *input, char *key)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_3.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 17:05:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/05 17:19:24 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:06:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 void	get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg)
 {
 	char	*src;
+	char	*input;
 
-	src = builtin_expand(token->value, shell);
+	input = ft_strdup(token->value);
+	src = builtin_expand(input, shell, NULL);
+	if (input)
+		free(input);
 	if (src)
 	{
 		new_arg->arg = ft_strdup(src);

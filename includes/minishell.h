@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 17:19:47 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 10:34:44 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ t_env			*get_node(t_env **head, char *key);
 t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
-int				check_dollar(char *input);
-char			*builtin_expand(char *input, t_shell *shell);
+int				get_char_index(char *input, char c);
+char			*builtin_expand(char *input, t_shell *shell, char *result);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */

@@ -6,11 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/08 13:17:53 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:23:05 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
 static bool	is_n_option(char *arg)
 {

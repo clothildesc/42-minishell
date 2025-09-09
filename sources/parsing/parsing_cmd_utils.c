@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/08/29 17:51:47 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:07:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 t_cmd	*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell)
 {
 	char	*cmd_expanded;
+	char	*input;
 
-	cmd_expanded = builtin_expand(cmd_name, shell);
+	input = ft_strdup(cmd_name);
+	cmd_expanded = builtin_expand(input, shell, NULL);
+	if (input)
+		free(input);
 	if (cmd_expanded)
 		new->name = cmd_expanded;
 	else
