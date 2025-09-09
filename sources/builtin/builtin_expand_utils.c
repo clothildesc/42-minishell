@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_utils.c                                       :+:      :+:    :+:   */
+/*   builtin_expand_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/01 14:34:28 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 09:56:06 by cscache          ###   ########.fr       */
+/*   Created: 2025/09/09 10:22:19 by cscache           #+#    #+#             */
+/*   Updated: 2025/09/09 10:23:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-void	free_child_and_exit(t_shell *shell, char **env_array, int exit_code)
+int	get_char_index(char *input, char c)
 {
-	if (env_array)
-		free_tab_chars(env_array);
-	free_and_exit(shell, exit_code);
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
 }

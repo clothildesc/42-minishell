@@ -3,21 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   exec_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:55:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 15:01:06 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:52:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
+// void display_tokens(t_shell *shell)
+// {
+// 	t_token	*current;
+// 	int	i = 1;
+
+// 	current = shell->tokens;
+// 	while (current)
+// 	{
+// 		if (current->value[0] == '\0')
+// 			ft_printf("[%d] = vide |  to_join = %d | to_exp = %d | state = %d\n", i, current->value, current->to_join, current->to_exp, current->state);
+// 		else
+// 			ft_printf("[%d] = %s |  to_join = %d | to_exp = %d | state = %d\n", i, current->value, current->to_join, current->to_exp, current->state);
+// 		i++;
+// 		current = current->next;
+// 	}
+// }
+
 static void	execute_shell(char *input, t_shell *shell)
 {
 	shell->tokens = NULL;
 	shell->ast = NULL;
 	shell->tokens = ft_lexer(input, shell);
+	//display_tokens(shell);
 	if (!shell->tokens)
 	{
 		shell->status = EXIT_SUCCESS;
@@ -104,13 +122,10 @@ int	main_loop(t_shell *shell)
 		{
 			free(line);
 			clear_shell(shell);
-			return (EXIT_FAILURE);
+			return (EXIT_SUCCESS);
 		}
 		if (g_signal_received)
-		{
 			shell->prev_status = g_signal_received;
-			clear_shell(shell);
-		}
 		free(line);
 	}
 	return (EXIT_SUCCESS);

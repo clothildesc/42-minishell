@@ -6,11 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:46:59 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/03 14:06:19 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:22:33 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
 int	builtin_exit(t_shell *shell, char **args, int saved_in, int saved_out)
 {
@@ -23,7 +24,7 @@ int	builtin_exit(t_shell *shell, char **args, int saved_in, int saved_out)
 	ft_putendl_fd("exit", 1);
 	if (nb_args > 2)
 	{
-		ft_putendl_fd("bash: exit: too many arguments", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (EXIT_FAILURE);
 	}
 	if (nb_args == 2)

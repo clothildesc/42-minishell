@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:27:46 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:33:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@
 
 /*=============== ERRORS =============== */
 
-# define SYNTAX_ERROR_TOKEN "bash: syntax error near unexpected token "
-# define SYNTAX_ERROR_KEY_ENV "bash: export: not a valid identifier"
-# define ERROR_CD_MANY_ARGS "bash: cd: too many arguments"
-# define ERROR_MISSING_FILE "bash: No such file or directory"
-# define ERROR_CMD_NOT_FOUND "bash: Command not found"
+# define SYNTAX_ERROR_TOKEN "minishell: syntax error near unexpected token "
+# define SYNTAX_ERROR_KEY_ENV "minishell: export: not a valid identifier"
+# define ERROR_CD_MANY_ARGS "minishell: cd: too many arguments"
+# define ERROR_MISSING_FILE "minishell: No such file or directory"
 
 /*=============== GLOBAL VARIABLE =============== */
 
@@ -75,7 +74,7 @@ void			free_tab_chars(char **tab);
 void			clear_env_lst(t_env **env);
 void			clear_lexer_tmp(t_lexer *lexer);
 void			clear_shell(t_shell *shell);
-void			free_child_and_exit(t_cmd *cmd, char **env_array, \
+void			free_child_and_exit(t_shell *shell, char **env_array, \
 				int exit_code);
 void			close_files(t_cmd *cmd);
 void			free_and_exit(t_shell *shell, int exit_code);
@@ -87,7 +86,7 @@ t_token			*ft_lexer(char *input, t_shell *shell);
 void			process_normal_state(t_lexer *lexer);
 
 /*-------Token-------*/
-void			create_token(t_lexer *lexer, bool to_join);
+void			create_token(t_lexer *lexer, bool to_join, bool single_quote);
 void			add_char(t_list **tmp_token, char c);
 void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
@@ -100,6 +99,8 @@ t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
 void			create_args_lst(t_arg **args, t_token *token, t_shell *shell);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
+void			get_token_value(t_token *token, t_arg *new_arg);
+void			get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
 /*-------Builtin-------*/
@@ -119,7 +120,8 @@ t_env			*get_node(t_env **head, char *key);
 t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
-char			*builtin_expand(char *input, t_shell *shell);
+int				get_char_index(char *input, char c);
+char			*builtin_expand(char *input, t_shell *shell, char *result);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
@@ -168,8 +170,8 @@ void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
 				t_shell *shell);
 int				open_and_create_here_doc(char *tmp_file_name);
 char			*get_file_name(void);
-pid_t			execute_child_heredoc(t_shell *shell, char *tmp_file_name, \
-				char *limiter, int fd_heredoc);
+pid_t			execute_child_heredoc(t_shell *shell, char *limiter, \
+				int fd_heredoc, char *file);
 void			ft_close_fd(int *fd);
 
 #endif

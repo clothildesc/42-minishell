@@ -6,11 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 16:39:20 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/14 13:35:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:22:54 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../libft/libft.h"
+#include "../../includes/minishell.h"
 
 int	builtin_pwd(void)
 {
@@ -24,7 +25,7 @@ int	builtin_pwd(void)
 	}
 	else
 	{
-		perror("bash: pwd");
+		perror("minishell: pwd");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

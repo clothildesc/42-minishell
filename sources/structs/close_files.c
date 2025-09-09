@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 09:44:34 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 15:27:25 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/05 11:24:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	close_all_pipes(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while (i != shell->nb_pipes)
+	while (i < shell->nb_pipes)
 	{
 		ft_close_fd(&shell->pipes[i][0]);
 		ft_close_fd(&shell->pipes[i][1]);
@@ -37,7 +37,6 @@ void	close_all_command_fds(t_ast *node)
 {
 	t_cmd	*cmd;
 
-	cmd = node->data.cmd.cmd;
 	if (!node)
 		return ;
 	if (node->node_type == NODE_PIPE)
@@ -46,7 +45,10 @@ void	close_all_command_fds(t_ast *node)
 		close_all_command_fds(node->data.binary.right);
 	}
 	else if (node->node_type == NODE_CMD)
+	{
+		cmd = node->data.cmd.cmd;
 		close_files(cmd);
+	}
 }
 
 void	close_all_fds_and_pipes(t_shell *shell)

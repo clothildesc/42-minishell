@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd_utils_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/04 11:25:54 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/08 10:44:38 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,20 @@ static t_arg	*init_new_arg(void)
 void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 {
 	t_arg	*new_arg;
-	char	*exp;
-	char	*src;
 
 	new_arg = init_new_arg();
 	if (!new_arg)
 		return ;
-	exp = NULL;
 	if (token->to_exp == true)
-		exp = builtin_expand(token->value, shell);
-	if (exp)
-		src = exp;
+		get_exp_value(token, shell, new_arg);
 	else
-		src = token->value;
-	new_arg->arg = ft_strdup(src);
+		get_token_value(token, new_arg);
 	if (!new_arg->arg)
 	{
 		free(new_arg);
 		clear_args_lst(args);
 		return ;
 	}
-	if (exp)
-		free(exp);
 	new_arg->to_join = token->to_join;
 	ft_lstadd_args(args, new_arg);
 }

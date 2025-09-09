@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:08:46 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:28:56 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:47:22 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	open_and_create_here_doc(char *tmp_file_name)
 	fd = open(tmp_file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror("bash: open heredoc");
+		perror("minishell: open heredoc");
 		free(tmp_file_name);
 		return (fd);
 	}
@@ -60,5 +60,4 @@ void	cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
 	ft_close_fd(&fd_tmp);
 	unlink(tmp_file_name);
 	free(tmp_file_name);
-	clear_shell(shell);
 }

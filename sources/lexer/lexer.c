@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/08/26 15:55:15 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:32:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,8 @@ static void	process_single_quote_state(t_lexer *lexer)
 	if (c == '\'')
 	{
 		lexer->state = STATE_NORMAL;
-		if (lexer->input[lexer->pos - 1] == '\'')
-		{
-			add_char(&lexer->tmp_token, '\0');
-			create_token(lexer, true);
-		}
 		if (lexer->input[lexer->pos + 1] != ' ')
-			create_token(lexer, true);
+			create_token(lexer, true, true);
 	}
 	else
 		add_char(&lexer->tmp_token, c);
@@ -41,13 +36,8 @@ static void	process_double_quote_state(t_lexer *lexer)
 	if (c == '"')
 	{
 		lexer->state = STATE_NORMAL;
-		if (lexer->input[lexer->pos - 1] == '"')
-		{
-			add_char(&lexer->tmp_token, '\0');
-			create_token(lexer, true);
-		}
-		else if (lexer->input[lexer->pos + 1] != ' ')
-			create_token(lexer, true);
+		if (lexer->input[lexer->pos + 1] != ' ')
+			create_token(lexer, true, false);
 	}
 	else
 		add_char(&lexer->tmp_token, c);
@@ -86,11 +76,12 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 
 	if (!shell || !input)
 		return (NULL);
-	lexer = shell->lexer;
+	ft_bzero(&lexer, sizeof(t_lexer));
 	lexer.state = STATE_NORMAL;
 	lexer.input = input;
 	lexer.to_exp = true;
-	lexer.to_join = 0;
+	lexer.to_join = false;
+	lexer.pos = 0;
 	while (lexer.input[lexer.pos])
 	{
 		process_current_char(&lexer);
@@ -98,6 +89,6 @@ t_token	*ft_lexer(char *input, t_shell *shell)
 	}
 	if (check_if_not_normal_state(&lexer))
 		return (NULL);
-	create_token(&lexer, true);
+	create_token(&lexer, true, false);
 	return (lexer.tokens);
 }
