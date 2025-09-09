@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/04 15:22:55 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:50:27 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static int	process_heredoc(t_shell *shell, t_cmd *cmd, char *target)
 		return (EXIT_FAILURE);
 	fd_tmp = open_and_create_here_doc(tmp_file_name);
 	if (fd_tmp == -1)
-		return (free(tmp_file_name), unlink(tmp_file_name), EXIT_FAILURE);
-	cmd->pid_heredoc = execute_child_heredoc(shell, tmp_file_name, target, \
-		fd_tmp);
+		return (unlink(tmp_file_name), free(tmp_file_name), EXIT_FAILURE);
+	cmd->pid_heredoc = execute_child_heredoc(shell, target, fd_tmp, \
+		tmp_file_name);
 	waitpid(cmd->pid_heredoc, &status, 0);
 	exit_code = get_exit_code(status);
 	if (exit_code == 130)

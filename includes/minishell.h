@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/09 10:34:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 15:33:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,8 @@ void			cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
 				t_shell *shell);
 int				open_and_create_here_doc(char *tmp_file_name);
 char			*get_file_name(void);
-pid_t			execute_child_heredoc(t_shell *shell, char *tmp_file_name, \
-				char *limiter, int fd_heredoc);
+pid_t			execute_child_heredoc(t_shell *shell, char *limiter, \
+				int fd_heredoc, char *file);
 void			ft_close_fd(int *fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:08:46 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 10:14:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 15:47:22 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,4 @@ void	cleanup_heredoc_on_error(char *tmp_file_name, int fd_tmp, \
 	ft_close_fd(&fd_tmp);
 	unlink(tmp_file_name);
 	free(tmp_file_name);
-	clear_shell(shell);
 }

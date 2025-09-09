@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:44:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/05 10:14:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/09 15:11:02 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	open_outfile(char *outfile, t_token_type type)
 	if (type == APPEND_OUT)
 		fd = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
-	fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
