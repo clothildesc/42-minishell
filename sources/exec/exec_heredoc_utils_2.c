@@ -6,14 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:58:26 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/10 13:09:09 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 16:18:44 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-static void	read_and_write_heredoc(int fd, char *limiter)
+static void	read_and_write_heredoc(int fd, char *limiter, t_shell *shell)
 {
 	char	*line;
 	int		limiter_reached;
@@ -33,6 +33,7 @@ static void	read_and_write_heredoc(int fd, char *limiter)
 			free(line);
 			break ;
 		}
+		line = builtin_expand(line, shell, NULL);
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
@@ -74,7 +75,7 @@ pid_t	execute_child_heredoc(t_shell *shell, char *limiter, int fd_heredoc, \
 	{
 		set_up_signals_child(true);
 		close_prev_fd_heredoc(shell->ast);
-		read_and_write_heredoc(fd_heredoc, limiter);
+		read_and_write_heredoc(fd_heredoc, limiter, shell);
 		ft_close_fd(&fd_heredoc);
 		close_all_command_fds(shell->ast);
 		free(file);
