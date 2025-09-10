@@ -6,7 +6,7 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/09/09 10:23:42 by cscache          ###   ########.fr        #
+#    Updated: 2025/09/10 13:16:29 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,12 +106,4 @@ fclean: clean
 
 re: fclean all
 
-valgrind: $(NAME)
-	@echo "=== Valgrind with all leaks (including readline) ==="
-	-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
-valgrind-clean: $(NAME)
-	@echo "=== Valgrind without readline leaks ==="
-	-valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=readline.supp ./$(NAME)
-
-.PHONY: all clean fclean re valgrind valgrind-clean
+.PHONY: all clean fclean re

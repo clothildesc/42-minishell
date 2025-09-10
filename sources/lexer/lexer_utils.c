@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/08 16:40:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:45:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ static void	enter_quote_state(t_lexer *lexer, char quote_char)
 	if (quote_char == '\'')
 	{
 		lexer->state = STATE_SINGLE_QUOTE;
-		if (lexer->input[lexer->pos + 1] == '$')
-			lexer->to_exp = false;
+		lexer->to_exp = false;
 	}
 	else
 		lexer->state = STATE_DOUBLE_QUOTE;
@@ -54,7 +53,7 @@ void	process_normal_state(t_lexer *lexer)
 	c = lexer->input[lexer->pos];
 	if (c == '\'' || c == '"')
 		enter_quote_state(lexer, c);
-	else if (c == ' ')
+	else if (ft_isspace(c))
 		create_token(lexer, true, false);
 	else if (c == '|' || c == '<' || c == '>')
 		handle_operators(lexer, c);

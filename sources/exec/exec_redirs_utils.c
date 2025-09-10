@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:40:22 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 13:57:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:09:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	process_dup_infile(t_cmd *cmd, int fd_i)
 	if (cmd->fd_in != -1)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-			perror("dup2 1");
+			perror("dup2");
 		close(cmd->fd_in);
 		cmd->fd_in = -1;
 		if (fd_i != STDIN_FILENO)
@@ -27,7 +27,7 @@ static void	process_dup_infile(t_cmd *cmd, int fd_i)
 	else if (fd_i != STDIN_FILENO)
 	{
 		if (dup2(fd_i, STDIN_FILENO) == -1)
-			perror("dup2 2");
+			perror("dup2");
 		ft_close_fd(&fd_i);
 	}
 }
@@ -37,7 +37,7 @@ static void	process_dup_outfile(t_cmd *cmd, int fd_o)
 	if (cmd->fd_out != -1)
 	{
 		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-			perror("dup2 3");
+			perror("dup2");
 		close(cmd->fd_out);
 		cmd->fd_out = -1;
 		if (fd_o != STDOUT_FILENO)
@@ -46,7 +46,7 @@ static void	process_dup_outfile(t_cmd *cmd, int fd_o)
 	else if (fd_o != STDOUT_FILENO)
 	{
 		if (dup2(fd_o, STDOUT_FILENO) == -1)
-			perror("dup2 4");
+			perror("dup2");
 		ft_close_fd(&fd_o);
 	}
 }

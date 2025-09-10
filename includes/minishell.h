@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/09 15:33:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:30:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int				builtin_pwd(void);
 /* cd */
 int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				builtin_echo(char **args);
+int				builtin_echo(char **args, t_shell *shell);
 /* exit */
 int				builtin_exit(t_shell *shell, char **args, \
 				int saved_in, int saved_out);

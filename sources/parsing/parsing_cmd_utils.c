@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 11:07:23 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:02:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_cmd	*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell)
 	char	*input;
 
 	input = ft_strdup(cmd_name);
+	if (!input)
+		return (NULL);
 	cmd_expanded = builtin_expand(input, shell, NULL);
 	if (input)
 		free(input);

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 17:05:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 11:06:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:11:52 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ void	get_token_value(t_token *token, t_arg *new_arg)
 	{
 		tmp = ft_strjoin("'", src);
 		if (!tmp)
-		{
 			return ;
-		}
 		new_arg->arg = ft_strjoin(tmp, "'");
 		free(tmp);
 	}

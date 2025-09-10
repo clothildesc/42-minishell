@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/08 16:32:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:52:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	process_single_quote_state(t_lexer *lexer)
 	if (c == '\'')
 	{
 		lexer->state = STATE_NORMAL;
-		if (lexer->input[lexer->pos + 1] != ' ')
+		if (!ft_isspace(lexer->input[lexer->pos + 1]))
 			create_token(lexer, true, true);
 	}
 	else
@@ -36,7 +36,7 @@ static void	process_double_quote_state(t_lexer *lexer)
 	if (c == '"')
 	{
 		lexer->state = STATE_NORMAL;
-		if (lexer->input[lexer->pos + 1] != ' ')
+		if (!ft_isspace(lexer->input[lexer->pos + 1]))
 			create_token(lexer, true, false);
 	}
 	else

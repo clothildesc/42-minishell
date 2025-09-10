@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:41:18 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/09 15:11:22 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:32:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static int	fork_and_execute(t_cmd *cmd, t_shell *shell, int fd_i, int fd_o)
 	pid_t	pid;
 	int		status;
 
+	if (!shell->env)
+		return (cmd_not_found(cmd));
 	status = prepare_cmd(cmd, shell->env);
 	if (status != EXIT_SUCCESS)
 		return (status);
