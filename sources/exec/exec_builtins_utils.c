@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:56:08 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/03 14:15:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:29:54 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	is_a_builtin(char *name)
 {
 	if (!name)
 		return (0);
-	if (!ft_strcmp(name, "env"))
+	else if (!ft_strcmp(name, ":"))
+		return (1);
+	else if (!ft_strcmp(name, "env"))
 		return (1);
 	else if (!ft_strcmp(name, "pwd"))
 		return (1);
@@ -38,13 +40,13 @@ bool	is_parent_builtin(char *name)
 {
 	if (!name)
 		return (false);
-	if (!ft_strcmp(name, "cd"))
+	else if (!ft_strcmp(name, "cd"))
 		return (true);
-	if (!ft_strcmp(name, "exit"))
+	else if (!ft_strcmp(name, "exit"))
 		return (true);
-	if (!ft_strcmp(name, "export"))
+	else if (!ft_strcmp(name, "export"))
 		return (true);
-	if (!ft_strcmp(name, "unset"))
+	else if (!ft_strcmp(name, "unset"))
 		return (true);
 	return (false);
 }
@@ -54,7 +56,7 @@ int	execute_builtins(t_cmd *cmd, t_shell *shell)
 	if (!ft_strcmp(cmd->name, "env"))
 		return (builtin_env(shell->env));
 	else if (!ft_strcmp(cmd->name, "echo"))
-		return (builtin_echo(cmd->args));
+		return (builtin_echo(cmd->args, shell));
 	else if (!ft_strcmp(cmd->name, "pwd"))
 		return (builtin_pwd());
 	else if (!ft_strcmp(cmd->name, "cd"))
@@ -79,5 +81,7 @@ int	execute_parent_builtins(t_cmd *cmd, t_shell *shell, \
 		return (builtin_export(shell->env, cmd->args));
 	else if (!ft_strcmp(cmd->name, "exit"))
 		return (builtin_exit(shell, cmd->args, saved_in, saved_out));
+	else if (!ft_strcmp(cmd->name, ":"))
+		return (EXIT_SUCCESS);
 	return (EXIT_FAILURE);
 }

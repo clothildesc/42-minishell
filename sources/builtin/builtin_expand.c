@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 11:55:18 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/10 11:05:33 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*builtin_expand(char *input, t_shell *shell, char *result)
 	int		dollar_index;
 	char	*new_result;
 
-	if (!input || !shell->env)
+	if (!shell->env || !input)
 		return (result);
 	dollar_index = get_char_index(input, '$');
 	if (dollar_index < 0)
