@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/10 11:30:19 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 16:58:09 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,18 +115,20 @@ int				builtin_export(t_env *env, char **args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
-int				compare_key(char *env, char *inpt);
 t_env			*get_node(t_env **head, char *key);
 t_env			*create_new_env_node(t_env *new, char *input, char *key);
 int				print_env_export(t_env *env);
 /* expand */
 int				get_char_index(char *input, char c);
+int				get_var_end_index(char *input);
 char			*builtin_expand(char *input, t_shell *shell, char *result);
 /* pwd */
 int				builtin_pwd(void);
 /* cd */
 int				builtin_cd(char **args, t_env *env);
 /* echo */
+int				handle_quoted_str(char *arg, t_shell *shell);
+int				print_echo_arg(char *arg, t_shell *shell);
 int				builtin_echo(char **args, t_shell *shell);
 /* exit */
 int				builtin_exit(t_shell *shell, char **args, \

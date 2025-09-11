@@ -6,23 +6,12 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 10:22:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 13:49:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
-
-int	compare_key(char *env, char *input)
-{
-	int	i;
-
-	i = 0;
-	while (env[i] && input[i] && env[i] != '=' && input[i] != '='\
-		&& env[i] == input[i])
-		i++;
-	return (env[i] - input[i]);
-}
 
 t_env	*get_node(t_env **head, char *key)
 {

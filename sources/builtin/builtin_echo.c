@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/11 11:00:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:46:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static bool	process_n_options(char **args, int *i)
 	return (option);
 }
 
-static int	handle_quoted_str(char *arg)
+int	ft_print_no_quote(char *arg)
 {
 	int	i;
 
@@ -60,17 +60,38 @@ static int	handle_quoted_str(char *arg)
 	return (1);
 }
 
-static int	print_echo_arg(char *arg, t_shell *shell)
+int	handle_quoted_str(char *arg, t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] != '\'' && arg[i] != '$')
+			write(1, &arg[i], 1);
+		else
+		{
+			if (arg[i] == '\'')
+				return (ft_print_no_quote(&arg[i]));
+			i++;
+			return (print_echo_arg(&arg[i], shell));
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	print_echo_arg(char *arg, t_shell *shell)
 {
 	int	i;
 
 	if (arg[0] != '$')
-		return (handle_quoted_str(arg));
+		return (handle_quoted_str(arg, shell), 1);
 	if (!arg[1])
 		return (ft_printf("%s", arg), 1);
-	else if (!shell->env && arg[1] == '?' && !arg[2])
+	if (!shell->env && arg[1] == '?' && !arg[2])
 		return (ft_printf("%d", shell->status), 1);
-	else if (ft_isdigit(arg[1]) && arg[2])
+	if (ft_isdigit(arg[1]) && arg[2])
 		return (ft_printf("%s", &arg[2]), 1);
 	i = 1;
 	while (ft_isalnum(arg[i]))
@@ -93,6 +114,7 @@ int	builtin_echo(char **args, t_shell *shell)
 	{
 		if (!first)
 			ft_printf(" ");
+		//printf("[DEBUG] arg[%d] = %s\n", i, args[i]);
 		if (args[i][0] == '\0' || print_echo_arg(args[i], shell))
 			first = false;
 		i++;
