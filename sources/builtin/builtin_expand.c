@@ -6,25 +6,25 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:50:06 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/10 11:05:33 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 10:27:40 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/libft.h"
 #include "../../includes/minishell.h"
 
-static char	*get_var_to_expand(char *input, int space_index)
+static char	*get_var_to_expand(char *input, int var_end_index)
 {
 	char	*var_to_exp;
 
-	var_to_exp = ft_substr(input, 0, space_index);
+	var_to_exp = ft_substr(input, 0, var_end_index);
 	if (!var_to_exp)
 		return (NULL);
 	return (var_to_exp);
 }
 
 static char	*find_env_var(t_env *env, char *var_to_exp, \
-						char *input, int space_index)
+						char *input, int var_end_index)
 {
 	char	*result;
 
@@ -32,7 +32,7 @@ static char	*find_env_var(t_env *env, char *var_to_exp, \
 	{
 		if (!ft_strcmp(var_to_exp, env->key))
 		{
-			result = ft_strjoin(env->value, &input[space_index]);
+			result = ft_strjoin(env->value, &input[var_end_index]);
 			return (result);
 		}
 		env = env->next;

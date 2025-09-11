@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/10 13:02:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 10:52:56 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ static void	handle_to_join(t_arg *last, t_arg *new)
 		free(new);
 		return ;
 	}
+	last->to_join = new->to_join;
 	free(old_arg);
 	free(new->arg);
 	free(new);

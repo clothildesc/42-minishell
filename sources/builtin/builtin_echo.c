@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 16:47:11 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/10 18:24:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/11 11:00:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,13 @@ static bool	process_n_options(char **args, int *i)
 static int	handle_quoted_str(char *arg)
 {
 	int	i;
-	int	start;
 
-	start = 0;
-	while (arg[start] && arg[start] != '\'')
-		start++;
-	if (!start)
-		ft_printf("%s", arg);
-	else
+	i = 0;
+	while (arg[i])
 	{
-		i = 0;
-		while (i < start)
-		{
+		if (arg[i] != '\'')
 			write(1, &arg[i], 1);
-			i++;
-		}
 		i++;
-		while (arg[i] && arg[i] != '\'')
-		{
-			write(1, &arg[i], 1);
-			i++;
-		}
 	}
 	return (1);
 }
@@ -84,8 +70,6 @@ static int	print_echo_arg(char *arg, t_shell *shell)
 		return (ft_printf("%s", arg), 1);
 	else if (!shell->env && arg[1] == '?' && !arg[2])
 		return (ft_printf("%d", shell->status), 1);
-	else if (arg[0] != '$')
-		return (ft_printf("%s", arg), 1);
 	else if (ft_isdigit(arg[1]) && arg[2])
 		return (ft_printf("%s", &arg[2]), 1);
 	i = 1;
