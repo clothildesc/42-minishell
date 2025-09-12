@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:09:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 10:22:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 11:17:12 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void	update_env_value(char *input, t_env **node)
 		return ;
 }
 
-static t_env	*find_or_create_env(t_env *env, char *input, char *key)
+static t_env	*find_or_create_env(t_env **env, char *input, char *key)
 {
 	t_env	*tmp;
 
-	if (!env || !input || !key)
+	if (!input || !key)
 		return (NULL);
-	tmp = env;
+	tmp = *env;
 	while (tmp)
 	{
 		if (!ft_strcmp(key, tmp->key))
@@ -88,7 +88,7 @@ static int	key_name_is_valid(char *key)
 	return (1);
 }
 
-static void	handle_export_key(t_env *env, char *arg, char *key, \
+static void	handle_export_key(t_env **env, char *arg, char *key, \
 								int *exit_code)
 {
 	t_env	*new;
@@ -102,11 +102,11 @@ static void	handle_export_key(t_env *env, char *arg, char *key, \
 	{
 		new = find_or_create_env(env, arg, key);
 		if (new)
-			ft_lstadd_back_env(&env, new);
+			ft_lstadd_back_env(env, new);
 	}
 }
 
-int	builtin_export(t_env *env, char **args)
+int	builtin_export(t_env **env, char **args)
 {
 	char	*key;
 	int		i;
@@ -116,7 +116,7 @@ int	builtin_export(t_env *env, char **args)
 	if (!args)
 		return (exit_code);
 	if (args && !args[1])
-		return (print_env_export(env));
+		return (print_env_export(*env));
 	i = 1;
 	while (args[i])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export_utils_2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:39:16 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/09 10:22:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 10:39:09 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_env	*create_new_env_node(t_env *new, char *input, char *key)
 {
-	if (!new || !input || !key)
+	if (!input || !key)
 		return (NULL);
 	new->key = key;
 	new->value = get_input_value(input);
@@ -34,7 +34,7 @@ int	print_env_export(t_env *env)
 
 	if (!env)
 	{
-		ft_putendl_fd(ERROR_MISSING_FILE, 2);
+		ft_putendl_fd("minishell: env: missing envp", 2);
 		return (EXIT_CMD_NOT_FOUND);
 	}
 	tmp = env;

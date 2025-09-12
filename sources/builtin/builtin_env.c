@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:42:47 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/10 11:16:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 10:38:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_env(t_env *env)
 
 	if (!env)
 	{
-		ft_putendl_fd(ERROR_MISSING_FILE, 2);
+		ft_putendl_fd("minishell: env: missing envp", 2);
 		return (EXIT_CMD_NOT_FOUND);
 	}
 	tmp = env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/11 16:58:09 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 11:17:59 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int				builtin_env(t_env *env);
 /* unset */
 int				builtin_unset(t_env **env, char **args);
 /* export */
-int				builtin_export(t_env *env, char **args);
+int				builtin_export(t_env **env, char **args);
 int				value_to_append(char *input);
 char			*get_input_value(char *input);
 char			*get_input_key(char *input);
