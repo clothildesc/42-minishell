@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/12 16:06:10 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:49:08 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,19 @@ static void	reset_tmp_token(t_lexer *lexer)
 	lexer->to_join = false;
 }
 
-// static void	set_to_join(t_lexer *lexer)
-// {
-// 	int	pos;
+void	set_to_join(t_lexer *lexer)
+{
+	int	pos;
 
-// 	pos = lexer->pos;
-// 	while (lexer->input[pos] && (lexer->input[pos] == '"' || \
-// 		lexer->input[pos] == '\''))
-// 		pos++;
-// 	if (lexer->input[pos] && !ft_isspace(lexer->input[pos]))
-// 		lexer->to_join = true;
-// 	else
-// 		lexer->to_join = false;
-// }
+	pos = lexer->pos;
+	while (lexer->input[pos] && (lexer->input[pos] == '"' || \
+		lexer->input[pos] == '\''))
+		pos++;
+	if (lexer->input[pos] && !ft_isspace(lexer->input[pos]))
+		lexer->to_join = true;
+	else
+		lexer->to_join = false;
+}
 
 static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, \
 	char *token_value)
@@ -60,7 +60,10 @@ static t_token	*set_new_token(t_lexer *lexer, t_token *new_token, \
 	new_token->value = token_value;
 	new_token->to_exp = lexer->to_exp;
 	new_token->to_join = lexer->to_join;
-	new_token->type = determine_token_type(lexer);
+	if (lexer->tmp_token)
+		new_token->type = determine_token_type(lexer);
+	else
+		new_token->type = WORD;  // Token vide = WORD
 	add_to_lst_tokens(&lexer->tokens, new_token);
 	return (new_token);
 }
@@ -70,9 +73,10 @@ void	create_token(t_lexer *lexer, bool to_join)
 	char	*token_value;
 	t_token	*new_token;
 
-	// if (to_join)
-	// 	set_to_join(lexer);
-	lexer->to_join = to_join;
+	if (to_join)
+		set_to_join(lexer);
+	else
+		lexer->to_join = false;
 	if (lexer->tmp_token)
 	{
 		token_value = create_token_value(lexer);
@@ -89,6 +93,21 @@ void	create_token(t_lexer *lexer, bool to_join)
 			return ;
 		}
 		set_new_token(lexer, new_token, token_value);
-		reset_tmp_token(lexer);
 	}
+	else if (to_join && lexer->state == NORMAL)
+	{
+		// Créer un token vide seulement si on vient de sortir des guillemets
+		// (détecté par to_join=true et state=NORMAL après traitement d'une quote)
+		token_value = ft_strdup("");
+		if (!token_value)
+			return ;
+		new_token = malloc(sizeof(t_token));
+		if (!new_token)
+		{
+			free(token_value);
+			return ;
+		}
+		set_new_token(lexer, new_token, token_value);
+	}
+	reset_tmp_token(lexer);
 }

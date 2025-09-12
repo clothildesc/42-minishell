@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/12 16:14:25 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 17:39:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	handle_operators(t_lexer *lexer, char c)
 		(lexer->pos)++;
 		add_char(&lexer->tmp_token, lexer->input[lexer->pos]);
 	}
-	create_token(lexer, false);
+	create_token(lexer, true);
 }
 
 static int	is_next_char_operator(t_lexer *lexer)
@@ -36,12 +36,7 @@ static int	is_next_char_operator(t_lexer *lexer)
 static void	enter_quote_state(t_lexer *lexer, char quote_char)
 {
 	if (lexer->state == NORMAL && lexer->tmp_token)
-	{
-		if (lexer->input[lexer->pos + 1] && !ft_isspace(lexer->input[lexer->pos + 1]))
-			create_token(lexer, true);
-		else
-			create_token(lexer, false);
-	}
+		create_token(lexer, true);
 	if (quote_char == '\'')
 	{
 		lexer->state = SINGLE_QUOTE;
@@ -59,12 +54,7 @@ void	process_normal_state(t_lexer *lexer)
 	if (c == '\'' || c == '"')
 		enter_quote_state(lexer, c);
 	else if (ft_isspace(c))
-	{
-		// if (lexer->pos != 0 && lexer->input[lexer->pos - 1] == '\'')
-		// 	create_token(lexer, true);
-		// else
-			create_token(lexer, false);
-	}
+		create_token(lexer, false);
 	else if (c == '|' || c == '<' || c == '>')
 		handle_operators(lexer, c);
 	else

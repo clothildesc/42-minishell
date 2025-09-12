@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/12 15:12:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 19:11:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 	{
 		free(new_arg);
 		clear_args_lst(args);
+		return ;
+	}
+	// a creuser sur le fait de ne pas mettre dans la liste les arguments vides qui sont dus au variable qui etait en exp=true mais pas trouve dans l'env
+	if (token->to_exp == false && new_arg->arg[0] == '\0')
+	{
+		free(new_arg->arg);
+		free(new_arg);
 		return ;
 	}
 	new_arg->to_join = token->to_join;

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/12 15:13:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 17:26:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void			close_all_fds_and_pipes(t_shell *shell);
 /*-------Lexer-------*/
 t_token			*ft_lexer(char *input, t_shell *shell);
 void			process_normal_state(t_lexer *lexer);
+void			set_to_join(t_lexer *lexer);
 
 /*-------Token-------*/
 void			create_token(t_lexer *lexer, bool to_join);
