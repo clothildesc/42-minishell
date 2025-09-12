@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:00:27 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/12 11:17:59 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:13:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_token			*ft_lexer(char *input, t_shell *shell);
 void			process_normal_state(t_lexer *lexer);
 
 /*-------Token-------*/
-void			create_token(t_lexer *lexer, bool to_join, bool single_quote);
+void			create_token(t_lexer *lexer, bool to_join);
 void			add_char(t_list **tmp_token, char c);
 void			clear_tokens_lst(t_token **lst);
 t_token_type	determine_token_type(t_lexer *lexer);
@@ -99,7 +99,6 @@ t_cmd			*parse_cmd_name(t_cmd *new, char *cmd_name, t_shell *shell);
 void			ft_lstadd_args(t_arg **args, t_arg *new);
 void			create_args_lst(t_arg **args, t_token *token, t_shell *shell);
 void			lst_args_to_array(t_cmd *cmd, t_arg **args);
-void			get_token_value(t_token *token, t_arg *new_arg);
 void			get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg);
 void			create_redir_lst(t_token *token, t_cmd *cmd);
 
@@ -127,8 +126,6 @@ int				builtin_pwd(void);
 /* cd */
 int				builtin_cd(char **args, t_env *env);
 /* echo */
-int				handle_quoted_str(char *arg, t_shell *shell);
-int				print_echo_arg(char *arg, t_shell *shell);
 int				builtin_echo(char **args, t_shell *shell);
 /* exit */
 int				builtin_exit(t_shell *shell, char **args, \

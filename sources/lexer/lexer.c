@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/10 17:40:11 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 15:57:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	process_single_quote_state(t_lexer *lexer)
 	c = lexer->input[lexer->pos];
 	if (c == '\'')
 	{
-		lexer->state = STATE_NORMAL;
+		lexer->state = NORMAL;
 		if (!ft_isspace(lexer->input[lexer->pos + 1]))
-			create_token(lexer, true, true);
+			create_token(lexer, true);
 	}
 	else
 		add_char(&lexer->tmp_token, c);
@@ -35,9 +35,9 @@ static void	process_double_quote_state(t_lexer *lexer)
 	c = lexer->input[lexer->pos];
 	if (c == '"')
 	{
-		lexer->state = STATE_NORMAL;
+		lexer->state = NORMAL;
 		if (!ft_isspace(lexer->input[lexer->pos + 1]))
-			create_token(lexer, true, false);
+			create_token(lexer, true);
 	}
 	else
 		add_char(&lexer->tmp_token, c);
@@ -45,7 +45,7 @@ static void	process_double_quote_state(t_lexer *lexer)
 
 static int	check_if_not_normal_state(t_lexer *lexer)
 {
-	if (lexer->state != STATE_NORMAL)
+	if (lexer->state != NORMAL)
 	{
 		if (lexer->tmp_token)
 		{
@@ -62,33 +62,35 @@ static int	check_if_not_normal_state(t_lexer *lexer)
 
 static void	process_current_char(t_lexer *lexer)
 {
-	if (lexer->state == STATE_NORMAL)
+	if (lexer->state == NORMAL)
 		process_normal_state(lexer);
-	else if (lexer->state == STATE_SINGLE_QUOTE)
+	else if (lexer->state == SINGLE_QUOTE)
 		process_single_quote_state(lexer);
-	else if (lexer->state == STATE_DOUBLE_QUOTE)
+	else if (lexer->state == DOUBLE_QUOTE)
 		process_double_quote_state(lexer);
 }
 
 t_token	*ft_lexer(char *input, t_shell *shell)
 {
 	t_lexer		lexer;
+	char		c;
 
 	if (!shell || !input)
 		return (NULL);
 	ft_bzero(&lexer, sizeof(t_lexer));
-	lexer.state = STATE_NORMAL;
+	lexer.state = NORMAL;
 	lexer.input = input;
 	lexer.to_exp = true;
 	lexer.to_join = false;
 	lexer.pos = 0;
 	while (lexer.input[lexer.pos])
 	{
+		c = lexer.input[lexer.pos];
 		process_current_char(&lexer);
 		(lexer.pos)++;
 	}
 	if (check_if_not_normal_state(&lexer))
 		return (NULL);
-	create_token(&lexer, true, false);
+	create_token(&lexer, false);
 	return (lexer.tokens);
 }

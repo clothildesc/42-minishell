@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:01:17 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/08 10:44:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 15:12:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	create_args_lst(t_arg **args, t_token *token, t_shell *shell)
 	if (token->to_exp == true)
 		get_exp_value(token, shell, new_arg);
 	else
-		get_token_value(token, new_arg);
+		new_arg->arg = ft_strdup(token->value);
 	if (!new_arg->arg)
 	{
 		free(new_arg);

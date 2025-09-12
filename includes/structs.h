@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:01:36 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/11 16:51:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 15:13:40 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 typedef enum e_state
 {
-	STATE_NORMAL,
-	STATE_SINGLE_QUOTE,
-	STATE_DOUBLE_QUOTE
+	NORMAL,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
 }	t_state;
 
 typedef enum e_token_type
@@ -37,7 +37,6 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	char			*value;
-	t_state			state;
 	t_token_type	type;
 	bool			to_exp;
 	bool			to_join;

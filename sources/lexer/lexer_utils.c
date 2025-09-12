@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/09/10 17:39:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 16:14:25 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	handle_operators(t_lexer *lexer, char c)
 		(lexer->pos)++;
 		add_char(&lexer->tmp_token, lexer->input[lexer->pos]);
 	}
-	create_token(lexer, false, false);
+	create_token(lexer, false);
 }
 
 static int	is_next_char_operator(t_lexer *lexer)
@@ -35,15 +35,20 @@ static int	is_next_char_operator(t_lexer *lexer)
 
 static void	enter_quote_state(t_lexer *lexer, char quote_char)
 {
-	if (lexer->state == STATE_NORMAL && lexer->tmp_token)
-		create_token(lexer, true, false);
+	if (lexer->state == NORMAL && lexer->tmp_token)
+	{
+		if (lexer->input[lexer->pos + 1] && !ft_isspace(lexer->input[lexer->pos + 1]))
+			create_token(lexer, true);
+		else
+			create_token(lexer, false);
+	}
 	if (quote_char == '\'')
 	{
-		lexer->state = STATE_SINGLE_QUOTE;
+		lexer->state = SINGLE_QUOTE;
 		lexer->to_exp = false;
 	}
 	else
-		lexer->state = STATE_DOUBLE_QUOTE;
+		lexer->state = DOUBLE_QUOTE;
 }
 
 void	process_normal_state(t_lexer *lexer)
@@ -55,10 +60,10 @@ void	process_normal_state(t_lexer *lexer)
 		enter_quote_state(lexer, c);
 	else if (ft_isspace(c))
 	{
-		if (lexer->input[lexer->pos - 1] == '\'')
-			create_token(lexer, true, true);
-		else
-			create_token(lexer, true, false);
+		// if (lexer->pos != 0 && lexer->input[lexer->pos - 1] == '\'')
+		// 	create_token(lexer, true);
+		// else
+			create_token(lexer, false);
 	}
 	else if (c == '|' || c == '<' || c == '>')
 		handle_operators(lexer, c);
@@ -66,6 +71,6 @@ void	process_normal_state(t_lexer *lexer)
 	{
 		add_char(&lexer->tmp_token, c);
 		if (is_next_char_operator(lexer))
-			create_token(lexer, false, false);
+			create_token(lexer, false);
 	}
 }

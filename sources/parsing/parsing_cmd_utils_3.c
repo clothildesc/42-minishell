@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 17:05:25 by barmarti          #+#    #+#             */
-/*   Updated: 2025/09/11 16:52:16 by cscache          ###   ########.fr       */
+/*   Updated: 2025/09/12 15:12:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,4 @@ void	get_exp_value(t_token *token, t_shell *shell, t_arg *new_arg)
 		return ;
 	}
 	new_arg->arg = ft_strdup(token->value);
-}
-
-void	get_token_value(t_token *token, t_arg *new_arg)
-{
-	char	*src;
-	char	*tmp;
-
-	src = token->value;
-	if (token->state == STATE_SINGLE_QUOTE && src[0] && src[0] == '$')
-	{
-		tmp = ft_strjoin("'", src);
-		if (!tmp)
-			return ;
-		new_arg->arg = ft_strjoin(tmp, "'");
-		free(tmp);
-	}
-	else
-		new_arg->arg = ft_strdup(src);
 }
